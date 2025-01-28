@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="CSAPP lecture 6 1. Condition code  Four condition codes:  CF: Carry Flag. Will be 1 if there is a carry out of the most significant bit. Used to detect the overflow of the unsigned number ZF: Z">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP-lecture-6">
+<meta property="og:url" content="http://plafle.github.io/2024/08/02/CSAPP%20lecture%206/index.html">
+<meta property="og:site_name" content="plafle&#39;s blog">
+<meta property="og:description" content="CSAPP lecture 6 1. Condition code  Four condition codes:  CF: Carry Flag. Will be 1 if there is a carry out of the most significant bit. Used to detect the overflow of the unsigned number ZF: Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-28T02:47:20.121Z">
+<meta property="article:author" content="plafle">
+<meta property="article:tag" content="CS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://plafle.github.io/2024/08/02/CSAPP%20lecture%206/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://plafle.github.io/2024/08/02/CSAPP%20lecture%206/","path":"2024/08/02/CSAPP lecture 6/","title":"CSAPP-lecture-6"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CSAPP-lecture-6 | plafle's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/logo.jpg" alt="plafle's blog">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">plafle's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">the pursuit of rationalism</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#csapp-lecture-6"><span class="nav-number">1.</span> <span class="nav-text">CSAPP lecture 6</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#condition-code"><span class="nav-number">1.1.</span> <span class="nav-text">1. Condition code</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#access-the-condition-code"><span class="nav-number">2.</span> <span class="nav-text">2. Access the condition code</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#how-to-set-a-single-byte-according-to-the-condition-code"><span class="nav-number">2.0.1.</span> <span class="nav-text">2.1
+How to set a single byte according to the condition code</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#conditionally-jump-to-some-part-of-the-program"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.2
+(Conditionally) jump to some part of the program</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#jump-instruction-encodings"><span class="nav-number">2.0.3.</span> <span class="nav-text">2.3 Jump instruction encodings</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#conditional-move"><span class="nav-number">2.0.4.</span> <span class="nav-text">2.4 Conditional Move</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">plafle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2024/08/02/CSAPP%20lecture%206/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CSAPP-lecture-6 | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPP-lecture-6
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-02 00:00:00" itemprop="dateCreated datePublished" datetime="2024-08-02T00:00:00+08:00">2024-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 10:47:20" itemprop="dateModified" datetime="2025-01-28T10:47:20+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="csapp-lecture-6">CSAPP lecture 6</h3>
+<h4 id="condition-code">1. Condition code</h4>
+<ul>
+<li><p>Four condition codes:</p>
+<ul>
+<li>CF: Carry Flag. Will be 1 if there is a carry out of the most
+significant bit. Used to detect the overflow of the unsigned number</li>
+<li>ZF: Zero Flag. Will be 1 if the most recent operation yield 0.</li>
+<li>SF: Sign Flag. Will be 1 if the most recent operation yield a value
+with the sign bit being 1.</li>
+<li>OF: Overflow Flag. Will be 1 if the most recent operation caused an
+overflow (for two's complement), either positive overflow or negative
+overflow.</li>
+</ul>
+<blockquote>
+<p>The leaq operation would not alter any of the condition code. All
+other arithmetic operation would make these condition code to
+change.</p>
+</blockquote></li>
+<li><p>For the logical operation (such as <code>xor</code>
+<code>or</code> <code>add</code>), they will leave the CF and OF to be
+0.</p></li>
+<li><p>For the shift operation, the CF will be set to the last digit
+shifted out, and the OF will be set to 0.</p></li>
+<li><p>For the <code>inc</code> and <code>dec</code> operation, they
+will set the OF and ZF, but they will leave the CF unchanged.</p></li>
+<li><p>There are two instruction classes which can only alter the
+condition codes without changing the other value.</p></li>
+</ul>
+<p>​</p>
+<p>​ We can check the sign of a value or whether this value is 0 by
+<code>test %rax %rax</code>. (Suppose this value is stored in register
+<code>%rax</code>)</p>
+<h3 id="access-the-condition-code">2. Access the condition code</h3>
+<ul>
+<li>Access the condition code: Rather than directly access the condition
+code, we prefer to access the condition code indirectly, using the
+following 3 methods:
+<ul>
+<li>We can set a single byte to 0 or 1, depending on some combination of
+the condition codes.</li>
+<li>We can conditionally jump to some part of the program</li>
+<li>We can conditionally transfer data.</li>
+</ul></li>
+</ul>
+<h5 id="how-to-set-a-single-byte-according-to-the-condition-code">2.1
+How to set a single byte according to the condition code</h5>
+<p>​ These <code>set</code> class of instruction have a single operand
+<code>D</code> indicating the destination. The destination have to be a
+register or a memory location. If it is a register, then it would set
+the least significant byte of the register to 1 (usually this register
+have to be <code>%al</code> kind rather than <code>%rax</code>
+kind.)</p>
+<p>​ an example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">comp:</span><br><span class="line">	cmpq	%rsi %rdi</span><br><span class="line">	setl	%al</span><br><span class="line">	movzbq	%al %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h5 id="conditionally-jump-to-some-part-of-the-program">2.2
+(Conditionally) jump to some part of the program</h5>
+<p><strong>Unconditionally jump:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	movq $0, %rax</span><br><span class="line">	jmp .L1</span><br><span class="line">	movq (%rax), %rdx</span><br><span class="line">.L1:</span><br><span class="line">	popq %rdx</span><br></pre></td></tr></table></figure>
+<p>The <code>jmp</code> instruction would jump to <code>.L1</code>
+label</p>
+<p><code>jmp</code> is the unconditional jump operation. It can jump
+directly or indirectly. When it is directly, it's something like
+<code>jmp .L1</code>. When it is indirectly, it is something like
+<code>jmp *%rax</code> or <code>jmp *(%rax)</code>, where the label is
+stored in the register <code>%rax</code> or the memory location
+<code>(%rax)</code></p>
+<p><strong>Conditional jump:</strong></p>
+<h5 id="jump-instruction-encodings">2.3 Jump instruction encodings</h5>
+<p>​ In assembly code, to specify where we want to jump to we can simply
+write something like <code>.L1</code> happily. In the disassembled
+machinery code <strong><em>(the assemble code translated from the
+machinery code)</em></strong>, the <code>jump</code> operation would
+written in the form like <code>jmp 0x1137</code>. There will be an
+address operand like <code>0x1137</code> to specify which operation will
+the program jump to. In this case, the jump operation would jump to
+<code>0x1137</code> and do the operation in <code>0x1137</code></p>
+<p>​ But in machinery code, how to specify where we want to jump to?
+There are two ways to do this, first is so called
+<code>PC relatives</code>. That is saying, they encode the target
+address as the difference between the target address and the address of
+the instruction immediately following the jump instruction.</p>
+<blockquote>
+<p>The difference between a and b is a - b</p>
+</blockquote>
+<p>​ The reason why we try to use this kind of notation is that the jump
+target would remain unchanged when the whole program is shifted to
+another address.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">eb 03 # In this case, 0x03 is the encoded jump target. 0x03 has to be 							added by the address of the next instruction to get the 								target address. </span><br><span class="line"># &quot;eb 03&quot; is a machine code in binary. &quot;eb&quot; specifies the type of the operation and &quot;03&quot; specifies the encoded jump target</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Note: this <code>0x03</code> is a two's complement number, so for
+example, if now it is <code>0xFF</code>, then it is actually -1, and the
+actual jump target would be the address of the next instruction minus
+1.</p>
+</blockquote>
+<p><strong><em>Question</em></strong></p>
+<p>​ Sometimes we would see operation <code>jmp .L1</code> and sometimes
+we would see operation <code>jmp 0x1137</code>. Which one (probably
+both) is the assembly code? What's difference between these two
+command?</p>
+<h5 id="conditional-move">2.4 Conditional Move</h5>
+<p>​ Apart from the <code>jump</code> operation, we have an operation
+called conditional move.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">comp</span><span class="params">(<span class="type">long</span> x,<span class="type">long</span> y)</span> &#123;</span><br><span class="line">    <span class="type">long</span> res;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; y)</span><br><span class="line">        res = y - x; <span class="keyword">else</span></span><br><span class="line">        res = x - y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>For example, this C code might be translated into the following
+assembly code:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">absdiff:</span><br><span class="line">	movq 	%rsi, %rax</span><br><span class="line">	subq	%rdi, %rax</span><br><span class="line">	movq	%rdi, %rdx</span><br><span class="line">	subq	%rsi, %rdx</span><br><span class="line">	cmpq	%rsi, %rdi</span><br><span class="line">	cmovge	%rdx, %rax	#If the last comparison said &quot;%rdi &gt;= %rsi&quot;, then this move will 						  conditional move will apply. Otherwise nothing will happen.</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p><strong><em>Question</em></strong></p>
+<p>​ Why will the conditional move operation reduce the penalty for
+misprediction? It also need to decide whether to do the move
+instruction, and the misprediction should affect the following pipeline
+as well.</p>
+<p><strong>The class of conditional move:</strong></p>
+<p>​ Some property for the conditional move:</p>
+<ul>
+<li>The destination must be register</li>
+<li>The data type can be 2,4,8 bytes long, but can't be 1 byte long</li>
+<li>The instruction don't need a suffix to specify the data type. The
+processor could infer the operand length from the name of the
+destination register.</li>
+</ul>
+<blockquote>
+<p>The condition move may not be valid if one expression is invalid.</p>
+<p>for example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    reutnr *p;</span><br></pre></td></tr></table></figure>
+<p>You can not calculate <code>*p</code> beforehand as <code>p</code>
+may be a null pointer, making the dereferencing invalid.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CS/" rel="tag"># CS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/09/3formulae/" rel="prev" title="Three Formulae">
+                  <i class="fa fa-angle-left"></i> Three Formulae
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/03/CSAPP%20notes/" rel="next" title="CSAPP-notes">
+                  CSAPP-notes <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">plafle</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

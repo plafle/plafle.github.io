@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概率论 1. 泊松分布 \(\hspace{1cm}\) 定义为\(P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}\)，\(\lambda &gt; 0\)，也可以记作\(X\) ~ \(P(\lambda)\) \(\hspace{1cm}\) 对于一个二项分布\(B(n,p)\)，如果\(n\)比较大，\(np\)适中（\(n \ge 100">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率论">
+<meta property="og:url" content="http://plafle.github.io/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/index.html">
+<meta property="og:site_name" content="plafle&#39;s blog">
+<meta property="og:description" content="概率论 1. 泊松分布 \(\hspace{1cm}\) 定义为\(P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}\)，\(\lambda &gt; 0\)，也可以记作\(X\) ~ \(P(\lambda)\) \(\hspace{1cm}\) 对于一个二项分布\(B(n,p)\)，如果\(n\)比较大，\(np\)适中（\(n \ge 100">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-28T10:21:43.324Z">
+<meta property="article:author" content="plafle">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://plafle.github.io/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://plafle.github.io/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/","path":"2025/01/01/概率论/","title":"概率论"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>概率论 | plafle's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/logo.jpg" alt="plafle's blog">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">plafle's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">the pursuit of rationalism</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">概率论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83"><span class="nav-number">1.1.</span> <span class="nav-text">1. 泊松分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B6%85%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-number">1.2.</span> <span class="nav-text">2. 超几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9D%87%E5%8C%80%E5%88%86%E5%B8%83"><span class="nav-number">1.3.</span> <span class="nav-text">3. 均匀分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83"><span class="nav-number">1.4.</span> <span class="nav-text">4. 指数分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-number">1.5.</span> <span class="nav-text">5. 几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="nav-number">1.6.</span> <span class="nav-text">6. 正态分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">多维随机变量相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E5%AF%B9%E4%BA%8E%E7%A6%BB%E6%95%A3%E5%9E%8B%E5%92%8C%E8%BF%9E%E7%BB%AD%E5%9E%8B%E5%9D%87%E9%80%82%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E8%BF%9E%E7%BB%AD%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2.
+多维随机变量的联合概率密度以及边缘概率密度（连续型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E5%88%97%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E5%88%86%E5%B8%83%E5%88%97%E7%A6%BB%E6%95%A3%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">3.
+多维随机变量的联合分布列以及边缘分布列（离散型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%86%E5%B8%83"><span class="nav-number">2.4.</span> <span class="nav-text">4. 多维变量的分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="nav-number">3.</span> <span class="nav-text">期望，方差，协方差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1%E9%83%A8%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">数理统计部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E9%83%A8%E5%88%86"><span class="nav-number">5.</span> <span class="nav-text">参数估计部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AE%BA%E5%A5%BD%E9%A2%98%E6%95%B4%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">概率论好题整理</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">plafle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="概率论 | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          概率论
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-01-01 00:00:00" itemprop="dateCreated datePublished" datetime="2025-01-01T00:00:00+08:00">2025-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 18:21:43" itemprop="dateModified" datetime="2025-01-28T18:21:43+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概率论">概率论</h3>
+<h4 id="泊松分布">1. 泊松分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 定义为<span
+class="math inline">\(P(x=k) = \frac{\lambda
+^k}{k!}e^{-\lambda}\)</span>，<span class="math inline">\(\lambda &gt;
+0\)</span>，也可以记作<span class="math inline">\(X\)</span> ~ <span
+class="math inline">\(P(\lambda)\)</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+对于一个二项分布<span class="math inline">\(B(n,p)\)</span>，如果<span
+class="math inline">\(n\)</span>比较大，<span
+class="math inline">\(np\)</span>适中（<span class="math inline">\(n \ge
+100， np \le 10\)</span>）那么可以把二项分布<span
+class="math inline">\(B(n,p)\)</span>近似为<span
+class="math inline">\(P(np)\)</span></p>
+<h4 id="超几何分布">2. 超几何分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 定义为<span
+class="math inline">\(H(N,M,n)\)</span>，表示从有限<span
+class="math inline">\(N\)</span>个物品中（其中包含<span
+class="math inline">\(M\)</span>个指定种类的物件）中抽出<span
+class="math inline">\(n\)</span>个物件，成功抽出该指定种类的物件的次数（不放回）</p>
+<h4 id="均匀分布">3. 均匀分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 即在<span
+class="math inline">\([a,b]\)</span>范围内等概率分布的情况，记作<span
+class="math inline">\(X\)</span> ~ <span
+class="math inline">\(U(a,b)\)</span></p>
+<h4 id="指数分布">4. 指数分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 其概率密度函数为
+<span class="math display">\[
+f(x) = \begin{cases}\lambda e^{-\lambda x}\ \ \ \ x &gt; 0\\ 0 \ \ \ \ \
+\ \ \ \ \ \ \ x \le 0 \end{cases}
+\]</span> <span class="math inline">\(\hspace{1cm}\)</span> 记作<span
+class="math inline">\(X\)</span> ~ <span
+class="math inline">\(Exp(\lambda)\)</span></p>
+<h4 id="几何分布">5. 几何分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 定义为<span
+class="math inline">\(P(X = k) = (1 - p)^{k - 1} \times
+p\)</span>，也可记作<span class="math inline">\(X\)</span> ~ <span
+class="math inline">\(G(p)\)</span>，表示第<span
+class="math inline">\(k\)</span>次刚好第一次发生概率为<span
+class="math inline">\(p\)</span>的事</p>
+<h4 id="正态分布">6. 正态分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 其密度函数记为
+<span class="math display">\[
+\varphi(x) = \frac 1{\sqrt{2\pi} \sigma}e^{-\frac{(x -
+\mu)^2}{2\sigma^2}}
+\]</span> <span class="math inline">\(\hspace{1cm}\)</span> 记作<span
+class="math inline">\(X\)</span> ~ <span class="math inline">\(N(\mu,
+\sigma^2)\)</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 其分布函数记为<span
+class="math inline">\(\Phi(x) = \int_{-\infty}^x \phi(t) dt\)</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 当<span
+class="math inline">\(\mu = 0, \sigma =
+1\)</span>时，认为是标准正态分布，其概率密度函数记为<span
+class="math inline">\(\varphi_0(x)\)</span>，分布函数记为<span
+class="math inline">\(\Phi_0(x)\)</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+对于任何任意一个<span class="math inline">\(\varphi(x)\)</span>，有<span
+class="math inline">\(\varphi(x) = \frac 1 \sigma \varphi_0(\frac {x -
+\mu}{\sigma})\)</span>，以及<span class="math inline">\(\Phi(x) =
+\Phi_0(\frac{x - \mu}{\sigma})\)</span></p>
+<h3 id="多维随机变量相关">多维随机变量相关</h3>
+<h4
+id="多维随机变量的联合分布函数以及边缘分布函数对于离散型和连续型均适用">1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+仿照单元模式，我们有如下定义：<span class="math inline">\(F(x,y) = P(X
+\le x, Y \le y)\)</span> 为<span
+class="math inline">\((X,Y)\)</span>的联合分布函数</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+根据定义，容易证明</p>
+<p><span class="math display">\[
+P(x_1 &lt; X \le x_2, y_1 &lt; Y \le y_2) = F(x_2,y_2) - F(x_1,y_2) -
+F(x_2,y_1) + F(x_1,y_1)
+\]</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 注意到<span
+class="math inline">\(F(x,y)\)</span>有如下性质：</p>
+<p><span class="math display">\[
+F(-\infty,y) = F(x, -\infty) = 0
+\]</span></p>
+<p><span class="math display">\[
+F(-\infty,-\infty) = 0, F(+\infty,+\infty) = 1
+\]</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+定义边缘分布函数：称<span
+class="math inline">\(F_X(x),F_Y(y)\)</span>分别为<span
+class="math inline">\((X,Y)\)</span>关于<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的边缘分布函数，其中<span
+class="math inline">\(F_X(x) = F(x,+\infty)\)</span>，<span
+class="math inline">\(F_Y(y) = F(y, +\infty)\)</span>。</p>
+<h4 id="多维随机变量的联合概率密度以及边缘概率密度连续型">2.
+多维随机变量的联合概率密度以及边缘概率密度（连续型）</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 若存在二元函数<span
+class="math inline">\(f(x,y)\)</span>使得<span
+class="math inline">\(\int_{-\infty}^x \int_{-\infty}^y f(u,v)dudv =
+F(x,y)\)</span>，则称<span
+class="math inline">\(f(x,y)\)</span>为联合概率密度</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+定义边缘概率密度函数：称<span class="math inline">\(f_X(x),
+f_Y(y)\)</span>分别为<span class="math inline">\((X,Y)\)</span>关于<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的边缘密度函数，其中<span
+class="math inline">\(f_X(x) =
+\int_{-\infty}^{+\infty}f(x,y)dy\)</span>, <span
+class="math inline">\(f_Y(y) =
+\int_{-\infty}^{+\infty}f(x,y)dx\)</span></p>
+<p>​</p>
+<h4 id="多维随机变量的联合分布列以及边缘分布列离散型">3.
+多维随机变量的联合分布列以及边缘分布列（离散型）</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 若<span
+class="math inline">\((X,Y)\)</span>均是离散的，那么定义<span
+class="math inline">\(p_{ij} =P(X = x_i, Y =
+y_i)\)</span>为联合分布列</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 同时定义<span
+class="math inline">\(p_{i·} = \sum_j p_{ij}\)</span>为<span
+class="math inline">\((X,Y)\)</span>关于<span
+class="math inline">\(X\)</span>的边缘分布列，<span
+class="math inline">\(p_{·j} =\sum _i p_{ij}\)</span> 为<span
+class="math inline">\((X,Y)\)</span>关于<span
+class="math inline">\(Y\)</span>的边缘分布列</p>
+<h4 id="多维变量的分布">4. 多维变量的分布</h4>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 设<span
+class="math inline">\(Z = \frac XY\)</span>，且<span
+class="math inline">\(f(x,y)\)</span>表示变量<span
+class="math inline">\(X,Y\)</span>的联合概率密度函数，则有： <span
+class="math display">\[
+f_Z(z) = \int_{-\infty}^{+\infty} |y| f(yz,y)dy
+\]</span></p>
+<h3 id="期望方差协方差">期望，方差，协方差</h3>
+<ul>
+<li><p>常见分布的期望和方差：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>E:期望</th>
+<th>D：方差</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(U(a,b)\)</span></td>
+<td><span class="math inline">\(\frac {a + b}2\)</span></td>
+<td><span class="math inline">\(\frac{(b - a)^2}{12}\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(P(\lambda)\)</span></td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(\lambda\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(E(\lambda)\)</span></td>
+<td><span class="math inline">\(\frac 1\lambda\)</span></td>
+<td><span class="math inline">\(\frac 1{\lambda^2}\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(G(p)\)</span></td>
+<td><span class="math inline">\(\frac 1p\)</span></td>
+<td><span class="math inline">\(\frac q{p^2}\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(N(\mu, \sigma^2)\)</span></td>
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\sigma^2\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(B(n,p)\)</span></td>
+<td><span class="math inline">\(np\)</span></td>
+<td><span class="math inline">\(npq\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>注：<span class="math inline">\(E(\lambda)\)</span>为指数分布，<span
+class="math inline">\(G(p)\)</span>为几何分布，<span
+class="math inline">\(q = 1 - p\)</span></p></li>
+<li><p>切比雪夫不等式： 对于一切分布<span
+class="math inline">\(X\)</span>，有： <span class="math display">\[
+P(|X - EX| &gt; \varepsilon) \le \frac {DX}{\varepsilon^2}
+\]</span></p></li>
+<li><p>注意：如果随机变量<span
+class="math inline">\(X,Y\)</span>满足<span class="math inline">\(E(XY)
+= E(X)E(Y)\)</span>那么不能说明<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>是独立的！</p></li>
+<li><p>对于任意随机变量<span
+class="math inline">\(X_1,X_2,...,X_n\)</span>以及任意常数<span
+class="math inline">\(k_0,k_1,...,k_n\)</span>，我们有： <span
+class="math display">\[
+D(k_0 + k_1X_1+ k_2X_2 + ... + k_nX_n) = \sum_{i = 1}^n{k_i}^2DX_i + 2
+\sum_{1 \le i &lt; j \le n}k_ik_jCov(X_i,X_j)
+\]</span></p></li>
+<li><p>Cauchy-schwarz inequation: <span class="math display">\[
+EX^2 \times EY^2 \ge (E[XY])^2
+\]</span></p></li>
+<li><p>最小二乘法拟合：对于随机变量<span
+class="math inline">\(X,Y\)</span>，尝试用<span class="math inline">\(y
+= \hat{a}x + \hat{b}\)</span>拟合，那么最好的拟合直线中: <span
+class="math display">\[
+\hat{a} = \rho_{XY} \sqrt{\frac {DY}{DX} }, \hat{b} = EY - \hat{a}EX
+\]</span></p></li>
+<li><p>若<span class="math inline">\((X,Y)\)</span>服从二维正态分布<span
+class="math inline">\(N(\mu_1,\mu_2,{\sigma_1}^2,{\sigma_2}^2,\rho)\)</span>，那么<span
+class="math inline">\(Cov(X,Y) = \sigma_1\sigma_2\rho\)</span></p></li>
+<li><p>条件期望的概念：书p69开始，注意：<span
+class="math inline">\(E(X|Y)\)</span>是一个关于<span
+class="math inline">\(Y\)</span>的函数，也是一个随机变量，而<span
+class="math inline">\(E(X|Y = y)\)</span>是一个常数。全期望公式： <span
+class="math display">\[
+E(X) = E[E(X|Y)]
+\]</span></p></li>
+</ul>
+<h3 id="数理统计部分">数理统计部分</h3>
+<ul>
+<li><p><strong>样本方差</strong>的定义：设有<span
+class="math inline">\(n\)</span>个样本<span
+class="math inline">\(X_1,X_2,...,X_n\)</span>，则定义样本方差 <span
+class="math display">\[
+S^2 = \frac 1{n - 1} \sum_{i = 1}^n(X_i - \bar{X})^2
+\]</span> 其中： <span class="math display">\[
+\bar{X} = \frac 1n \sum_{i = 1}^nX_i
+\]</span></p></li>
+<li><p>设<span
+class="math inline">\(n\)</span>个样本都是独立同分布的，且每个样本作为随机变量均值为<span
+class="math inline">\(\mu\)</span>,方差为<span
+class="math inline">\(\sigma^2\)</span>，则： <span
+class="math display">\[
+ES^2 =E(\frac 1{n - 1} \sum_{i = 1}^n(X_i - \bar{X})^2) = \frac 1{n - 1}
+\sum_{i = 1}^n(E^2(X_i) - 2E(X_i\bar{X}) + E^2(\bar{x}))\\ = \frac 1{n -
+1} \sum_{i = 1}^n(\mu^2 + \sigma^2 + \mu^2 + \frac 1n \sigma^2 -
+2E(X_i\bar{X}))\\
+\because E(X_i\bar{X}) = \frac 1nE(\sum_{1 \le j\le n, j \neq i}X_iX_j)
++ \frac 1nE({X_i}^2) = \frac 1n\sum_{1 \le j\le n, j \neq i}E(X_i)E(X_j)
++ \frac 1nE({X_i}^2)\\ = \mu^2 + \frac 1n \sigma^2\\
+\therefore ES^2 = \frac 1{n - 1} \times n \times \frac{n - 1}n\sigma^2 =
+\sigma^2
+\]</span></p></li>
+<li><p>设<span class="math inline">\(\chi^2\)</span> ~ <span
+class="math inline">\(\chi^2(n)\)</span>，则当<span
+class="math inline">\(n\)</span>足够大时，<span
+class="math inline">\(\sqrt{2\chi^2}\)</span>近似服从正态分布<span
+class="math inline">\(N(\sqrt{2n-1},1)\)</span></p></li>
+<li><p><strong>t分布</strong>：若<span class="math inline">\(X\)</span>
+~ <span class="math inline">\(N(0,1)\)</span>, <span
+class="math inline">\(Y\)</span> ~ <span
+class="math inline">\(\chi^2(N)\)</span>，且<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>相互独立，那么定义<span
+class="math inline">\(T\)</span> ~ <span class="math inline">\(t(n) =
+\frac{X}{\sqrt{Y/n}}\)</span>为<strong>t分布</strong>.</p>
+<p>当<span class="math inline">\(n \to +\infty\)</span>时，<span
+class="math inline">\(t(n)\)</span> 可近似为 <span
+class="math inline">\(N(0,1)\)</span></p></li>
+<li><p><strong>F分布：</strong>若<span class="math inline">\(X\)</span>
+~ <span class="math inline">\(\chi^2(n_1)\)</span>， <span
+class="math inline">\(Y\)</span> ~ <span
+class="math inline">\(\chi^2(n_2)\)</span>，且<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>相互独立，那么定义<span
+class="math inline">\(F(n_1,n_2) =
+\frac{X/{n_1}}{Y/_{n_2}}\)</span>为<strong>F分布</strong></p>
+<p>​ 若<span class="math inline">\(F\)</span> ~ <span
+class="math inline">\(F(n_1,n_2)\)</span>,则有$1F $ ~ <span
+class="math inline">\(F(n_2,n_1)\)</span>。同时我们有：<span
+class="math inline">\(F_{\alpha}(n_2,n_1) = \frac 1{F_{1 -
+\alpha}(n_1,n_2)}\)</span></p></li>
+<li><p>假设<span
+class="math inline">\(X_1,X_2,...,X_n\)</span>均服从<span
+class="math inline">\(N(\mu,\sigma^2)\)</span>且相互独立，设<span
+class="math inline">\(\bar{X} = \frac 1n \sum_{i = 1}^n
+{X_i}\)</span>，<span class="math inline">\(S^2 = \frac 1n \sum_{i =
+1}^n(X_i - \bar{X})^2\)</span>，那么：</p>
+<ul>
+<li>$ _{i = 1}^n (X_i - )^2$ ~ <span
+class="math inline">\(\chi^2(n)\)</span></li>
+<li>$_{i = 1}^n (X_i - {X})^2 $ ~ <span class="math inline">\(\chi^2 (n
+- 1)\)</span> 这条等价为<span class="math inline">\((n - 1)\frac
+{S^2}{\sigma^2}\)</span> ~ <span class="math inline">\(\chi^2(n -
+1)\)</span></li>
+<li><span class="math inline">\(\frac{\bar{X} - \mu}
+{\sigma}\sqrt{n}\)</span> ~ <span
+class="math inline">\(N(0,1)\)</span>；<br />
+</li>
+<li><span class="math inline">\(\frac{\bar{X} - \mu}{S}\sqrt{n}\)</span>
+~ <span class="math inline">\(t(n - 1)\)</span>；
+（这里的S表示标准差，即<span
+class="math inline">\(\sqrt{S^2}\)</span>，同时我们可以比较上下发现，当<span
+class="math inline">\(n \to \infty\)</span>时，<span
+class="math inline">\(t(n - 1) \to N(0,1)\)</span>）</li>
+</ul></li>
+<li><p>p96 推论6.3 考前看一下，难记</p></li>
+<li><p>在正态分布中，不相关和独立是等价的，这是一条很强的结论</p></li>
+<li><p>正态分布随机抽样得到<span
+class="math inline">\(X_1,X_2,...,X_n\)</span>。那么有<span
+class="math inline">\(S^2\)</span>与<span
+class="math inline">\(\overline{X}\)</span>独立，且有<span
+class="math inline">\(\tilde{S}\)</span>与<span
+class="math inline">\(\overline{X}\)</span>独立。</p></li>
+</ul>
+<h3 id="参数估计部分">参数估计部分</h3>
+<p><span class="math inline">\(\hspace{1cm}\)</span>
+这部分主要用于处理已经知道一系列样本，要用这些样板来估计分布函数里面的一些参数的问题。</p>
+<ul>
+<li><p>矩估计：</p>
+<ul>
+<li><p>若只有一个参数要估计，那只需要用一阶矩来估计即可；
+如果有n个参数要估计，那么用前n阶矩来估计</p></li>
+<li><p>用第<span class="math inline">\(k\)</span>阶矩来估计的方法：</p>
+<ul>
+<li>首先计算出总体的<span
+class="math inline">\(k\)</span>阶原点矩，这等于<span
+class="math inline">\(E(X^k)\)</span>，这应该是一个关于待估计参数的函数</li>
+<li>然后计算出样本的<span
+class="math inline">\(k\)</span>阶原点矩，这等于<span
+class="math inline">\(\frac 1n \sum_{i = 1}^n {X_i}^k\)</span>
+，这算出来是一个确定的数</li>
+<li>令样本的<span
+class="math inline">\(k\)</span>阶原点矩等于总体的<span
+class="math inline">\(k\)</span>阶原点矩，得到一个方程用来解待估计的参数</li>
+</ul></li>
+<li><p>更加一般化地说，就是我们可以用样本的<span
+class="math inline">\(k\)</span>阶原点矩作为总体的<span
+class="math inline">\(k\)</span>阶原点矩。例如，我们知道样本的<span
+class="math inline">\(1\)</span>阶原点矩是<span
+class="math inline">\(a\)</span>，样本的<span
+class="math inline">\(2\)</span>阶原点矩是<span
+class="math inline">\(b\)</span>，现在要求样本的标准差的矩估计。</p>
+<p>那么，我们就可以认为<span class="math inline">\(EX = a\)</span>,
+<span class="math inline">\(EX^2 = b\)</span>，于是<span
+class="math inline">\(D = EX^2 -(EX)^2 = b -
+a^2\)</span>，所以我们就认为<span class="math inline">\(\sqrt{b -
+a^2}\)</span>是样本的标准差的矩估计。</p></li>
+<li><p>我们有如下记号约定：对于一个样本<span
+class="math inline">\((X_1,X_2,...,X_n)\)</span>，令 <span
+class="math inline">\(\tilde{S}^2 = \frac 1n \sum_{i = 1}^n (X_i -
+\overline{X})^2\)</span></p></li>
+<li><p>在矩估计法中，认为<span class="math inline">\(DX =
+\tilde{S}^2\)</span></p>
+<p>证明如下： <span class="math display">\[
+\tilde{S}^2 =\frac 1n \sum_{i = 1}^n (X_i - \overline{X})^2 \\ =
+\frac 1n \sum_{i = 1}^n{X_i}^2 - \frac 2n \sum_{i =
+1}^n{X_i}\overline{X} + \overline{X}^2\\ =  \frac 1n \sum_{i =
+1}^n{X_i}^2 - 2\overline{X}^2 + \overline{X}^2 = \frac 1n \sum_{i =
+1}^n{X_i}^2 - \overline{X}^2\\ = EX^2 - (EX)^2 = DX
+\]</span></p></li>
+</ul></li>
+<li><p>最大似然估计</p>
+<p>即为要让参数取该估计值时，样本发生的概率最大</p></li>
+<li><p>设<span class="math inline">\(\hat{\theta} =
+\hat{\theta}(X_1,X_2,...,X_n)\)</span>是参数<span
+class="math inline">\(\theta\)</span>的估计量，若对于任意的<span
+class="math inline">\(\theta \in \Theta\)</span>，都有： <span
+class="math display">\[
+E(\hat{\theta}) = \theta
+\]</span> 那么称<span class="math inline">\(\hat{\theta}\)</span>是<span
+class="math inline">\(\theta\)</span>的无偏估计。</p>
+<p>设总体方差<span
+class="math inline">\(DX=\sigma^2\)</span>存在，那么<span
+class="math inline">\(S^2 = \frac 1{n - 1} \sum_{i = 1}^n (X_i -
+\overline{X})^2\)</span>是<span
+class="math inline">\(\sigma^2\)</span>的无偏估计，而<span
+class="math inline">\(\tilde{S}^2 = \frac 1n \sum_{i = 1}^n(X_i -
+\overline{X})^2\)</span>是<span
+class="math inline">\(\sigma^2\)</span>的有偏估计。</p></li>
+</ul>
+<h3 id="概率论好题整理">概率论好题整理</h3>
+<ol type="1">
+<li><p>若<span class="math inline">\(X,Y\)</span>独立，且<span
+class="math inline">\(X\)</span> ~ <span
+class="math inline">\(P(\lambda_1)\)</span>,<span
+class="math inline">\(Y\)</span> ~ <span
+class="math inline">\(P(\lambda_2)\)</span>。</p>
+<ol type="1">
+<li>证明<span class="math inline">\(X + Y\)</span> ~ <span
+class="math inline">\(P(\lambda_1 + \lambda_2)\)</span>;
+（2）求在已知<span class="math inline">\(X + Y = m\)</span>的条件下<span
+class="math inline">\(X\)</span>的分布</li>
+</ol></li>
+<li><p>已知随机变量<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>相互独立，且都服从<span
+class="math inline">\(N(0,1)\)</span>，求<span
+class="math inline">\(E[max\{X,Y\}]\)</span></p></li>
+<li><p>已知<span class="math inline">\(X\)</span> ~ <span
+class="math inline">\(N(\mu, \sigma ^2)\)</span>，求<span
+class="math inline">\(DX\)</span></p>
+<p>首先<span class="math inline">\(EX = \mu\)</span>, 然后： <span
+class="math display">\[
+DX = E((X - EX)^2) = E((X - \mu)^2) = \int_{-\infty}^{+\infty} \frac 1
+{\sqrt{2\pi}\sigma}e^{-\frac {(x - \mu)^2}{2\sigma ^2}}\times (x -
+\mu)^2 dx\\ = \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma}
+e^{\frac{-x^2}{2\sigma^2} }\times x^2 dx = \int_{-\infty}^{+\infty}
+\frac 1 {\sqrt{2\pi}\sigma} e^{-(\frac x{\sqrt 2 \sigma})^2} \times
+(\frac x{\sqrt 2 \sigma})^2d(\frac {x}{\sqrt 2 \sigma}) \times 2\sqrt 2
+\sigma ^3\\ = \frac{2\sigma ^2}{\sqrt{\pi}} \int_{-\infty}^{+\infty}
+e^{-x^2} x^2dx
+\]</span></p></li>
+</ol>
+<p>​ 考察积分<span
+class="math inline">\(\int_{-\infty}^{+\infty}e^{-x^2}x^2dx\)</span>：
+<span class="math display">\[
+\int_{-infty}^{+infty} e^{-x^2}dx = \left.
+xe^{-x^2}\right|_{-infty}^{+infty}  + 2\int_{-infty}^{+infty}e^{x^2}x^2
+dx = \sqrt{\pi}
+\]</span> ​ 于是： <span class="math display">\[
+\int_{-\infty}^{+\infty}e^{x^2}x^2 dx =\frac {\sqrt \pi}2
+\]</span> ​ 所以: <span class="math display">\[
+DX = \sigma^2
+\]</span></p>
+<ol start="4" type="1">
+<li>已知<span class="math inline">\(X\)</span> ~ <span
+class="math inline">\(N(0,\sigma^2)\)</span>, <span
+class="math inline">\(Y\)</span> ~ <span
+class="math inline">\(N(0,\sigma ^2)\)</span>，求证：<span
+class="math inline">\(X + Y\)</span> ~ <span class="math inline">\(N(0,
+2\sigma^2)\)</span>， <span class="math inline">\(X - Y\)</span> ~ <span
+class="math inline">\(N(0, 2\sigma^2)\)</span>。</li>
+</ol>
+<p><strong>超级强的一个结论：</strong>若<span
+class="math inline">\(X\)</span> ~ <span
+class="math inline">\(N(\mu_1,{\sigma_1}^2)\)</span>，<span
+class="math inline">\(Y\)</span> ~ <span
+class="math inline">\(N(\mu_2,{\sigma_2}^2)\)</span>，则<span
+class="math inline">\(X + Y\)</span> ~ <span
+class="math inline">\(N(\mu_1+\mu_2，{\sigma_1}^2+{\sigma_2}^2
+)\)</span>，</p>
+<p><span class="math inline">\(X - Y\)</span> ~ <span
+class="math inline">\(N(\mu1 - \mu
+2,{\sigma_1}^2+{\sigma_2}^2  )\)</span></p>
+<ol start="5" type="1">
+<li><p>设随机变量<span class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>相互独立，且都服从<span
+class="math inline">\(N(0, \frac 12)\)</span>分布，求<span
+class="math inline">\(E|X - Y|\)</span>以及<span
+class="math inline">\(D|X-Y|\)</span> <span class="math display">\[
+E|X-Y| = \sqrt{\frac 2 \pi}\ \ \ \ \ \ \ D|X-Y| = 1 - \frac 2 \pi
+\]</span></p></li>
+<li><p>设随机变量<span class="math inline">\(x\)</span>具有概率密度：
+<span class="math display">\[
+f(x) = \begin{cases} \frac{x^m}{m!} e^{-x}\ \ \ \ \ \ \ \ x \ge 0\\
+0 \ \ \ \ \ \ \  \ \ \ \ \  \ else\end{cases}
+\]</span> 其中<span
+class="math inline">\(m\)</span>为正整数。请证明：<span
+class="math inline">\(P(0 \le X \le 2(m + 1)) \ge \frac m{m +
+1}\)</span></p>
+<blockquote>
+<p>hint: 实际上这个概率密度函数和欧拉给出的 x!
+的连续函数的被积函数很像</p>
+</blockquote></li>
+<li><p>设随机变量<span
+class="math inline">\(X,Y\)</span>独立，且分别服从参数为<span
+class="math inline">\(\lambda\)</span>和<span
+class="math inline">\(\mu\)</span>的泊松分布，求<span
+class="math inline">\(E(X|X + Y = m)\)</span></p>
+<blockquote>
+<p><span class="math inline">\(ans:\frac{m\lambda}{\lambda +
+\mu}\)</span></p>
+</blockquote></li>
+<li><p>假设随机变量<span class="math inline">\(X_1\)</span>在<span
+class="math inline">\([0,1]\)</span>上有均匀分布,<span
+class="math inline">\(X_i\)</span>在<span
+class="math inline">\([X_{i-1},X_{i-1}+1]\)</span>上有均匀分布，其中<span
+class="math inline">\(i = 2,3,...,n\)</span>，求<span
+class="math inline">\(EX_n\)</span></p>
+<p>解：首先<span class="math inline">\(E(X_i|X_{i - 1}) = X_{i - 1} +
+\frac 12\)</span>，根据全期望公式，有</p>
+<p><span class="math display">\[
+E(X_i) = E(E(X_i|X_{i - 1})) = E(x_{i - 1} + \frac 12) = EX_{i - 1} +
+\frac 12
+\]</span> 而<span class="math inline">\(E_1 = \frac
+12\)</span>，所以<span class="math inline">\(E_n = \frac
+n2\)</span></p></li>
+<li><p>已知<span class="math inline">\(X\)</span> ~ <span
+class="math inline">\(N(0,1)\)</span>，求<span
+class="math inline">\(E(X^2),D(X^2)\)</span> <span
+class="math display">\[
+E(X^2) = E^2(X) + D(X) = 1\\
+E(X^4) = \int_{-\infty}^{+\infty}\frac
+1{\sqrt{2\pi}}e^{-\frac{x^2}2}x^4dx\\
+while\ \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^4dx = \frac 34 \sqrt{\pi}\
+\ (This \ \ is \ \ similar \ \  to \ \ calculating \ \
+\int_{-\infty}^{+\infty}e^{-x^2}x^2 dx)\\
+\therefore E(X^4) = 3\\
+\therefore D(X^2) = E(X^4)-E^2(X^2) = 3 - 1 = 2
+\]</span></p></li>
+<li><p>设总体<span class="math inline">\(B\)</span> ~ <span
+class="math inline">\(B(1,p)\)</span>,<span
+class="math inline">\(p\)</span>为未知参数，<span
+class="math inline">\((X_1,X_2,X_3,...,X_n)\)</span> 为来自总体<span
+class="math inline">\(X\)</span>的样本，求<span
+class="math inline">\(p\)</span>的极大似然估计</p>
+<p>第一种做法是<span class="math inline">\(L(\theta) = \prod(X_ip +
+(1-X_i)(1-p))\)</span>，这种后续取对然后求驻点是做不下去的</p>
+<p>需要写成<span class="math inline">\(L(\theta) = \prod(p^{X_i}(1 -
+p)^{1 - X_i})\)</span>，然后后续取对然后求驻点可以做</p></li>
+<li><p>设总体<span class="math inline">\(X\)</span>的密度函数为： <span
+class="math display">\[
+f(x) = \begin{cases}\frac 1 \theta e^{-\frac{x - \mu}\theta}\ \ \ \ x
+\ge \mu \\ 0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x &lt; \mu  \\ \end{cases}
+\]</span> 其中<span class="math inline">\(\theta &gt; 0\)</span>，
+求未知参数<span class="math inline">\(\mu,
+\theta\)</span>的矩估计量</p></li>
+</ol>
+<p>注意到：<span class="math inline">\(X - \mu\)</span> ~ <span
+class="math inline">\(E(\frac 1\theta)\)</span>，</p>
+<p>所以：<span class="math inline">\(E(X - \mu)\)</span> = <span
+class="math inline">\(\theta\)</span>, <span class="math inline">\(D(X -
+\mu) = \theta^2\)</span>， 所以：<span class="math inline">\(EX = \theta
++ \mu, DX = \theta ^2\)</span>， 所以：<span
+class="math inline">\(\overline{X} = \theta + \mu, \tilde{S}^2 =
+\theta^2\)</span> 所以：<span class="math inline">\(\theta = \tilde{S},
+\mu = \overline{X} - \tilde{S}\)</span></p>
+<ol start="12" type="1">
+<li>若<span class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>不相关，是否有<span
+class="math inline">\(f(X)\)</span>与<span
+class="math inline">\(g(Y)\)</span>不相关？</li>
+<li>若<span
+class="math inline">\(X_1,X_2,...,X_n\)</span>独立同分布，是否有<span
+class="math inline">\(\overline{X}\)</span>与<span
+class="math inline">\(S^2\)</span>不相关？</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/25/ICS_Notes/" rel="prev" title="ICS Notes">
+                  <i class="fa fa-angle-left"></i> ICS Notes
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/01/27/hello-world/" rel="next" title="Hello World">
+                  Hello World <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">plafle</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

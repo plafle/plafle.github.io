@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Acwing 299 裁剪序列（也许它能帮到你） 1.题意： 给定一个长度为 \(N\) \((N \le 1e5)\)的序列 \(A\) ，要求把该序列分成若干段，在满足“每段中所有数的和”不超过M的前提下，让“每段中所有数的最大值”之和最小。 试计算这个最小值。 2.分析 朴素DP：  状态：设\(f[i]\) 表示将前 \(i\) 个数分为若干段，每段和不超过 \(m\)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Acwing299题解">
+<meta property="og:url" content="http://plafle.github.io/2023/06/15/ACwing299%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="plafle&#39;s blog">
+<meta property="og:description" content="Acwing 299 裁剪序列（也许它能帮到你） 1.题意： 给定一个长度为 \(N\) \((N \le 1e5)\)的序列 \(A\) ，要求把该序列分成若干段，在满足“每段中所有数的和”不超过M的前提下，让“每段中所有数的最大值”之和最小。 试计算这个最小值。 2.分析 朴素DP：  状态：设\(f[i]\) 表示将前 \(i\) 个数分为若干段，每段和不超过 \(m\)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-28T08:56:59.371Z">
+<meta property="article:author" content="plafle">
+<meta property="article:tag" content="OI题目训练">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://plafle.github.io/2023/06/15/ACwing299%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://plafle.github.io/2023/06/15/ACwing299%E9%A2%98%E8%A7%A3/","path":"2023/06/15/ACwing299题解/","title":"Acwing299题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Acwing299题解 | plafle's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/logo.jpg" alt="plafle's blog">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">plafle's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">the pursuit of rationalism</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#acwing-299-%E8%A3%81%E5%89%AA%E5%BA%8F%E5%88%97%E4%B9%9F%E8%AE%B8%E5%AE%83%E8%83%BD%E5%B8%AE%E5%88%B0%E4%BD%A0"><span class="nav-number">1.</span> <span class="nav-text">Acwing 299
+裁剪序列（也许它能帮到你）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E6%84%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.题意：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#code"><span class="nav-number">1.0.3.</span> <span class="nav-text">Code:</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">plafle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/06/15/ACwing299%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Acwing299题解 | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Acwing299题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-15T00:00:00+08:00">2023-06-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 16:56:59" itemprop="dateModified" datetime="2025-01-28T16:56:59+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="acwing-299-裁剪序列也许它能帮到你">Acwing 299
+裁剪序列（也许它能帮到你）</h1>
+<h3 id="题意">1.题意：</h3>
+<p>给定一个长度为 <span class="math inline">\(N\)</span> <span
+class="math inline">\((N \le 1e5)\)</span>的序列 <span
+class="math inline">\(A\)</span>
+，要求把该序列分成若干段，在满足“每段中所有数的和”不超过M的前提下，让“每段中所有数的最大值”之和最小。</p>
+<p>试计算这个最小值。</p>
+<h3 id="分析">2.分析</h3>
+<p>朴素DP：</p>
+<ul>
+<li><p>状态：设<span class="math inline">\(f[i]\)</span> 表示将前 <span
+class="math inline">\(i\)</span> 个数分为若干段，每段和不超过 <span
+class="math inline">\(m\)</span> 时，最大值之和的最小值。</p></li>
+<li><p>转移方程： <span class="math display">\[
+  f[i] = min(f[j] + max(a[j + 1],a[j + 2],……a[i])) \ \ \ \ (\sum_{k = j
++ 1}^na_k \le m)
+  \]</span> 其中的区间最大值和区间和分别可以用ST表和前缀和完成。</p>
+<p>复杂度<span class="math inline">\(O(n^2)\)</span>.</p>
+<p>接下来来考虑优化。</p></li>
+</ul>
+<blockquote>
+<p>若<span class="math inline">\(j\)</span>可能作为<span
+class="math inline">\(f[i]\)</span>的唯一最优决策，那么<span
+class="math inline">\(j\)</span>必须满足下面两个条件<strong>之一</strong>：</p>
+<ul>
+<li><span class="math inline">\(a[j]\)</span>是<span
+class="math inline">\(a[j],a[j + 1],……,a[i]\)</span>中的最大值</li>
+<li><span class="math inline">\(\sum_{k = j}^i a_k &gt; m\)</span></li>
+</ul>
+</blockquote>
+<p>证明：</p>
+<p>若<span
+class="math inline">\(j\)</span>对上述两个条件都不满足，那么对于决策<span
+class="math inline">\(j - 1\)</span>：</p>
+<p>因为<span class="math inline">\(\sum_{k = j}^i a_k \le
+m\)</span>，所以决策<span class="math inline">\(j -
+1\)</span>是合法的。</p>
+<p>同时因为<span class="math inline">\(a[j]\)</span>不是<span
+class="math inline">\(a[j],a[j + 1],……,a[i]\)</span>中的最大值，所以</p>
+<p><span class="math display">\[
+\max(a[j + 1],a[j + 2],……a[i]) = \max(a[j],a[j + 1],a[j + 2],……a[i])
+\]</span></p>
+<p>又因为<span class="math inline">\(f[i]\)</span>单调不减，所以： <span
+class="math display">\[
+f[j - 1] + max(a[j],a[j + 1],a[j + 2],……a[i])\le f[j] + max(a[j + 1],a[j
++ 2],……a[i])
+\]</span> 即决策<span class="math inline">\(j - 1\)</span>比决策<span
+class="math inline">\(j\)</span>更优或相等，所以决策<span
+class="math inline">\(j\)</span>不会是唯一的最优决策。</p>
+<p>对于考虑满足第二个条件的决策，我们可以预处理出<span
+class="math inline">\(c[i]\)</span>，表示满足<span
+class="math inline">\(\sum_{k = j}^ia_k \le m\)</span>的最小的<span
+class="math inline">\(j\)</span>。然后对于<span
+class="math inline">\(f[i]\)</span>，执行<code>f[i] = min(f[i],f[c[i] - 1]+max(a[c[i]],a[c[i] + 1],a[c[i] + 2],……,a[i]))</code></p>
+<p>​</p>
+<p>对于考虑满足第一个条件的决策，我们可以考虑用单调队列来优化DP。</p>
+<p>循环变量<span
+class="math inline">\(i\)</span>，循环开始先从队头剔除不合法的决策（即状态转移中的条件）</p>
+<p>然后将<span
+class="math inline">\(i\)</span>入队，同时维护单调队列元素<span
+class="math inline">\(x\)</span>的<span
+class="math inline">\(a[x]\)</span>单调不增，保证单调队列中的决策都是可能的最优决策。</p>
+<p>但是这样我们还是需要循环整个单调队列枚举所有决策。</p>
+<p>接下来我们来集中解决这个问题。</p>
+<p>我们先建立一个used数组。</p>
+<p>我们再建立一个小根堆，其中的元素为(id,x)，按x作为比较的依据。表示对于决策<span
+class="math inline">\(id\)</span>，x表示<span
+class="math inline">\(f[id] + max(a[id + 1],a[id +
+2],……a[id])\)</span>。</p>
+<p>每次向单调队列中插入一个新决策<span
+class="math inline">\(j\)</span>时，同时也向堆中插入这个决策<span
+class="math inline">\((j,f[j] + max(a[j + 1],a[j +
+2],……,a[i]))\)</span>。当从单调队列中删除一个决策<span
+class="math inline">\(j\)</span>时，令<span
+class="math inline">\(used[j] =
+1\)</span>。以后从堆顶取数时，需要判断<span
+class="math inline">\(used[top().id]\)</span>是否为1，若是1，需要将其弹出，重新取堆顶。</p>
+<p>我们能这样做的一个原因在于一旦决策<span
+class="math inline">\(j\)</span>被丢弃，以后该决策就不可能再次出现在单调队列中了。</p>
+<p>现在我们还需要一个问题要解决：当<span
+class="math inline">\(i\)</span>变成<span class="math inline">\(i +
+1\)</span>时，有可能 <span class="math display">\[
+\max(a[j + 1],a[j + 2],……,a[i]) \neq \max(a[j + 1],a[j + 2],……,a[i],a[i
++ 1])
+\]</span> 即对于每个<span
+class="math inline">\(i\)</span>，我们都需要将堆中的元素重新更新一遍。</p>
+<p>为了方便起见，我们称呼<span class="math inline">\(max(a[j + 1],a[j +
+2],……,a[i])\)</span>为决策<span
+class="math inline">\(j\)</span>对于<span
+class="math inline">\(i\)</span>的<strong>“决策 值</strong>，简写为<span
+class="math inline">\(p(j,i)\)</span>。</p>
+<p>我们观察一下何时<span class="math inline">\(p(j,i) \neq p(j,i +
+1)\)</span>.发现：将<span
+class="math inline">\(i\)</span>入队后，在单调队列<span
+class="math inline">\(\{q_1,q_2,……,q_s,i\}\)</span>中，因为<span
+class="math inline">\(a[q_1] \ge a[q_2] \ge ……
+a[i]\)</span>，所以对于决策<span class="math inline">\(q_1,q_2,……,q_{s -
+1}\)</span>，<span class="math inline">\(p(q_1,i) = p(q_1,i +
+1)\)</span>,<span class="math inline">\(p(q_2,i) = p(q_2,i +
+1)\)</span>,……,<span class="math inline">\(p(q_{s - 1},i) = p(q_{s -
+1},i + 1)\)</span>,只有<span
+class="math inline">\(p(q_s,i)\)</span>可能不等于<span
+class="math inline">\(p(q_s,i + 1)\)</span>.</p>
+<p>所以<span class="math inline">\(i\)</span>入队后，我们再将决策<span
+class="math inline">\((id = q_s,x = f[q_s]\)</span> + $ max(a[q_s +
+1],a[q_s + 2] ，……，a[i]))<span
+class="math inline">\(重新入队，作为修正。可以发现，\)</span>max(a[q_s +
+1],a[q_s + 2] ，…，a[i]) = a[i]$。</p>
+<p>但是，决策<span
+class="math inline">\(q_s\)</span>在堆里面原来的错误的值并没有被修改。为了解决这个问题，我们可以给堆的结构体中加一个变量<span
+class="math inline">\(y\)</span>表示当前决策目前的"决策值"。取出堆顶的时候，如果发现堆顶决策的”决策值“不等于堆顶决策对于<span
+class="math inline">\(i\)</span>应有的决策值时，就将该决策视为无效，重新取堆顶。</p>
+<h3 id="code">Code:</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span> </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e5</span> + <span class="number">5</span>,inf = <span class="number">1e15</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">	<span class="type">int</span> id,x,y;</span><br><span class="line">	<span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt; (node a,node b) &#123;</span><br><span class="line">		<span class="keyword">return</span> a.x + a.y &gt; b.x + b.y;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> q[maxn &lt;&lt; <span class="number">3</span>],t,w;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[maxn],n,m,sum[maxn],lg[maxn],st[maxn][<span class="number">30</span>],c[maxn];</span><br><span class="line"><span class="type">int</span> f[maxn]; <span class="comment">//f[i] 表示将前 i 个数分为若干段，每段和不超过 m 时，最大值之和的最小值。 </span></span><br><span class="line"><span class="type">bool</span> used[maxn];</span><br><span class="line"></span><br><span class="line">priority_queue&lt;node&gt; h;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> len = lg[r - l + <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">max</span>(st[l][len],st[r - (<span class="number">1</span> &lt;&lt; len) + <span class="number">1</span>][len]); 	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;a[i]);</span><br><span class="line">		<span class="keyword">if</span> (a[i] &gt; m) &#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">		&#125;</span><br><span class="line">		sum[i] = sum[i - <span class="number">1</span>] + a[i];</span><br><span class="line">		st[i][<span class="number">0</span>] = a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	lg[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		lg[i] = lg[i &gt;&gt; <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=lg[n]; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=(n - (<span class="number">1</span> &lt;&lt; i) + <span class="number">1</span>); j++)</span><br><span class="line">			st[j][i] = <span class="built_in">max</span>(st[j][i - <span class="number">1</span>],st[j + (<span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>))][i - <span class="number">1</span>]);</span><br><span class="line">			</span><br><span class="line">	c[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=c[i - <span class="number">1</span>]; j&lt;=n; j++)</span><br><span class="line">			<span class="keyword">if</span> (sum[i] - sum[j - <span class="number">1</span>] &lt;= m) &#123;</span><br><span class="line">				c[i] = j;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// c[i] 表示 a[j] + a[j] + ……+ a[i] &lt;= m的最小的j。</span></span><br><span class="line">	<span class="comment">// f[i] 表示将前 i 个数分为若干段，每段和不超过 m 时，最大值之和的最小值。 </span></span><br><span class="line">	t = <span class="number">1</span>,w = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		f[i] = inf;</span><br><span class="line">		f[i] = <span class="built_in">min</span>(f[i],f[c[i] - <span class="number">1</span>] + <span class="built_in">query</span>(c[i],i)); <span class="comment">//考虑条件2</span></span><br><span class="line">		<span class="keyword">while</span> (t &lt;= w &amp;&amp; sum[i] - sum[q[t]] &gt; m) &#123;</span><br><span class="line">			used[q[t]] = <span class="number">1</span>;</span><br><span class="line">			t++;</span><br><span class="line">		&#125; <span class="comment">//从队头弹出非法决策</span></span><br><span class="line">			</span><br><span class="line">		<span class="keyword">while</span> (t &lt;= w &amp;&amp; a[q[w]] &lt; a[i]) &#123;</span><br><span class="line">			used[q[w]] = <span class="number">1</span>;</span><br><span class="line">			w--;</span><br><span class="line">		&#125; <span class="comment">//从队尾弹出不必要决策</span></span><br><span class="line">		q[++w] = i;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (t &lt; w) </span><br><span class="line">			h.<span class="built_in">push</span>((node)&#123;q[w - <span class="number">1</span>],f[q[w - <span class="number">1</span>]],a[i]&#125;); <span class="comment">//修正“决策值”</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">while</span> (!h.<span class="built_in">empty</span>() &amp;&amp; (used[h.<span class="built_in">top</span>().id] || h.<span class="built_in">top</span>().y &lt; <span class="built_in">query</span>(h.<span class="built_in">top</span>().id + <span class="number">1</span>,i)))</span><br><span class="line">			h.<span class="built_in">pop</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (!h.<span class="built_in">empty</span>())</span><br><span class="line">			f[i] = <span class="built_in">min</span>(f[i],h.<span class="built_in">top</span>().x + h.<span class="built_in">top</span>().y); </span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,f[n]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OI%E9%A2%98%E7%9B%AE%E8%AE%AD%E7%BB%83/" rel="tag"># OI题目训练</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/12/%E5%88%9D%E5%BF%83/" rel="prev" title="初心">
+                  <i class="fa fa-angle-left"></i> 初心
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/" rel="next" title="exgcd&二元一次丢番图方程">
+                  exgcd&二元一次丢番图方程 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">plafle</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

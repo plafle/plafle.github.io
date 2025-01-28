@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="CSAPP notes Lecture 2     Argument X X &#x3D; 10100010     &lt;&lt; 3 X &#x3D; 00010000   logical &gt;&gt; 2 X &#x3D; 00101000   Arithmetic &gt;&gt; 2 X &#x3D; 11101000    Logical right shift wou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP-notes">
+<meta property="og:url" content="http://plafle.github.io/2024/08/03/CSAPP%20notes/index.html">
+<meta property="og:site_name" content="plafle&#39;s blog">
+<meta property="og:description" content="CSAPP notes Lecture 2     Argument X X &#x3D; 10100010     &lt;&lt; 3 X &#x3D; 00010000   logical &gt;&gt; 2 X &#x3D; 00101000   Arithmetic &gt;&gt; 2 X &#x3D; 11101000    Logical right shift wou">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-28T03:48:03.769Z">
+<meta property="article:author" content="plafle">
+<meta property="article:tag" content="CS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://plafle.github.io/2024/08/03/CSAPP%20notes/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://plafle.github.io/2024/08/03/CSAPP%20notes/","path":"2024/08/03/CSAPP notes/","title":"CSAPP-notes"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CSAPP-notes | plafle's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/logo.jpg" alt="plafle's blog">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">plafle's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">the pursuit of rationalism</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#csapp-notes"><span class="nav-number">1.</span> <span class="nav-text">CSAPP notes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lecture-2"><span class="nav-number">1.1.</span> <span class="nav-text">Lecture 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lecture-3"><span class="nav-number">1.2.</span> <span class="nav-text">Lecture 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lecture-4"><span class="nav-number">1.3.</span> <span class="nav-text">Lecture 4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-lab"><span class="nav-number">1.4.</span> <span class="nav-text">Data lab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lecture-5"><span class="nav-number">1.5.</span> <span class="nav-text">Lecture 5</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">plafle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2024/08/03/CSAPP%20notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CSAPP-notes | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSAPP-notes
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-03 00:00:00" itemprop="dateCreated datePublished" datetime="2024-08-03T00:00:00+08:00">2024-08-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 11:48:03" itemprop="dateModified" datetime="2025-01-28T11:48:03+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="csapp-notes">CSAPP notes</h2>
+<h3 id="lecture-2">Lecture 2</h3>
+<ul>
+<li><table>
+<thead>
+<tr>
+<th>Argument X</th>
+<th>X = 10100010</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&lt;&lt; 3</strong></td>
+<td><strong>X = 00010000</strong></td>
+</tr>
+<tr>
+<td><strong>logical &gt;&gt; 2</strong></td>
+<td><strong>X = 00101000</strong></td>
+</tr>
+<tr>
+<td><strong>Arithmetic &gt;&gt; 2</strong></td>
+<td><strong>X = 11101000</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Logical right shift would fill the high digit with zero.</p>
+<p>Arithmetic right shift would fill the high digit with the sign
+digit.</p></li>
+<li><p>In real world practice, when you do <strong>X &lt;&lt; Y</strong>
+in the machine, most machine would actually do <strong>X &lt;&lt; (Y mod
+8)</strong> <strong><em>(However, when I test it locally, this mod
+operation didn't apply)</em></strong></p></li>
+<li><p>The difference between <strong>&amp;&amp;</strong> and
+<strong>&amp;</strong>：</p>
+<ul>
+<li><strong>&amp;&amp;</strong> would only return 0 or 1, while
+<strong>&amp;</strong> can return all kinds of integers</li>
+<li><strong>&amp;&amp;</strong> would consider any non-zero integer as
+1, and consider 0 as 0. <strong>&amp;</strong> certainly don't have this
+trait</li>
+<li>When the outcome of an expression is known,
+<strong>&amp;&amp;</strong> would not calculate the rest of the
+expression. For example, if <code>int x = 0</code>, and we calculate
+expression <code>a&amp;&amp;(5/a)</code>, it would not raise an
+DIVIDEZERO error as the second part would not be calculated. Similarly,
+if <code>p</code> is a null pointer, then <code>p&amp;&amp;*p++</code>
+would not access a null pointer as the second part would be
+omitted.</li>
+</ul></li>
+<li><p>If you shift left by a negative number, the outcome might not be
+a right shift. For example, <code>1 &lt;&lt; (-2)</code> might not be
+<code>1 &gt;&gt; 2</code></p></li>
+<li><p>A different way to understand <strong>two's
+complement</strong></p>
+<p>For example, the two's complement of a number is
+<code>10110001</code>, then the value of this number should be: <span
+class="math display">\[
+1\times (-2^7) + 0 \times 2^6 + 1 \times 2^5 + 1 \times 2^4 + 0 \times
+2^3 + 0 \times 2^2 + 0 \times 2^1 + 1 \times 2^0
+\]</span></p>
+<p>In other word, when it comes to two's complement, we consider the
+weight of the highest digit to be negative. More accurately, the weight
+of the highest digit should be the opposite number of its original
+weight.</p></li>
+<li><p>If a comparison operation involves two signed numbers, then it
+would do it signed ways. If a comparison operation involves two unsigned
+umbers, then it would do it unsigned ways.</p>
+<p>However, if a comparison operation involves a signed number and an
+unsigned number, then it would first transform the signed number into
+unsigned form then compare these two unsigned numbers.</p>
+<p>For example, if <code>int x = -1; unsigned int y = 0</code>, then
+<code>x</code> would be greater than <code>y</code>. In other word,
+<code>x &gt; y</code> would be true.</p>
+<p>This rule applies to other operations, including add, minus,
+etc.</p></li>
+<li><p>Define <code>int x = -2147483648</code> might make the compiler
+confused for obscure reason. You can do the same thing by
+<code>int x = -2147483647 - 1</code></p></li>
+<li><p>An example:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">10</span>; i - <span class="keyword">sizeof</span>(<span class="type">char</span>) &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\&quot;,i);</span></span><br></pre></td></tr></table></figure>
+<p>For this program, what you will get is just an endless loop.
+Why？because <code>sizeof(char)</code> is an unsigned number, making the
+whole bunch of <code>i - sizeof(char)</code> to be considered unsigned.
+Thus, <code>i - sizeof(char)&gt;=0</code> always holds, making the loop
+endless.</p></li>
+<li><p>How to promote a smaller type of integer to a larger type of
+integer?</p></li>
+</ul>
+<p><span class="math inline">\(\hspace{1cm}\)</span> For example, if we
+have a variable <code>x</code> of type <code>int</code>, how do we cast
+it to type <code>long long</code>?</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span> Simply by
+repeatedly copying the sign digit and insert it to the left until the
+number of digit reach the word size of long long.</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span> This is both true
+when it is a two's complement number and when it is an unsigned
+number.</p>
+<hr />
+<h3 id="lecture-3">Lecture 3</h3>
+<ul>
+<li><p>Addition for unsigned number (A.K.A. <code>UAdd</code>) :</p>
+<p>Computer will just add the two numbers up and abandon the higher
+digit if it exceeds the word size.</p>
+<p>For unsigned number <code>u</code> and <code>v</code>，perform
+addition between them would lead to the result of <span
+class="math inline">\((u + v) \% 2^w\)</span> , with <code>w</code>
+representing the word size.</p></li>
+<li><p>Addition for two's complement number (A.K.A
+<code>TAdd</code>):</p>
+<p>Computer will do the same thing in <code>UAdd</code>: Add the two
+numbers up and abandon the higher digit if it exceeds the word size.</p>
+<p>For example, if we have a 4-digit two's complement number
+<code>u = 1101</code> and <code>v = 0101</code>. So u is actually -3 and
+v is actually 5. Thus, u + v should be 2 arithmetically. When we add the
+<code>1101</code> and <code>0101</code>, we got <code>10010</code>, and
+we abandon the most significant digit and we got <code>0010</code>,
+which is 2 and it matches the arithmetic result.</p>
+<p>Another example: <code>u = 1101, v = 1010</code>, so u is actually -3
+and v is actually -6, so u + v should be -9 arithmetically. If we add
+<code>1101</code> and <code>1010</code>, we got <code>10111</code>.
+Abandon the highest digit we got <code>0111</code>, which is 7.</p></li>
+<li><p><code>UAdd</code> and <code>TAdd</code> have identical Bit-level
+behavior</p></li>
+<li><p>Multiplication for unsigned number:</p>
+<p>Similar to addition, computer would first calculate the product, then
+abandon the higher digit exceeding the word size. Simply put, <span
+class="math inline">\(u \times v\)</span> would be <span
+class="math inline">\((u \times v) \% (2^w)\)</span>, with <span
+class="math inline">\(w\)</span> representing the word size</p></li>
+<li><p>Multiplication for two's complement number:</p>
+<p>Computer would first calculate the product, then abandon the higher
+digit exceeding the word size.</p>
+<p>For example, if <code>u=0101</code> and <code>v = 0101</code>, then
+<span class="math inline">\(u \times v = 11001\)</span>. Abandon the
+highest digit we got <code>1001</code> , that would be -7.</p></li>
+<li><p>A property for two's complement</p>
+<p>Assume a number <code>x</code> can be represented <span
+class="math inline">\((\overline{a_1 a_2 a_3 ... a_n})_2\)</span> in
+two's complement. Let's denote <span
+class="math inline">\((\overline{a_1 a_2 a_3 ... a_n})_2\)</span> as
+<span class="math inline">\([a_1,a_2,...,a_n]\)</span>. And we could
+assert that: if <span class="math inline">\(x =
+[a_1,a_2,...,a_n]\)</span>, then: <span class="math display">\[
+-x = [1 - a_1,1 - a_2, ... , 1 - a_n] +1
+\]</span> Notice: the last "+" operation will be done in computer ways,
+which means if it overflows, then the highest digit would be
+omitted.</p>
+<p>For example, 0 = [0,0,0,0], so -0 = [1,1,1,1] +1 = [1,0,0,0,0], then
+we omit the highest number, then we could get [0,0,0,0], and the result
+is correct.</p></li>
+<li><p>It appears that in my computer, when you do a "&gt;&gt;"
+operation then it would actually perform <strong>arithmetic
+&gt;&gt;</strong></p></li>
+<li><p>In a 64-bit word size machine, the address of the memory would be
+8-bytes (which is also 64 bits). Thus, if we do
+<code>printf("%d\n",sizeof(int*))</code>, then it would probably get
+"8".</p></li>
+<li><p>Terminology time:</p>
+<p><strong>Word</strong> means a range of memory unit storing a specific
+type of data. For example, an <code>int</code> word is comprised of 2
+bytes, an <code>long long</code> word is comprised of 4 bytes.</p></li>
+<li><p>So, how are the bytes within a multi-byte word ordered in
+memory?</p>
+<p>Two ways: <strong>Big Endian</strong>; <strong>Little
+Endian</strong>;</p></li>
+</ul>
+<p>​ Little Endian is the major way today.</p>
+<p>​ The internet still use Big Endian.</p>
+<ul>
+<li><p>The way to store strings:</p>
+<p>Computer would just store the string from head to tail char-wise.
+There's no big-endian or little-endian here.</p></li>
+</ul>
+<p>​ (Notes: IA32 is a little-endian machine, and Sun is a big-endian
+machine)</p>
+<hr />
+<h3 id="lecture-4">Lecture 4</h3>
+<ul>
+<li><p>An example <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,(<span class="number">2</span>/<span class="number">3</span>)==(<span class="number">2</span>/<span class="number">3.0</span>));</span><br></pre></td></tr></table></figure></p>
+<p>In fact, this program would output 0. Because (2/3) is an integer
+while (2 / 3.0) is a double number. Thus, the equation can not
+hold.</p></li>
+<li><p>Implicit Conversion</p>
+<p>In the C language, when an operation involves multiple types of
+variables, type conversions occurs to make sure that the type of
+different variables match. In operations, implicit conversions take
+place. Type conversions can also be called as cast.</p>
+<ul>
+<li>All integer type smaller than <code>int</code> (like
+<code>short</code>, <code>char</code>) will be promoted to
+<code>int</code></li>
+<li>Low precision type will be cast to high precision
+type.(<code>int</code> would be cast to <code>float</code>,
+<code>float</code> would be cast to <code>double</code>)</li>
+</ul></li>
+<li><p>Immediate Value</p>
+<p>In the C language, immediate value refers to a constant value that is
+directly specified in code.</p>
+<p>The immediate value is also known as a literal.</p>
+<p>In the C language, the immediate value <code>3.14</code> are treated
+as type <code>duoble</code> by default.</p></li>
+<li><p>IEEE floating point representation</p>
+<p>The IEEE float point representation represents a number in the form
+<span class="math inline">\(V = (-1)^s \times M \times 2^E\)</span></p>
+<p>The sign <code>s</code> determine whether this number is positive or
+negative</p>
+<p>The exponent <code>E</code> weights the value by a (possibly
+negative) power of 2.</p>
+<p>Floating-point number are represented in three fields above.</p>
+<ul>
+<li><p>The single sign bit in the front directly encode sign
+<code>s</code></p></li>
+<li><p>The <span class="math inline">\(k-bit\)</span> exponent field
+<span class="math inline">\(exp = e_{k-1}e_{k - 2}...e_0\)</span>
+encodes the exponent <span class="math inline">\(E\)</span></p></li>
+<li><p>The <span class="math inline">\(n - bit\)</span> fraction field
+<span class="math inline">\(frac = f_{n - 1}f_{n - 2}...f_0\)</span>
+encodes the significand <span class="math inline">\(M\)</span></p></li>
+<li><p>Normalized Case</p>
+<p>When exp is not all 0 and exp is not all 1，it is the normalized
+case</p>
+<p>In this case, <span class="math inline">\(E = e -
+bias\)</span>，where <span class="math inline">\(bias = 2^{k - 1} -
+1\)</span> and <span class="math inline">\(e\)</span> is the unsigned
+number having the bit representation of <span class="math inline">\(e_{k
+- 1}e_{k-  2}...e_0\)</span>.</p>
+<p>In this case, <span class="math inline">\(M = (1.f_{n - 1}f_{n -
+2}...f_0)_2\)</span></p></li>
+<li><p>Denormalized Case</p>
+<p>When exp is all 0, it is the denormalized case, used to represent
+floating-point number that is close to zero.</p>
+<p>In this case, <span class="math inline">\(E = 1 - bias\)</span>,
+where <span class="math inline">\(bias = 2^{k - 1} - 1\)</span>.</p>
+<p>In this case, <span class="math inline">\(M = (0.f_{n - 1}f_{n -
+2}...f_0)_2\)</span></p></li>
+<li><p>Special Case A</p>
+<p>When exp is all 1, and frac is all 0, this number means infinity. By
+assigning s to 1 or 0, we could get positive infinity and negative
+infinity.</p></li>
+<li><p>Special Case B</p>
+<p>When exp is all 1, and frac is not all 0, this number means
+<code>NaN</code> (Not a number). Such values are returned as the result
+of an operation where the result can not be given as a real number or as
+infinity, as when computing <span
+class="math inline">\(\sqrt{-1}\)</span> or <span
+class="math inline">\(\infty - \infty\)</span> .</p></li>
+</ul></li>
+<li><p>Why do we have to define denormalized case?</p>
+<p>In normalized case, we can not represent 0.</p>
+<p>In denormalized case, we can represent 0 as well as some numbers
+really close to 0.</p></li>
+<li><p>Floating-point Operation</p>
+<p>The IEEE standard specifies a simple of way of floating-point
+operation. Viewing the two number as real numbers and just do the
+operation in mathematical ways, then round the mathematical result to
+yield the final result.</p>
+<p>If one of the value is special (such as <code>NaN</code>,
+<code>infinity</code>,<code>0</code>), the IEEE standard specify a
+convention that attempt to be reasonable. To be specific,
+<code>1/-0</code> is defined to yield <span
+class="math inline">\(-\infty\)</span>, <span
+class="math inline">\(\infty - \infty\)</span> is defined to yield
+<code>NaN</code>.</p></li>
+<li><p>The floating-point addition is commutative but not associative.
+For example, a float <code>x = 3.14 + 1e20 - 1e20</code> would yield 0,
+while a float <code>x = 3.14 + (1e20 - 1e20)</code> would yield
+3.14</p></li>
+<li><p>The floating-point multiplication is commutative but not
+associative. For example, <code>1e20 * 1e20 * 1e-20</code> would yield
+<span class="math inline">\(+\infty\)</span>, while
+<code>1e20 * (1e20 * 1e-20)</code> would yield <code>1e20</code></p>
+<p>The floating-point multiplication does not distribute over
+addition.</p></li>
+<li><p>Conversion between <code>int</code>, <code>float</code> and
+<code>double</code>:</p>
+<ul>
+<li><code>int</code> -&gt; <code>float</code>: The number will not
+overflow, but it may be rounded.</li>
+<li><code>int or float</code> -&gt; <code>double</code>: The number will
+not overflow and it will not be rounded. Because it has both greater
+range and greater precision.</li>
+<li><code>double</code> -&gt; <code>float</code>: The number might
+overflow(leading to <span class="math inline">\(+\infty\)</span> or
+<span class="math inline">\(-\infty\)</span>) or be rounded.</li>
+<li><code>float or double</code> -&gt; <code>int</code>: The number
+would be rounded toward <span class="math inline">\(0\)</span>.</li>
+</ul></li>
+<li><p>Infinity can be compared. It is compared in mathematical
+ways.</p></li>
+<li><p>For floating-point number <span
+class="math inline">\(a\)</span>,<span
+class="math inline">\(b\)</span>,<span
+class="math inline">\(c\)</span></p>
+<ul>
+<li>if $ a&gt; b$, then <span class="math inline">\(a + c &gt; b +
+c\)</span></li>
+<li>If <span class="math inline">\(a &gt; b\)</span>, then <span
+class="math inline">\(-a  &lt; -b\)</span></li>
+<li>For every floating-point number <span
+class="math inline">\(x\)</span>, we have <span class="math inline">\(x
+\times x \ge 0\)</span></li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="data-lab">Data lab</h3>
+<hr />
+<h3 id="lecture-5">Lecture 5</h3>
+<ul>
+<li><p>how to assemble a file <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S test.c</span><br></pre></td></tr></table></figure></p>
+<p>Can assemble <code>test.c</code> into assemble code
+<code>test.s</code></p></li>
+<li><p>how to disassemble an object code file <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d <span class="built_in">test</span> &gt; test.d</span><br></pre></td></tr></table></figure></p>
+<p>Can disassemble the object code file test into assemble code file
+<code>test.d</code></p></li>
+<li><p>Use gdb to disassemble a function:</p>
+<p>Suppose we have a program code <code>test.c</code> and we want to
+disassemble the function <code>build</code> which is in this
+program.</p>
+<p>First we have to compile <code>test.c</code>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -o test test.c</span><br></pre></td></tr></table></figure>
+<p>Then we type</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb test</span><br></pre></td></tr></table></figure>
+<p>Then we would get into the gdb interface.</p>
+<p>After it, we type</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">disassemble build</span><br></pre></td></tr></table></figure>
+<p>and we could get the disassemble code</p></li>
+<li><p>The concept of instruction set:</p>
+<p>There are two kinds of prevalent instruction set,
+<code>intel x86-64</code> and <code>ARM</code>. Most intel chip use
+<code>x86-64</code> while mobile phone chip and apple chip use
+<code>ARM</code>. The course is about <code>x86-64</code></p></li>
+<li><p>The assembly code usually implement data manipulation in memory
+and register. There are 16 register, and there names are as follow:</p>
+<table>
+<thead>
+<tr>
+<th>%rax</th>
+<th>%r8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>%rbx</strong></td>
+<td><strong>%r9</strong></td>
+</tr>
+<tr>
+<td><strong>%rcx</strong></td>
+<td><strong>%r10</strong></td>
+</tr>
+<tr>
+<td><strong>%rdx</strong></td>
+<td><strong>%r11</strong></td>
+</tr>
+<tr>
+<td><strong>%rsi</strong></td>
+<td><strong>%r12</strong></td>
+</tr>
+<tr>
+<td><strong>%rdi</strong></td>
+<td><strong>%r13</strong></td>
+</tr>
+<tr>
+<td><strong>%rsp</strong></td>
+<td><strong>%r14</strong></td>
+</tr>
+<tr>
+<td><strong>%rbp</strong></td>
+<td><strong>%r15</strong></td>
+</tr>
+</tbody>
+</table></li>
+<li><p>the syntax <code>%rax</code> refers to the register
+<code>%rax</code>, and the syntax <code>(%rax)</code> refers to the
+value in register <code>%rax</code></p></li>
+<li><p>A general way to designate address: <span class="math display">\[
+D(R_b, R_i, S)
+\]</span> <span class="math inline">\(D\)</span> is a constant, <span
+class="math inline">\(R_b\)</span> and <span
+class="math inline">\(R_i\)</span> are the name of two general-purpose
+register, and the <span class="math inline">\(S\)</span> is the scaling
+factor restricted to be 1, 2, 4, or 8. This expression specifies an
+address, which would be: <span class="math display">\[
+D + ([numbers \ \ in \ \ R_b] + S \times [numbers \ \ in \ \ R_i])
+\]</span> For example, provided that the number stored in <span
+class="math inline">\(R_b\)</span> is <code>0x100</code>, the number
+stored in <span class="math inline">\(R_i\)</span> is
+<code>0x200</code>, <span class="math inline">\(D = 2\)</span>, <span
+class="math inline">\(S = 4\)</span>， then <span
+class="math inline">\(D(R_b,R_i,S)\)</span> would designate the address
+<code>2 + 0x100 + 0x200 * 4</code>, which is <code>0x902</code>.</p>
+<p>(Denote: <code>D</code> is short for <em>displacement</em>, and
+<code>S</code> is short for <em>scaling</em>)</p></li>
+<li><p>The <code>MOV</code> grammar:</p>
+<ul>
+<li><p>Move an immediate value to the register:</p>
+<p><code>mov $0x4, %rax</code></p>
+<p>This would move the immediate value <code>0x4</code> into the
+register <code>%rax</code></p>
+<p>​</p></li>
+<li><p>Move an immediate value to the memory:</p>
+<p><code>mov $-147, (%rax)</code></p>
+<p>In this case, there is an address stored in the register
+<code>%rax</code> and it would move the immediate value
+<code>-147</code> to that address in the memory</p></li>
+<li><p>Move a value from a register to register</p>
+<p><code>mov %rad, %rdx</code></p>
+<p>It would copy the value stored in register <code>%rad</code> to
+register <code>%rdx</code></p></li>
+<li><p>Move a value from a register to memory</p>
+<p><code>mov %rax, (%rdx)</code></p>
+<p>It would copy the value stored in register <code>%rax</code> to the
+address <code>(%rdx)</code> in the memory</p></li>
+<li><p>Move a value from memory to register</p>
+<p><code>mov (%rax), %rdx</code></p>
+<p>vice versa</p></li>
+</ul>
+<p>Note: you can't move a value from memory directly to memory</p>
+<p><strong>Observation:</strong></p>
+<p>​ This operation simply move something into a register or the memory.
+If it is a register, the second argument should be the name of the
+register. If it is the memory, then the second argument should be the
+address, usually designated by <code>(the name of a register)</code> or
+<code>D(Rb,Ri,S)</code>.</p>
+<p>​ The first argument specifies the number we want to move. The first
+argument could be an immediate number, the name of a register or an
+address. If it is an immediate value, then it means it would move this
+literal. If it is the name of a register, then it means it would move
+<strong>the number stored in the register</strong>. If it is an address,
+it means it would move <strong>the number stored in this
+address</strong>.</p></li>
+<li><p>The <code>LEA</code> grammar</p>
+<p>The general form:<code>LEA first_argument, second_argument</code></p>
+<p>The first argument is an address, the second argument must be the
+name of a register.</p>
+<p>This operation will move the address (the first argument)
+<strong>itself</strong> to the second argument (a register or an
+address).</p>
+<ul>
+<li>The difference between <code>LEA</code> and <code>MOV</code>:
+<code>LEA</code> would simply move the address <strong>itself</strong>
+while <code>MOV</code> would dereference the address and move the value
+stored in that address</li>
+</ul></li>
+</ul>
+<p>​ In practice, the first argument can be literal or the name of a
+register. This might violate the rule, but compiler still use this,
+especially in some arithmetic operation.</p>
+<p>​</p>
+<blockquote>
+<p>Can't understand <code>MOV</code> and <code>LEA</code>? Watch this
+video: <a
+target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8rpXUYuV_pM&amp;t=122s">4 MOV vs
+LEA (youtube.com)</a></p>
+</blockquote>
+<ul>
+<li><p>In a function, the first parameter passed to the function will be
+stored in register <code>%rdi</code>, the second parameter would be
+stored in <code>%rsi</code>. The return value of a function would be
+stored in register <code>%rax</code></p></li>
+<li><p><code>movl</code> instruction：</p>
+<p>This instruction could move a 32-bit value from one place to
+another.</p>
+<ul>
+<li><p>From register to register:</p>
+<p><code>movl %eax, %ebx</code></p>
+<p>This would move the value in <code>%eax</code> to
+<code>%ebx</code></p>
+<p>(Note: <code>%eax</code> is the lower 32 bits of %rax, so does
+<code>%ebx</code>)</p></li>
+<li><p>From memory to register</p>
+<p><code>movl 0x100(%rbp), %eax</code></p>
+<p>This would move the 32-bit value from memory location at
+<code>0x100(%rbp)</code> to register <code>%eax</code>. This would load
+4 memory units and would load it upside down (because we are talking
+about little-endian machine)</p>
+<p>For example, here are the number stored in memory:</p>
+<table>
+<thead>
+<tr>
+<th>Memory Location</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x100</td>
+<td>0x17</td>
+</tr>
+<tr>
+<td>0x101</td>
+<td>0x25</td>
+</tr>
+<tr>
+<td>0x102</td>
+<td>0x33</td>
+</tr>
+<tr>
+<td>0x103</td>
+<td>0x64</td>
+</tr>
+<tr>
+<td>0x104</td>
+<td>0x89</td>
+</tr>
+<tr>
+<td>0x105</td>
+<td>0x26</td>
+</tr>
+<tr>
+<td>0x106</td>
+<td>0x71</td>
+</tr>
+</tbody>
+</table>
+<p>If <code>%rbp = 0</code>, then after this operation,
+<code>0x64332517</code> would be stored in register
+<code>%eax</code>.</p></li>
+<li><p>From register to memory</p>
+<p>Similar, so omit it.</p></li>
+<li><p>Move a literal to memory &amp; Move a literal to register</p>
+<p>Similar, so omit it.</p></li>
+</ul>
+<blockquote>
+<p>Note: After the <code>movl</code> operation, the upper-32 bits of the
+destination(could be register or memory location) would be set to 0</p>
+</blockquote></li>
+<li><p>A general property for instructions copying and generating 1-,
+2-, 4-, 8- byte values: When the destination is a register, those that
+generates 1-,2- byte values leaves the remaining upper bytes unchanged,
+while those that generate 4- byte values will set the upper 4 byte to
+0.</p></li>
+<li><p>The program counter(commonly called <code>%rip</code>) indicates
+the address in memory of the next instruction to be executed.</p></li>
+<li><p>The regular <code>movq</code> operation can only have immediate
+source operand that can be represented in 32-bit two's complement
+(Simply put, the immediate source operand must be in the range of <span
+class="math inline">\([-2147483648, 2147483647])\)</span>. Then the
+compiler would do sign extension to the 32-bit two's complement to make
+it 64-bit, then carry out the move.</p>
+<blockquote>
+<p>What is sign extension?</p>
+<p>​ Given a number represented in short-word-length two's complement, we
+want to represent this number in a long-word-length two's complement
+without changing its arithmetic value. This transformation is called
+sign extension.</p>
+<p>​ We can finish this task by replicating the sign digit. Whether the
+number is positive or not, you will find by doing the replication the
+value remain unchanged.</p>
+<p>​ For example, <code>0x0011</code> after sign extension becomes
+<code>0x000011</code>, the value remains unchanged. (before: 3; after:
+3)</p>
+<p>​ Another example: <code>0x1100</code> after sign extension becomes
+<code>0x111100</code>， and the value remains unchanged (before: -4;
+after: -32+16+8+4 = -4;)</p>
+</blockquote></li>
+<li><p>As mentioned above, the regular <code>movq</code> instruction has
+limitation on literal, that's why the instruction<code>movabsq</code>
+comes into life. It can move arbitrary 64-bit two's complement literal,
+and the destination must be a register.</p></li>
+<li><p>When copying from a smaller source to a larger destination (for
+example, from a 32-bit to 64-bit), the x86-64 ISA provides two
+instructions: <code>movz</code> and <code>movs</code>.</p>
+<p><code>movz</code> would set the remaining higher bits to 0, while
+<code>movs</code> would fill the remaining higher bits by replicating
+the most significant bits of the source operand.</p>
+<p>Here are some example:</p></li>
+</ul>
+<p>​ The operation <code>cltq</code> has the same effect of the operation
+<code>movslq</code>, but it has more compact encoding.</p>
+<blockquote>
+<p><code>cltq</code> is short for `convert l(double word) to q(quad
+word)</p>
+</blockquote>
+<ul>
+<li><p>The unary operation:</p>
+<p>It has a single operand serving as both resource and destination. For
+example, we could have:</p></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">incq(%rax) # to increment register %rax by 1</span><br><span class="line">decq(%rax) # to decrement register %rax by </span><br></pre></td></tr></table></figure>
+<ul>
+<li>The arithmetic binary operation:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">addq %rcx, %rax   # to increment register %rax by the value stored in %rcx</span><br><span class="line">subq %rcx, %rax   # to decrement register %rax by the value stored in %rax</span><br><span class="line">mulq %rcx, %rax   # rax &lt;---- (rax * rcx)   (value stored in rax and rcx are considered to be unsigned)</span><br><span class="line">imulq $16, (%rax,%rdx,8) # to multiply the address %rax + 8 * %rdx by a factor of 16 (value involved are considered to be two&#x27;s complement)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>For these binary operations, there are two observations:</p>
+<ul>
+<li>The source would be the first argument, and the destination would be
+the second argument.</li>
+<li>The first operand could be an immediate number, a register or a
+memory location. The second operand could be an register or a memory
+location. However, the first operand and the second operand could not
+both be memory location.</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>Shift operation:</p>
+<p>The operation involves two operand, the first operand specifies the
+shift amount, and the second value designates the value we want to
+shift. Shift amount usually is a immediate number, but it can also be
+the value stored in single-byte register <code>%cl</code>.</p>
+<p>A shift operation on the data type that are <code>w</code> bits long
+would use the lower <code>m</code> bits of the register
+<code>%cl</code>, where <span class="math inline">\(2^m = w\)</span>.
+For example, if the register <code>%cl</code> stores the hexadecimal
+value of <code>$0XFF</code>, then <code>SALB</code> would shift by 7
+digits, <code>SALW</code> would shift by 15 digits, <code>SALL</code>
+would shift by 31 digits, and <code>SALQ</code> would shift by 63
+digits.</p>
+<ul>
+<li><p>Left shift:</p>
+<p>Comprises two instructions: <code>SAL</code> and <code>SHL</code>.
+These instructions have same effect</p></li>
+<li><p>Right shift:</p>
+<p>Comprises two instructions: <code>SAR</code> and <code>SHR</code>.
+The former is the arithmetic right shift, and the latter is the logical
+right shift.</p></li>
+</ul></li>
+<li><p>Single Operand Multiplication:</p>
+<p>​ This types comprise two operations: <code>imulq S</code> and
+<code>mulq S</code>. The former one is for two's complement, and the
+latter one is for unsigned. Apart from this difference, the rest are the
+same, so we would only talk about <code>imulq S</code>.</p>
+<p>​ The operation <code>imulq S</code> would calculate the value <span
+class="math inline">\(S \times M[\%rax]\)</span> keep the all 128-bit
+without truncate. Then it would store the higher 64 bits to register
+<code>%rdx</code> and store the lower 64 bits to register
+<code>%rax</code>.</p>
+<p>​</p></li>
+<li><p><code>cqto</code> operation:</p>
+<p>This would convert a 64-bit value to 128-bit value. Specifically, it
+would sign extend <code>%rax</code> to make it to be a 128-bit value,
+and then store the upper 64 bit in <code>%rdx</code> and store the
+lower-64 bit in <code>%rax</code></p></li>
+<li><p><code>divide</code> operation:</p>
+<p>There are divide operation: <code>idivq</code> and <code>divq</code>.
+Similarly, former one is for two's complement, and the latter one is for
+unsigned. Let's just talk about <code>idivq</code> since
+<code>divq</code> is the same case.</p>
+<p><strong>Syntax for <code>idivq</code>: </strong>
+<code>idivq S</code></p>
+<ul>
+<li>case 1: If the bits of <code>$rdx</code> are all set to the sign bit
+of <code>$rax</code> <em>(for operation <code>divq S</code>, we should
+look at whether the bits of <code>$rdx</code> are all set to zero)</em>,
+then we would consider that the dividend is a 64-bit value stored in
+<code>$rax</code>.</li>
+<li>case 2: If the bits of <code>$rdx</code> are not all set to the sign
+bit of <code>$rax</code> <em>(for operation <code>divq S</code>, we
+should look at whether the bits of <code>$rdx</code> are all set to
+zero)</em>, then we would consider that the dividend is a 128-bit value,
+with higher 64 bits stored in <code>$rdx</code> and lower 64 bits stored
+in <code>$rax</code></li>
+</ul>
+<p>Anyway, after specifying the dividend, then the machine would do the
+division, and yield a quotient and a remainder.</p>
+<p>The quotient would be stored in <code>$rax</code> and the remainder
+would be stored in <code>$rdx</code>.</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CS/" rel="tag"># CS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/02/CSAPP%20lecture%206/" rel="prev" title="CSAPP-lecture-6">
+                  <i class="fa fa-angle-left"></i> CSAPP-lecture-6
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/25/2024%E7%89%9B%E5%AE%A2D1/" rel="next" title="2024牛客D1">
+                  2024牛客D1 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">plafle</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

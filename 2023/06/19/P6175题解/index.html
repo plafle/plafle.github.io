@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="P6175（数学化语言表述，较严谨且易理解） 考虑一个环：\(a_1- &gt;a_2 -&gt;a_3 -&gt;…… -&gt;a_n -&gt; a_1\) \((n \ge 3)\)，设\(max(a_i)(1 \le i \le n) &#x3D; a_k\)，设\(a_k\)在环中相邻的两个点分别是\(a_v\)和\(a_w\)。 对于任意的几个环，如果它们的\(a_k,a_v,a_w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P6175题解">
+<meta property="og:url" content="http://plafle.github.io/2023/06/19/P6175%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="plafle&#39;s blog">
+<meta property="og:description" content="P6175（数学化语言表述，较严谨且易理解） 考虑一个环：\(a_1- &gt;a_2 -&gt;a_3 -&gt;…… -&gt;a_n -&gt; a_1\) \((n \ge 3)\)，设\(max(a_i)(1 \le i \le n) &#x3D; a_k\)，设\(a_k\)在环中相邻的两个点分别是\(a_v\)和\(a_w\)。 对于任意的几个环，如果它们的\(a_k,a_v,a_w">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-28T08:53:38.006Z">
+<meta property="article:author" content="plafle">
+<meta property="article:tag" content="OI题目训练">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://plafle.github.io/2023/06/19/P6175%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://plafle.github.io/2023/06/19/P6175%E9%A2%98%E8%A7%A3/","path":"2023/06/19/P6175题解/","title":"P6175题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>P6175题解 | plafle's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/logo.jpg" alt="plafle's blog">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">plafle's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">the pursuit of rationalism</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#p6175%E6%95%B0%E5%AD%A6%E5%8C%96%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BF%B0%E8%BE%83%E4%B8%A5%E8%B0%A8%E4%B8%94%E6%98%93%E7%90%86%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">P6175（数学化语言表述，较严谨且易理解）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#code"><span class="nav-number">1.0.1.</span> <span class="nav-text">Code:</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">plafle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/06/19/P6175%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="P6175题解 | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          P6175题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-19 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-19T00:00:00+08:00">2023-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 16:53:38" itemprop="dateModified" datetime="2025-01-28T16:53:38+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1
+id="p6175数学化语言表述较严谨且易理解">P6175（数学化语言表述，较严谨且易理解）</h1>
+<p>考虑一个环：<span class="math inline">\(a_1- &gt;a_2 -&gt;a_3 -&gt;……
+-&gt;a_n -&gt; a_1\)</span> <span class="math inline">\((n \ge
+3)\)</span>，设<span class="math inline">\(max(a_i)(1 \le i \le n) =
+a_k\)</span>，设<span
+class="math inline">\(a_k\)</span>在环中相邻的两个点分别是<span
+class="math inline">\(a_v\)</span>和<span
+class="math inline">\(a_w\)</span>。</p>
+<p>对于任意的几个环，如果它们的<span
+class="math inline">\(a_k,a_v,a_w\)</span>都分别相等，我们就把这几个环都放入一个集合，并设这个集合为
+<span class="math inline">\(S(a_k,a_v,a_w)\)</span>。</p>
+<p><strong>可以发现，任意一个环都属于一个集合。</strong></p>
+<p>令<span class="math inline">\(d(x,y)\)</span>表示<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(y\)</span>之间直接距离（不经过其他点）。令<span
+class="math inline">\(f(x,y,k)\)</span>表示x和y之间经过若干个编号<span
+class="math inline">\(&lt;k\)</span>的点得到的最短距离。</p>
+<p>则易证，对于任意一个集合（设这个集合为<span
+class="math inline">\(S(a_k,a_v,a_w)\)</span>)，该集合中的最小环的长度为<span
+class="math inline">\(d(a_v,a_k) + d(a_k,a_w) +
+f(a_v,a_w,a_k)\)</span>。</p>
+<p><strong>因为任意一个环都属于一个集合</strong>，所以我们只要枚举所有的集合，将该集合中最小环的长度作为可能的答案进行比较，即可得到最终答案。</p>
+<p>现在还有一个问题，那就是如何求出<span
+class="math inline">\(f(a_v,a_w,a_k)\)</span>。</p>
+<p>我们可以发现<span
+class="math inline">\(floyd\)</span>算法的外循环<span
+class="math inline">\(k\)</span>枚举到<span
+class="math inline">\(a_k\)</span>时，<span
+class="math inline">\(a_v,a_w\)</span>之间的最短路径即为所求。</p>
+<p>综上，时间复杂度<span class="math inline">\(O(n^3)\)</span>.</p>
+<h3 id="code">Code:</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OI%E9%A2%98%E7%9B%AE%E8%AE%AD%E7%BB%83/" rel="tag"># OI题目训练</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/18/OI%E9%A2%98%E5%8D%95/" rel="prev" title="OI题单">
+                  <i class="fa fa-angle-left"></i> OI题单
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/06/21/%E5%88%9D%E5%AD%A6%E5%BE%AE%E5%88%86%E3%81%AE%E7%AC%94%E8%AE%B0/" rel="next" title="初学微分の笔记">
+                  初学微分の笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">plafle</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

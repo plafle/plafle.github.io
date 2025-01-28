@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="微分总结 1.极限，导数，连续性，可导性 \[ \lim_{x \to a}f(x) &#x3D; L \] \(\hspace{1cm}\)这个式子叫做函数\(f\)在\(a\)处的双侧极限，表示对于任意的\(\varphi&gt;0\)，可以选取对应的\(\beta &gt; 0\)，使得对于所有满足\(0 &lt; |x - a| &lt; \beta\)的\(x\)，都有\(|f(x)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初学微分の笔记">
+<meta property="og:url" content="http://plafle.github.io/2023/06/21/%E5%88%9D%E5%AD%A6%E5%BE%AE%E5%88%86%E3%81%AE%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="plafle&#39;s blog">
+<meta property="og:description" content="微分总结 1.极限，导数，连续性，可导性 \[ \lim_{x \to a}f(x) &#x3D; L \] \(\hspace{1cm}\)这个式子叫做函数\(f\)在\(a\)处的双侧极限，表示对于任意的\(\varphi&gt;0\)，可以选取对应的\(\beta &gt; 0\)，使得对于所有满足\(0 &lt; |x - a| &lt; \beta\)的\(x\)，都有\(|f(x)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-28T08:53:10.188Z">
+<meta property="article:author" content="plafle">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://plafle.github.io/2023/06/21/%E5%88%9D%E5%AD%A6%E5%BE%AE%E5%88%86%E3%81%AE%E7%AC%94%E8%AE%B0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://plafle.github.io/2023/06/21/%E5%88%9D%E5%AD%A6%E5%BE%AE%E5%88%86%E3%81%AE%E7%AC%94%E8%AE%B0/","path":"2023/06/21/初学微分の笔记/","title":"初学微分の笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>初学微分の笔记 | plafle's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/logo.jpg" alt="plafle's blog">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">plafle's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">the pursuit of rationalism</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">微分总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E9%99%90%E5%AF%BC%E6%95%B0%E8%BF%9E%E7%BB%AD%E6%80%A7%E5%8F%AF%E5%AF%BC%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">1.极限，导数，连续性，可导性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%9B%B4%E5%A5%BD%E7%9A%84%E6%96%B9%E6%B3%95%E6%B1%82%E5%AF%BC"><span class="nav-number">1.2.</span> <span class="nav-text">2.用更好的方法求导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0%E4%B8%8E%E6%9E%81%E9%99%90"><span class="nav-number">1.3.</span> <span class="nav-text">3.三角函数的导数与极限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Ee"><span class="nav-number">1.4.</span> <span class="nav-text">4.关于e</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E5%87%BD%E6%95%B0%E5%92%8C%E6%8C%87%E6%95%B0%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">5.对数函数和指数函数的导数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9y-fxgx%E6%B1%82%E5%AF%BC"><span class="nav-number">1.6.</span> <span class="nav-text">6.对\(y &#x3D;
+f(x)^{g(x)}\)求导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%A2%9E%E9%95%BF%E5%92%8C%E6%8C%87%E6%95%B0%E8%A1%B0%E5%8F%98"><span class="nav-number">1.7.</span> <span class="nav-text">7.指数增长和指数衰变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E6%9B%B2%E5%87%BD%E6%95%B0"><span class="nav-number">1.8.</span> <span class="nav-text">8.双曲函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.</span> <span class="nav-text">9.反函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%8D%E8%B0%88%E5%AF%BC%E6%95%B0"><span class="nav-number">1.10.</span> <span class="nav-text">10.再谈导数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E7%90%86%E4%BB%A5%E5%8F%8A%E6%8E%A8%E8%AE%BA"><span class="nav-number">1.11.</span> <span class="nav-text">11.一些定理以及推论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8C%96"><span class="nav-number">1.12.</span> <span class="nav-text">12.线性化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="nav-number">1.13.</span> <span class="nav-text">13.牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%9B%E5%BF%85%E8%BE%BE%E6%B3%95%E5%88%99"><span class="nav-number">1.14.</span> <span class="nav-text">14.洛必达法则</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">plafle</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/06/21/%E5%88%9D%E5%AD%A6%E5%BE%AE%E5%88%86%E3%81%AE%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="初学微分の笔记 | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初学微分の笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-21T00:00:00+08:00">2023-06-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 16:53:10" itemprop="dateModified" datetime="2025-01-28T16:53:10+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="微分总结">微分总结</h2>
+<h3 id="极限导数连续性可导性">1.极限，导数，连续性，可导性</h3>
+<p><span class="math display">\[
+\lim_{x \to a}f(x) = L
+\]</span></p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>这个式子叫做函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(a\)</span>处的双侧极限，表示对于任意的<span
+class="math inline">\(\varphi&gt;0\)</span>，可以选取对应的<span
+class="math inline">\(\beta &gt; 0\)</span>，使得对于所有满足<span
+class="math inline">\(0 &lt; |x - a| &lt; \beta\)</span>的<span
+class="math inline">\(x\)</span>，都有<span class="math inline">\(|f(x)
+- L| &lt; \varphi\)</span>.</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>除了双侧极限，我们还有左侧极限和右侧极限。
+<span class="math display">\[
+\lim_{x \to a^-}f(x) = L
+\]</span></p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>这个式子叫做函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(a\)</span>处的左侧极限，表示对于任意的<span
+class="math inline">\(\varphi&gt;0\)</span>，可以选取对应的<span
+class="math inline">\(\beta &gt; 0\)</span>，使得对于所有满足<span
+class="math inline">\(0 &lt; a - x &lt; \beta\)</span>的<span
+class="math inline">\(x\)</span>，都有<span class="math inline">\(|f(x)
+- L| &lt; \varphi\)</span>.</p>
+<p>同时： <span class="math display">\[
+\lim_{x \to a^+}f(x) = L
+\]</span></p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>这个式子叫做函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(a\)</span>处的右侧极限，表示对于任意的<span
+class="math inline">\(\varphi&gt;0\)</span>，可以选取对应的<span
+class="math inline">\(\beta &gt; 0\)</span>，使得对于所有满足<span
+class="math inline">\(0 &lt; x - a &lt; \beta\)</span>的<span
+class="math inline">\(x\)</span>，都有<span class="math inline">\(|f(x)
+- L| &lt; \varphi\)</span>.</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>极限不一定存在，比如<span
+class="math inline">\(f(x) = sin(\frac1x)\)</span>在<span
+class="math inline">\(x = 0\)</span>处就没有极限。</p>
+<ul>
+<li><p>三明治定理：</p>
+<p>如果对于所有在<span class="math inline">\(a\)</span>附近的<span
+class="math inline">\(x\)</span>都满足<span class="math inline">\(g(x)
+\le f(x) \le h(x)\)</span>，且</p>
+<p><span class="math display">\[
+\lim_{x \to a}g(x) = L = \lim_{x \to a}h(x)
+\]</span></p></li>
+</ul>
+<p><span class="math inline">\(\hspace{1cm}\)</span>那么有 <span
+class="math display">\[
+  \lim_{x \to a}f(x) = L
+\]</span></p>
+<ul>
+<li><p>连续性</p>
+<p>若<span class="math inline">\(x\)</span>在函数<span
+class="math inline">\(f\)</span>的定义域内，函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处存在双侧极限，且双侧极限等于<span
+class="math inline">\(f(x)\)</span>，则函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处连续。</p></li>
+<li><p>导数</p>
+<p>函数<span class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处的导数<span
+class="math inline">\(f&#39;(x)\)</span>定义为： <span
+class="math display">\[
+f&#39;(x) = \lim_{h\to x}\frac{f&#39;(x + h) - f&#39;(x)}{h}
+\]</span> 同时我们也可以用<span
+class="math inline">\(\frac{dy}{dx}\)</span>来表示函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处的导数。其中<span
+class="math inline">\(dx\)</span>表示<span
+class="math inline">\(x\)</span>变化很小一个范围，<span
+class="math inline">\(dy\)</span>表示此时<span
+class="math inline">\(y\)</span>对应的变化量。</p></li>
+<li><p>可导性</p>
+<p>函数<span class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处可导，当且仅当函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处连续，且函数<span
+class="math inline">\(f\)</span>在<span
+class="math inline">\(x\)</span>处的“左导数”和“右导数”相等，其中： <span
+class="math display">\[
+左导数= \lim_{h \to x ^-} \frac{f&#39;(x + h) - f&#39;(x)}{h}
+\]</span></p>
+<p><span class="math display">\[
+右导数 = \lim_{h \to x^+}\frac{f&#39;(x + h) - f&#39;(x)}{h}
+\]</span></p></li>
+</ul>
+<h3 id="用更好的方法求导">2.用更好的方法求导</h3>
+<ul>
+<li><p>加/减法法则：</p>
+<p>若<span class="math inline">\(f(x) = g(x) \pm h(x)\)</span>，则<span
+class="math inline">\(f&#39;(x) = g&#39;(x) \pm
+h&#39;(x)\)</span></p></li>
+<li><p>乘法法则： <span class="math display">\[
+\frac{d}{dx}(uv) = \frac{du}{dx}v + \frac{dv}{dx}u
+\]</span></p></li>
+<li><p>乘积法则的推广 <span class="math display">\[
+\frac{d}{dx}(uvw) = \frac{du}{dx}vw + \frac{dv}{dx}uw + \frac{dw}{dx}uv
+\]</span></p></li>
+<li><p>除法法则：</p>
+<p>若<span class="math inline">\(f(x) =
+\frac{g(x)}{h(x)}\)</span>，则有： <span class="math display">\[
+f&#39;(x) = \frac{g&#39;(x)h(x) - g(x)h&#39;(x)}{(h(x))^2}
+\]</span></p></li>
+<li><p>链式求导法则：</p>
+<p>若<span class="math inline">\(u\)</span>是<span
+class="math inline">\(v\)</span>的函数，<span
+class="math inline">\(v\)</span>是<span
+class="math inline">\(s\)</span>的函数，则有： <span
+class="math display">\[
+\frac{du}{ds} = \frac{du}{dv}\frac{dv}{ds}
+\]</span></p></li>
+</ul>
+<h3 id="三角函数的导数与极限">3.三角函数的导数与极限</h3>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>首先有一个基本的定理（这里暂且不证）：
+<span class="math display">\[
+\lim_{x \to 0} \frac{sin(x)}{x} = 1
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>然后先看一个极限： <span
+class="math display">\[
+\lim_{x \to 0} \frac{cos(x) - 1}{x} = \lim_{x \to 0} \frac{cos^2(x) -
+1}{x \cdot (cos(x) + 1)} = \lim_{x \to 0} \frac{-sin^2(x)}{x \cdot
+(cos(x) + 1)} \\= \lim_{x \to 0}\frac{sin(x)}x \times (-sin(x))
+\times\frac{1}{cos(x) + 1} = (1) \times (0)\times (\frac12) = 0
+\]</span></p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>接下来求<span
+class="math inline">\(f(x) = sin(x)\)</span>的导数： <span
+class="math display">\[
+f&#39;(x) = \lim_{h \to x} \frac{sin(x + h) - sin(x)}{h} = \lim_{h \to
+x} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \\ = \lim_{h \to x}
+\frac{sin(x) \cdot (cos(h) - 1)}h + \lim_{h \to x}\frac{sin(h)}h \cdot
+cos(x) \\=\lim_{h\to x}\frac{cos(x) - 1}{h} \times sin(x ) + (1)\cdot
+cos(x) = (0 )\times sin(x) + cos(x) \times(1) = cos(x)
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>同理，我们可以得到<span
+class="math inline">\(f(x) = cos(x)\)</span>的导数： <span
+class="math display">\[
+f&#39;(x) = -\sin(x)
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>根据这两个公式，我们可以通过乘积法则和除法法则求出<span
+class="math inline">\(f(x) = tan(x)，f(x) = csc(x)\)</span>,<span
+class="math inline">\(f(x) = sec(x),f(x) = cot(x)\)</span>的导数. <span
+class="math display">\[
+\frac d{dx}(tan(x)) = sec^2(x)\\\frac d{dx}(sec(x)) = sec(x)tan(x)\\
+\frac d{dx}(csc(x)) = -csc(x)cot(x) \\ \frac{d}{dx}(cot(x)) = -csc^2(x)
+\]</span></p>
+<h3 id="关于e">4.关于e</h3>
+<p><span class="math inline">\(\hspace{1cm}\)</span>自然常数<span
+class="math inline">\(e\)</span>的定义： <span class="math display">\[
+e = \lim_{n \to \infty}(1 + \frac1n)^n
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>这样做会有一个风险，那就是这个极限不一定存在。现在我们暂且不管。</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>对于<span
+class="math inline">\(e\)</span>的收敛性证明，我们证一个<span
+class="math inline">\(e \le 4\)</span>即可。即我们尝试证明： <span
+class="math display">\[
+(1 + \frac1n)^n \le 4
+\]</span> <span class="math inline">\(\hspace{1cm}\)</span>即要证明：
+<span class="math display">\[
+\sqrt[n]{\frac14} \leq \frac{n}{n + 1}
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>根据均值不等式，我们有 <span
+class="math display">\[
+\sqrt[n]{\frac14} = \sqrt[n]{\frac12 \times \frac{1}{2} \times 1^{n -
+2}} \le \frac{n - 1}n \le \frac n{n + 1}
+\]</span> <span class="math inline">\(\hspace{1cm}\)</span>因此得证<span
+class="math inline">\(e \le 4\)</span>.</p>
+<p>​</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>然后我们来求一个极限： <span
+class="math display">\[
+\lim _{n \to \infty}(1 + \frac rn)^n
+\]</span> <span class="math inline">\(\hspace{1cm}\)</span>令<span
+class="math inline">\(k = \frac nr\)</span>，则<span
+class="math inline">\(n = rk\)</span>，所以有： <span
+class="math display">\[
+\lim _{n \to \infty}(1 + \frac rn)^n = \lim_{n \to \infty} (1 +
+\frac1k)^{rk} = \lim_{n \to \infty}((1 + \frac1k)^k)^r = e^r
+\]</span></p>
+<h3 id="对数函数和指数函数的导数">5.对数函数和指数函数的导数</h3>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>先来求对数函数的导数，设<span
+class="math inline">\(f(x) = \log_bx\)</span>，则有： <span
+class="math display">\[
+f&#39;(x) = \lim_{h \to 0} \frac{\log_b(x + h) - \log_bx} h = \lim_{h
+\to 0} \frac{\log_b(\frac{x + h}{x})}h = \lim_{h \to 0}\log_b(1 + \frac
+hx) ^ \frac1h = \lim_{h \to \infty} \log_b(1 + \frac 1h \times \frac1x
+)^h = \log_b e^\frac1x = \frac{1}{x \times ln(b)}
+\]</span></p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>再来看指数函数的导数。设<span
+class="math inline">\(y = b^x\)</span>，则<span class="math inline">\(x
+= \log_by\)</span>，所以 <span class="math display">\[
+\frac{dx}{dy} = \frac1{y \times ln(b)}
+\]</span> <span class="math inline">\(\hspace{1cm}\)</span>则： <span
+class="math display">\[
+\frac{dy}{dx} = yln(b) = b^xln(b)
+\]</span></p>
+<h3 id="对y-fxgx求导">6.对<span class="math inline">\(y =
+f(x)^{g(x)}\)</span>求导</h3>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>一个例子胜千言。比如我们现在要对<span
+class="math inline">\(y = x^x\)</span>求导。</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>有： <span
+class="math display">\[
+ln(y) = xln(x) \\ \frac d{dx} ln(y) = \frac d{dx} (x ln(x)) \\ \frac
+d{dy}(ln(y)) \times \frac{dy}{dx} = ln(x) + 1 \\ \frac1y \times
+\frac{dy}{dx} = ln(x) + 1 \\ \frac{dy}{dx} = (ln(x) + 1) \times x^x
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>我们再举一个例子，这个例子推出的结论也是很重要的一个结论。我们现在要求<span
+class="math inline">\(y = x^a\)</span>的导数。</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>有： <span
+class="math display">\[
+ln(y) = aln(x) \\ \frac d{dx}(ln(y)) = \frac {d}{dx}(aln(x)) \\ \frac
+d{dy}(ln(y)) \times \frac{dy}{dx} = \frac ax \\ \frac{dy}{dx} = \frac ax
+\times y = \frac ax \times x^a = ax^{a - 1}
+\]</span></p>
+<h3 id="指数增长和指数衰变">7.指数增长和指数衰变</h3>
+<ul>
+<li>指数增长</li>
+</ul>
+<p><span class="math inline">\(\hspace{1cm}\)</span>假设<span
+class="math inline">\(y = Ae^{kx}\)</span>，则<span
+class="math inline">\(\frac{dy}{dx} =
+Ake^{kx}\)</span>。这说明该函数的增长速度和函数值成正比。</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>这很符合现实中的一些情况。一个生物种群，它扩张繁殖的速度和这个生物种群内生物的多少成正比。</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>让我们来解决一个问题。一个兔子种群现在有1000只兔子，而3年后增长到64000只，那么4年后会有多少兔子呢？</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>设<span
+class="math inline">\(f(x)\)</span>表示兔子种群在第<span
+class="math inline">\(x\)</span>年有<span
+class="math inline">\(f(x)\)</span>只兔子，那么我们有<span
+class="math inline">\(f(0) = 1000\)</span>,<span
+class="math inline">\(f(3) = 64000\)</span>.</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>根据指数增长的原则，我们设<span
+class="math inline">\(f(x) = Ae^{kx}\)</span>,则<span
+class="math inline">\(f(0) = Ae^0\)</span>,则<span
+class="math inline">\(A = f(0)\)</span>.</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>所以我们有<span
+class="math inline">\(f(x) = f(0)e^{kx} = 1000e^{kx}\)</span>,则<span
+class="math inline">\(f(3) = 1000e^{3k} = 64000\)</span>，所以<span
+class="math inline">\(e^{3k} = 64\)</span>，<span
+class="math inline">\(3k = ln(64)\)</span>，<span
+class="math inline">\(k = \frac{ln(64)}3 = \ln(4)\)</span>，所以<span
+class="math inline">\(f(x) = 1000e^{\ln(4)x}\)</span>。将<span
+class="math inline">\(x = 4\)</span>代入，有$f(4) = 1000e^{(4) } = 1000e
+^ {(256)} = 256000 $.所以4年后有256000只兔子。</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>同时我们也可以得到，一般对于这种建模，我们都有<span
+class="math inline">\(f(t) = f(0)e^{kt}\)</span>，</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>可以从上述例子中看出，指数函数增长得很快。所以我们推测出一下定理（可用洛必达法则证明）：
+<span class="math display">\[
+\lim_{x\to \infty} \frac{f(x)}{b^x} = 0,其中f(x)是关于x的多项式，b &gt;
+1
+\]</span></p>
+<ul>
+<li>指数衰减</li>
+</ul>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>指数衰减适用于给原子衰变建模。因为原子越多，其衰变速度越快。换句话说，衰变速度与原子个数成正比。</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>现在假设你有一瓶铀—235，它的半衰期是7年，也就是说过7年你打开这个瓶子，你会发现这个瓶子里面只有一半铀-235了。如果你初始又50公斤的铀-235，那么过10年之后你还有几公斤的铀-235没有衰变呢？</p>
+<p><span class="math inline">\(\hspace{1cm}\)</span>设<span
+class="math inline">\(f(t)\)</span>是时间为<span
+class="math inline">\(t\)</span>时你剩下的铀-235，那我们应该有： <span
+class="math display">\[
+  f&#39;(t) = -kf(t),其中k为常数
+\]</span> <span
+class="math inline">\(\hspace{1cm}\)</span>所以我们设<span
+class="math inline">\(f(t) = Ae^{-kt}\)</span>，则<span
+class="math inline">\(f(0) = Ae^0 = A = 50\)</span>，所以<span
+class="math inline">\(f(t) = 50e^{-kt}\)</span>。又因为<span
+class="math inline">\(f(7) = 50e^{-7k} = 25\)</span>，所以<span
+class="math inline">\(-7k = ln(\frac 12) = \ln(1) - \ln(2) =
+-\ln(2)\)</span>，所以<span class="math inline">\(k = \frac{\ln
+2}7\)</span>，<span class="math inline">\(f(t) = 50e^{\frac{-t
+\ln2}7}\)</span>。当<span class="math inline">\(t = 10\)</span>时，<span
+class="math inline">\(f(10) = 50e^{\frac{-10 \ln2}7}\)</span>。</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>同时我们也可以得到，一般对于这种建模，我们都有<span
+class="math inline">\(f(t) = f(0)e^{-kt}\)</span>，同时<span
+class="math inline">\(k = \frac{\ln2}{t_{1/2}}\)</span>，其中<span
+class="math inline">\(t_{1 / 2}\)</span>表示半衰期时间。</p>
+<p><span
+class="math inline">\(\hspace{1cm}\)</span>和指数增长那一块一样，我们会得出几个有关极限的结论：</p>
+<ul>
+<li>对数函数在<span
+class="math inline">\(\infty\)</span>附近增长缓慢：</li>
+</ul>
+<p><span class="math display">\[
+  \lim_{x \to \infty} \frac{\log_b x}{f(x)} =
+0,其中f(x)是关于x的多项式,b &gt; 1
+\]</span></p>
+<ul>
+<li>对数函数在<span class="math inline">\(0\)</span>附近增长缓慢： <span
+class="math display">\[
+\lim_{x \to 0}f(x)\cdot \log_bx = 0,其中f(x)是关于x的多项式,b &gt; 1
+\]</span></li>
+</ul>
+<p><span class="math inline">\(\hspace{1cm}\)</span> 当<span
+class="math inline">\(f(x) = x\)</span>时关于上面这个极限的证明： <span
+class="math display">\[
+    \lim_{x \to 0}x\cdot \log_bx = \lim_{x \to \infty}\frac 1x \cdot
+\log_b(\frac 1x) = \lim_{x \to \infty} \frac{-\log_bx}{x} = 0
+    \]</span></p>
+<h3 id="双曲函数">8.双曲函数</h3>
+<p>定义： <span class="math display">\[
+sinh(x) = \frac{e^x - e^{-x}}2 \\ cosh(x) = \frac {e^x + e^{-x}}2
+\\tanh(x) = \frac{sinh(x)}{cosh(x)} \\ csch(x) = \frac1{sinh(x)} \\
+sech(x) = \frac1{cosh(x)} \\ coth(x) = \frac1{tanh(x)}
+\]</span> 注意到 <span class="math display">\[
+cosh^2(x) - sinh^2(x) = 1
+\]</span> 如果对其求导，会得到： <span class="math display">\[
+\frac d{dx}(sinh(x)) =\frac d{dx}(\frac{e^x - e^{-x}}2) = \frac{e^x +
+e^{-x}}2 = cosh(x)
+\]</span></p>
+<p><span class="math display">\[
+\frac d{dx}(cosh(x)) =\frac d{dx}(\frac{e^x + e^{-x}}2) = \frac{e^x -
+e^{-x}}2 = sinh(x)
+\]</span></p>
+<p>这也是其前缀<span class="math inline">\(sin\)</span>，<span
+class="math inline">\(cos\)</span>的原因。</p>
+<p>不管怎样，你可以通过链式求导或除法法则得到如下结果： <span
+class="math display">\[
+\frac{d}{dx}(tanh(x)) = sech^2(x)\\\frac d{dx}(sech(x)) =
+-sech(x)tanh(x)\\ \frac d{dx}(csch(x)) = -csch(x)coth(x) \\
+\frac{d}{dx}(coth(x)) = -csch^2(x)
+\]</span>
+注意到它们与三角函数导数之间的关系（事实上，这段公式是我从三角函数那里复制下来再轻微改造得到的）。</p>
+<p>顺便说一句，<span
+class="math inline">\(cosh(x)\)</span>的图像就是悬链线的图像，悬链线就是一个固定绳子的两段，在重力场中让它自然垂下，绳子的曲线方程.</p>
+<h3 id="反函数">9.反函数</h3>
+<p>函数本质是一个映射。一个元素<span
+class="math inline">\(x\)</span>经过函数<span
+class="math inline">\(f\)</span>的映射后就变成了元素<span
+class="math inline">\(f(x)\)</span>，那么将<span
+class="math inline">\(f(x)\)</span>变回<span
+class="math inline">\(x\)</span>的映射就叫做函数<span
+class="math inline">\(f\)</span>的反函数，记为<span
+class="math inline">\(f^{-1}\)</span>,也就是<span
+class="math inline">\(f^{-1}(f(x)) = x\)</span>。</p>
+<p>一个函数<span class="math inline">\(f\)</span>如果要有反函数<span
+class="math inline">\(f^{-1}\)</span>，要满足对于每一个<span
+class="math inline">\(y\)</span>，最多只有一个<strong>定义域内</strong>的<span
+class="math inline">\(x\)</span>使得<span class="math inline">\(f(x) =
+y\)</span>.</p>
+<p>对于一个函数<span class="math inline">\(f\)</span>，如果<span
+class="math inline">\(f&#39;(x)\)</span>恒大于等于0，且只有有限多个<span
+class="math inline">\(x\)</span>使得<span
+class="math inline">\(f&#39;(x) = 0\)</span>，那么显然<span
+class="math inline">\(f\)</span>存在反函数。同样的，对于一个函数<span
+class="math inline">\(f\)</span>，如果<span
+class="math inline">\(f&#39;(x)\)</span>恒小于等于0，且只有有限多个<span
+class="math inline">\(x\)</span>使得<span
+class="math inline">\(f&#39;(x) = 0\)</span>，那么显然<span
+class="math inline">\(f\)</span>也存在反函数。</p>
+<p>如果我们现在已经知道<span class="math inline">\(f(x)\)</span>和<span
+class="math inline">\(f&#39;(x)\)</span>，如何求<span
+class="math inline">\(f^{-1}(x)\)</span>的导数呢？</p>
+<p>首先如果<span class="math inline">\(y = f^{-1}(x)\)</span>，那么
+<span class="math display">\[
+x =f(y) \\ \frac{dx}{dy} = \frac{d}{dy}(f(y)) \\ \frac{dx}{dy}
+=  f&#39;(y) \\ \frac{dy}{dx} = \frac 1{f&#39;(y)}
+\]</span></p>
+<p>所以我们得到了反函数的导数。</p>
+<p>特别的，反函数的图像与原函数的图像关于<span class="math inline">\(y =
+x\)</span>对称。</p>
+<h3 id="再谈导数">10.再谈导数</h3>
+<p>导数是一个很强大的工具，所以我们重新来挖掘一下它的潜在价值。</p>
+<p>一阶导数<span
+class="math inline">\(f&#39;(x)\)</span>表现的是函数<span
+class="math inline">\(f\)</span>的增减性。<span
+class="math inline">\(f&#39;(x) &gt; 0\)</span>则函数在x上增长，<span
+class="math inline">\(f&#39;(x) &lt; 0\)</span>则函数在x上减少。</p>
+<p>二阶导数<span
+class="math inline">\(f&#39;&#39;(x)\)</span>表现得是函数<span
+class="math inline">\(f\)</span>的凹凸性。<span
+class="math inline">\(f&#39;&#39;(x) &gt;
+0\)</span>则函数在x处凹面向上，<span
+class="math inline">\(f&#39;&#39;(x) &lt;
+0\)</span>则函数在x处凹面向下。函数<span
+class="math inline">\(f\)</span>的凹凸性质改变的临界点叫做函数<span
+class="math inline">\(f\)</span>的拐点。在拐点<span
+class="math inline">\(x\)</span>上，必定有<span
+class="math inline">\(f&#39;&#39;(x) = 0\)</span>.</p>
+<p>有一个不证自明的事实。函数<span
+class="math inline">\(f\)</span>的最大值/最小值只会是<span
+class="math inline">\(f(x)\)</span>，其中的<span
+class="math inline">\(x\)</span>满足<span
+class="math inline">\(f&#39;(x) = 0\)</span>或<span
+class="math inline">\(f&#39;(x)\)</span>不存在或<span
+class="math inline">\(x\)</span>是闭区间的端点.</p>
+<p>现在我们的任务是求某一个函数的最值。比如说<span
+class="math inline">\(f(x) = x^2 - 2x
++2\)</span>，通过配方它有最小值1。但如果我们以导数的视角，你就会先对其求导得到<span
+class="math inline">\(f&#39;(x) = 2x - 2\)</span>，那么<span
+class="math inline">\(f&#39;(x)\)</span>的零点是1。而<span
+class="math inline">\(f&#39;&#39;(x) = 2 &gt;
+0\)</span>，所以函数凹面向上，<span class="math inline">\(f(1) =
+1\)</span>是函数<span class="math inline">\(f\)</span>的最小值。</p>
+<p>上面这个例子不能体现处导数求极值的优越性，让我们再来看一个栗子。</p>
+<blockquote>
+<p>求函数<span class="math inline">\(f(x) = 5x \sqrt{900 -
+6x}\)</span>的最大值。</p>
+</blockquote>
+<p>对其求导，得到<span class="math inline">\(f&#39;(x) = \frac{45(100 -
+x)}{\sqrt{900 -
+6x}}\)</span>。导数函数的零点为100。导数函数只有这一个零点，说明这一定是最大值或者最小值。让我们再看一下，对于任意的<span
+class="math inline">\(f&#39;(v)(v &lt; 100)\)</span>都有<span
+class="math inline">\(f&#39;(v) &gt; 0\)</span>，对于任意的<span
+class="math inline">\(f&#39;(w)(w &gt; 100)\)</span>都有<span
+class="math inline">\(f&#39;(w) &lt; 0\)</span>。所以<span
+class="math inline">\(f(100) = 5000
+\sqrt{3}\)</span>是函数的最大值。</p>
+<h3 id="一些定理以及推论">11.一些定理以及推论</h3>
+<ul>
+<li><p>罗尔定理</p>
+<p>若函数<span class="math inline">\(f\)</span>在闭区间<span
+class="math inline">\([a,b]\)</span>间连续，在开区间<span
+class="math inline">\((a,b)\)</span>间可导，如果<span
+class="math inline">\(f(a) = f(b)\)</span>，则在开区间<span
+class="math inline">\((a,b)\)</span>中必定存在一点<span
+class="math inline">\(c\)</span>，满足<span
+class="math inline">\(f&#39;(c) = 0\)</span>.</p></li>
+<li><p>拉格朗日中值定理</p>
+<p>若函数<span class="math inline">\(f\)</span>在闭区间<span
+class="math inline">\([a,b]\)</span>间连续，在开区间<span
+class="math inline">\((a,b)\)</span>间可导，则在开区间<span
+class="math inline">\((a,b)\)</span>中必定存在一点<span
+class="math inline">\(c\)</span>，满足<span
+class="math inline">\(f&#39;(c) = \frac{f(b) - f(a)}{b -
+a}\)</span>。</p></li>
+<li><p>拉格朗日中值定理的推论</p>
+<p>如果一个函数<span class="math inline">\(f\)</span>的导函数<span
+class="math inline">\(f&#39;\)</span>对于定义域内的任意<span
+class="math inline">\(x\)</span>满足<span
+class="math inline">\(f&#39;(x) = 0\)</span>，则函数<span
+class="math inline">\(f\)</span>为常数函数。</p></li>
+</ul>
+<p>证明：固定其定义域内一点<span
+class="math inline">\(s\)</span>，设<span class="math inline">\(f(s) =
+C\)</span>。再任取其定义域内一点<span
+class="math inline">\(t\)</span>，因为导函数恒为0，所以<span
+class="math inline">\(\frac{f(s) - f(t)}{s - t} = 0\)</span>，所以<span
+class="math inline">\(f(s) = f(t) =
+C\)</span>，所以对于定义域内任意一点<span
+class="math inline">\(t\)</span>，都有<span class="math inline">\(f(t) =
+C\)</span>。所以函数<span
+class="math inline">\(f\)</span>为常数函数。</p>
+<h3 id="线性化">12.线性化</h3>
+<blockquote>
+<p>估算<span class="math inline">\(\sqrt{11}\)</span>.</p>
+</blockquote>
+<p>这里的方法（线性化）是先将其函数化，将原问题转化为对于函数<span
+class="math inline">\(f(x) = \sqrt{x}\)</span>，求<span
+class="math inline">\(f(11)\)</span>.</p>
+<p>然后我们找一个离<span
+class="math inline">\(11\)</span>很近且很好求的<span
+class="math inline">\(f(x)\)</span>，比如<span
+class="math inline">\(f(9)\)</span>。求出<span
+class="math inline">\(f&#39;(9) = \frac
+16\)</span>。我们记通过（9，3）的切线为<span
+class="math inline">\(L\)</span>，有<span class="math inline">\(L =
+\frac 16 x + \frac 32\)</span>，则<span class="math inline">\(L(11) =
+\frac {10} 3\)</span>。我们估算出来的值为<span
+class="math inline">\(\frac{10}3\)</span>.</p>
+<p>这里我们得到近似公式： <span class="math display">\[
+f(x) \approx L(x) = f(a) + f&#39;(a)(x - a)
+其中a是你选择的一个离x较近的且好算的值
+\]</span> 同时观察可得：</p>
+<ul>
+<li><p>如果<span
+class="math inline">\(f&#39;&#39;\)</span>在a和x之间为<strong>正</strong>，则通过线性化得到的估算是<strong>低估</strong>。</p></li>
+<li><p>如果<span
+class="math inline">\(f&#39;&#39;\)</span>在a和x之间为<strong>负</strong>，则通过线性化得到的估算是<strong>高估</strong>。</p>
+<p>同时我们对于误差也有一个很好的公式： <span class="math display">\[
+误差 = \frac 12 f&#39;&#39;(c)(x - a)^2，其中c为在x和a之间的某个数。
+\]</span></p></li>
+</ul>
+<h3 id="牛顿法">13.牛顿法</h3>
+<p>牛顿法是用来估算函数零点（解方程）的方法。</p>
+<p>一图胜千言</p>
+<p>其中<span class="math inline">\(x^*\)</span>是真正的零点，<span
+class="math inline">\(x_k\)</span>是估算的点，<span
+class="math inline">\(x_{k + 1}\)</span>是更好的估算的点。</p>
+<p>牛顿法只在一般情况下适用。在某些特殊情况下牛顿法不适用。</p>
+<h3 id="洛必达法则">14.洛必达法则</h3>
+<ul>
+<li><p><strong>A. <span class="math inline">\(\frac0 0\)</span>或 <span
+class="math inline">\(\frac{ \pm \infty}{\pm
+\infty}\)</span>形：</strong></p>
+<p>对于极限<span class="math inline">\(\lim_{x \to a}
+\frac{g(x)}{h(x)}\)</span>，如果<span class="math inline">\(g(a) = h(a)
+= 0\)</span>或<span class="math inline">\(g(a) = \pm
+\infty\)</span>,<span class="math inline">\(h(a) = \pm
+\infty\)</span>，那么：</p></li>
+</ul>
+<p><span class="math display">\[
+\lim_{x \to a} \frac{g(x)}{h(x)} = \lim_{x \to a}
+\frac{g&#39;(x)}{h&#39;(x)}
+\]</span></p>
+<ul>
+<li><p><strong>B. <span class="math inline">\(0 \times  \pm
+\infty\)</span></strong>形：</p>
+<p>对于极限<span class="math inline">\(\lim_{x \to a}
+{g(x)}{h(x)}\)</span>，如果<span class="math inline">\(g(a)  =0,h(a) =
+\pm \infty\)</span>，则： <span class="math display">\[
+\lim_{x \to a} {g(x)}{h(x)} = \lim_{x \to a} \frac{h(x)}{1 / g(x)}
+\]</span> 因为<span class="math inline">\(g(a) = 0\)</span>，所以<span
+class="math inline">\(\frac 1{g(a)}
+=  \pm\infty\)</span>，此时可以用洛必达法则求解。</p></li>
+<li><p><strong>C.<span class="math inline">\(\infty -
+\infty\)</span>形：</strong></p>
+<p>这种形式比较难处理，可以尝试同时乘以除以一个共轭根式，创造一个分母。</p>
+<blockquote>
+<p>求极限<span class="math inline">\(\lim_{x \to \infty}(\sqrt{x +
+ln(x)} - \sqrt{x})\)</span>。</p>
+</blockquote></li>
+</ul>
+<p><span class="math display">\[
+\lim_{x \to \infty}(\sqrt{x + ln(x)} - \sqrt{x}) = \lim_{x \to \infty}
+\frac{\ln x}{\sqrt{x + ln(x)} + \sqrt{x}}
+\]</span></p>
+<p>此时分数线上下的表达式均趋向于<span
+class="math inline">\(\infty\)</span>，可以用洛必达法则求解。</p>
+<ul>
+<li><p><strong>D.<span class="math inline">\(1 ^ {\pm
+\infty}，0^0,\infty ^ 0\)</span>形：</strong></p>
+<p>这种形式最复杂。例如： <span class="math display">\[
+求\lim_{x\to a}f(x)^{g(x)}
+\]</span> 首先我们对其取对数： <span class="math display">\[
+\lim_{x\to a}\ln(f(x)^{g(x)}) = \lim_{x\to a}g(x)\ln(f(x))
+\]</span></p>
+<p>这个时候如果该式子是不定式，我们可以用<span
+class="math inline">\(B\)</span>类型对其求极限。如果不是，你需要另外想办法。</p>
+<p>如果你求得了上面这个式子的极限，这时，就有： <span
+class="math display">\[
+\lim_{x\to a}\ln(f(x)^{g(x)}) = \lim_{x\to a}g(x)\ln(f(x)) = L \\ \lim
+_{x \to a}f(x)^{g(x)} = e^L
+\]</span></p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/19/P6175%E9%A2%98%E8%A7%A3/" rel="prev" title="P6175题解">
+                  <i class="fa fa-angle-left"></i> P6175题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/06/22/x%5Eyy%5Ex/" rel="next" title="关于$x^y$和$y^x$的大小判断问题的一点思考">
+                  关于$x^y$和$y^x$的大小判断问题的一点思考 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">plafle</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

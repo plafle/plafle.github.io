@@ -2557,9 +2557,9 @@ e^{-x^2} x^2dx
 <p>​ 考察积分<span
 class="math inline">\(\int_{-\infty}^{+\infty}e^{-x^2}x^2dx\)</span>：
 <span class="math display">\[
-\int_{-infty}^{+infty} e^{-x^2}dx = \left.
-xe^{-x^2}\right|_{-infty}^{+infty}  + 2\int_{-infty}^{+infty}e^{x^2}x^2
-dx = \sqrt{\pi}
+\int_{-\infty}^{+\infty} e^{-x^2}dx = \left.
+xe^{-x^2}\right|_{-\infty}^{+\infty}  +
+2\int_{-\infty}^{+\infty}e^{x^2}x^2 dx = \sqrt{\pi}
 \]</span> ​ 于是： <span class="math display">\[
 \int_{-\infty}^{+\infty}e^{x^2}x^2 dx =\frac {\sqrt \pi}2
 \]</span> ​ 所以: <span class="math display">\[

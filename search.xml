@@ -3527,4 +3527,125 @@ Wiles终于成功证明了费马大定理，8年阁楼中的研究岁月换来�
         <tag>随笔</tag>
       </tags>
   </entry>
+  <entry>
+    <title>应该要掌握的STL</title>
+    <url>/2023/07/12/%E5%BA%94%E8%AF%A5%E8%A6%81%E6%8E%8C%E6%8F%A1%E7%9A%84STL/</url>
+    <content><![CDATA[<h3 id="应该要掌握的stl">应该要掌握的STL</h3>
+<h4 id="vector">1. vector</h4>
+<p>​ 假设我们有一个<code>vector&lt;typename&gt;</code>
+变量<code>v</code>，那么我们就可以有如下操作：</p>
+<ul>
+<li><p><code>v.push_back(obj)</code>，可以在<code>v</code>的最后插入一个<code>obj</code></p></li>
+<li><p><code>v.pop_back()</code>可以弹出<code>v</code>最后一个元素</p></li>
+<li><p><code>v.size()</code>可以返回<code>v</code>中元素的个数</p></li>
+<li><p>可以直接通过<code>v[i]</code>访问<code>vector</code>中的元素
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;v.<span class="built_in">size</span>(); i++)</span><br><span class="line">    #可以直接用v[i]访问vector中的元素</span><br></pre></td></tr></table></figure></p></li>
+<li><p><code>sort(v.begin(),v.end(),cmp)</code>可以对<code>v</code>进行排序</p></li>
+<li><p><code>v.clear()</code>清空<code>vector v</code></p></li>
+</ul>
+<h4
+id="priority_queue优先队列即堆默认大根堆">2.priority_queue（优先队列，即堆，默认大根堆）</h4>
+<p>​
+假设我们有一个<code>priority_queue&lt;node&gt;</code>变量<code>heap</code>，那么我们就可以有如下操作：</p>
+<ul>
+<li><p><code>heap.push(obj)</code>可以把一个元素加入堆</p></li>
+<li><p><code>heap.pop()</code>可以弹出堆顶元素</p></li>
+<li><p><code>node tmp = heap.top()</code>可以获得堆顶元素</p></li>
+<li><p>自定义结构体类型的重载运算符</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">    <span class="type">int</span> x,id;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">bool</span> <span class="keyword">operator</span> &lt; (<span class="type">const</span> node &amp;a, <span class="type">const</span> node &amp;b) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.x &lt; b.x; <span class="comment">//以x为关键字从大到小实现大根堆</span></span><br><span class="line">    <span class="keyword">return</span> a.x &gt; b.x; <span class="comment">//以x为关键字从小到大实现小根堆</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4
+id="lower_bound-upper_bound可以对数组和vector-注意需要事先排序">3.lower_bound
+&amp; upper_bound（可以对数组和<em>vector</em>
+）（注意需要事先排序）</h4>
+<ul>
+<li><p><code>int tmp1 = lower_bound(a + 1,a + n + 1,obj) - a</code>返回数组<code>a</code>中第一个<strong>大于等于</strong><code>obj</code>的元素的下标</p></li>
+<li><p><code>int tmp2 = upper_bound(a + 1,a + n + 1,obj) - a</code>返回数组<code>a</code>中第一个<strong>大于</strong><code>obj</code>的元素的下标。</p></li>
+<li><p><code>int tmp1 = lower_bound(v.begin(),v.end(),obj) - v.begin()</code>返回数组<code>a</code>中第一个<strong>大于等于</strong><code>obj</code>的元素的下标</p></li>
+<li><p><code>int tmp1 = upper_bound(v.begin(),v.end(),obj) - v.begin()</code>返回数组<code>a</code>中第一个<strong>大于</strong><code>obj</code>的元素的下标</p></li>
+</ul>
+<h4 id="unqiue-可以对数组和vector-注意需要事先排序">4.unqiue
+(可以对数组和<em>vector</em>) （注意需要事先排序）</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[] = &#123;<span class="number">0</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="built_in">sort</span>(a + <span class="number">1</span>,a + <span class="number">7</span>);</span><br><span class="line"><span class="type">int</span> m = <span class="built_in">unique</span>(a + <span class="number">1</span>,a + <span class="number">7</span>) - a - <span class="number">1</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;m = %d\n&quot;</span>,m);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++)</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,a[i]);</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = 3</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<h4 id="bitset">5.bitset</h4>
+<ul>
+<li>新建一个长度为30的<code>bitset</code>并给它赋值为<code>a</code>：
+<code>bitset&lt;30&gt; s(a);</code></li>
+<li>可以直接用<code>s[i]</code>访问这个<code>bitset</code>，既可以取值，也可以修改。注意：<code>s[0]</code>是最低位，<code>s[29]</code>是最高位。</li>
+<li>可以把两个<code>bitset</code>互相做位运算，也可以对两个<code>bitset</code>做<code>==</code>
+<code>!=</code> 的比较，还可以对<code>bitset</code>进行左移右移。</li>
+<li><code>s.count()</code>返回有几个<code>1</code></li>
+<li>如果<code>s</code>所有位全部是<code>0</code>，那么<code>s.any()</code>返回<code>False</code>，<code>s.none()</code>返回<code>True</code></li>
+<li>如果<code>s</code>至少有一位是<code>1</code>，那么<code>s.any()</code>返回<code>True</code>，<code>s.none()</code>返回<code>False</code></li>
+<li>一个使用实例</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">a = <span class="number">20</span>;</span><br><span class="line"><span class="function">bitset&lt;20&gt; <span class="title">s</span><span class="params">(a)</span></span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,s);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">20</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意：<code>s[0]</code>的类型不是<code>int</code>，但可以强制转换为<code>int</code>，所以可以这样<code>int tmp = s[0]</code>，但不能<code>printf("%d\n",s[0])</code>，如果要直接<code>printf</code>，那么应该<code>printf("%d\n",(int)s[0])</code>.</li>
+</ul>
+<h4 id="multisetset">6. multiset/set</h4>
+<blockquote>
+<p>所有multiset的操作只要把“multiset”换成”set"就可以了，故下面用multiset演示</p>
+</blockquote>
+<ul>
+<li><p>声明方式：<code>multiset&lt;int&gt; s</code>
+或<code>multiset&lt;node&gt; s;</code></p>
+<p>​
+注意，如果用了后者，那么需要重载<code>&lt;</code>运算符，重载方法和前面在<code>priority_queue</code>里面重载的方法一样。然后，<code>set</code>和<code>multiset</code>默认都是从小到大排序的，所以如果要按照<code>node</code>里的<code>x</code>关键字排序，重载函数应该这样写：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="keyword">operator</span> &lt; (<span class="type">const</span> node &amp;a, <span class="type">const</span> node &amp;b) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.x &lt; b.x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>multiset</code>的迭代器的概念：</p>
+<ul>
+<li>声明一个<code>multiset</code>的迭代器：<code>multiset&lt;node&gt;::iterator it;</code></li>
+<li><code>multiset</code>的迭代器仅支持<code>++</code>和<code>--</code>两个操作，分别表示在<code>multiset</code>中向后或者向前一个元素</li>
+<li>如果我们有一个<code>multiset</code>的迭代器<code>it</code>，可以通过<code>*it</code>来表示迭代器<code>it</code>指向的元素（有点像一个指针）</li>
+</ul></li>
+</ul>
+<hr />
+<p>假设我们有一个<code>multiset&lt;int&gt; s;</code></p>
+<ul>
+<li><p><code>s.size(), s.erase(), s.clear()</code>均支持。</p></li>
+<li><p><code>s.insert(obj)</code>可以实现往里面插入元素的功能</p></li>
+<li><p><code>s.find(obj)</code>可以返回一个<code>multiset</code>的迭代器，如果找不到对应元素那么就会返回<code>s.end()</code>，否则返回对应元素的迭代器，可以通过<code>*</code>运算得到对应元素。</p></li>
+<li><p>设<code>it</code>是一个<code>multiset</code>的迭代器，那么<code>s.erase(it)</code>可以删除这个迭代器对应的元素。</p></li>
+<li><p><code>s.erase(obj)</code>可以删除所有对应元素。</p></li>
+<li><p><code>s.count(obj)</code>可以返回<code>s</code>中有多少个元素等于<code>obj</code></p></li>
+<li><p><code>s.lower_bound(obj)</code>可以返回第一个大于等于<code>obj</code>的元素的迭代器</p>
+<p><code>s.upper_bound(obj)</code>可以返回第一个大于<code>obj</code>的元素的迭代器</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>可以通过这个方式输出<code>multiset s</code>中的元素（默认是从小到大排序的）</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (multiset&lt;<span class="type">int</span>&gt;::iterator it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); it++)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,*it);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="pair">7. pair</h4>
+<ul>
+<li><p>声明方法：<code>pair&lt;typename1,typename2&gt; tmp;</code></p>
+<p>例如：<code>pair&lt;pair&lt;int,int&gt;, vector&lt;int&gt; &gt; tmp;</code></p></li>
+<li><p>一种构造方法：<code>pair&lt;int, int&gt; p = make_pair(2,3)</code></p></li>
+<li><p>假设我们有一个<code>pair&lt;int, int&gt; p;</code>
+那么可以通过<code>p.first</code>和<code>p.second</code>分别访问第一个元素和第二个元素。</p></li>
+</ul>
+<h4 id="map">8. map</h4>
+<ul>
+<li><code>map</code>也有<code>insert(), clear(), empty()</code>的操作</li>
+</ul>
+<p>假设我们有一个<code>map&lt;int,int&gt; mp;</code>和一个<code>map&lt;int,int&gt;::iterator it;</code>
+-
+往<code>map</code>里插入一个键值对：<code>mp.insert(make_pair(2,3))</code></p>
+<ul>
+<li><p>删除迭代器<code>it</code>对应的元素：<code>mp.erase(it)</code></p></li>
+<li><p>删除<code>map</code>中的<code>pair</code>：<code>mp.erase(make_pair(2,3))</code></p></li>
+<li><p>通过<code>key</code>来删除<code>map</code>中的<code>pair</code>：
+<code>mp.erase(2)</code></p></li>
+<li><p><code>mp.find(make_pair(2,3))</code>在<code>m</code>中找对应元素，返回迭代器。如果不存在，返回<code>mp.end()</code></p></li>
+<li><p><code>mp[key]</code>返回<code>key</code>值对应的<code>value</code>，可以直接赋值或访问（和python里的字典一样），如果不存在<code>mp[key]</code>，则直接新建一个空二元组<code>(key,zero)</code></p></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>OI</tag>
+      </tags>
+  </entry>
 </search>

@@ -3653,43 +3653,43 @@ id="lower_bound-upper_bound可以对数组和vector-注意需要事先排序">3.
     <url>/2025/05/04/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95/</url>
     <content><![CDATA[<h3 id="拉格朗日乘数法复习">拉格朗日乘数法复习</h3>
 <p><span class="math inline">\(\hspace{1cm}\)</span>
-给定一个多元函数<span class="math inline">\(f(\bold{x})\)</span>,
-和若干个限制：<span class="math inline">\(g_1(\bold{x}) = g_2(\bold{x})
-= ... = g_m(\bold{x}) = 0\)</span>, 求<span
-class="math inline">\(f(\bold{x})\)</span>的最小值。这里的<span
-class="math inline">\(\bold{x}\)</span>是一个向量。<span
-class="math inline">\(\bold{x} = \{x_1,x_2,...x_n\}\)</span></p>
+给定一个多元函数<span class="math inline">\(f(\mathbf{x})\)</span>,
+和若干个限制：<span class="math inline">\(g_1(\mathbf{x}) =
+g_2(\mathbf{x}) = ... = g_m(\mathbf{x}) = 0\)</span>, 求<span
+class="math inline">\(f(\mathbf{x})\)</span>的最小值。这里的<span
+class="math inline">\(\mathbf{x}\)</span>是一个向量。<span
+class="math inline">\(\mathbf{x} = \{x_1,x_2,...x_n\}\)</span></p>
 <p><span class="math inline">\(\hspace{1cm}\)</span> 设<span
-class="math inline">\(L(\bold{x}, \lambda_1, \lambda_2, ..., \lambda_m)
-= f(\bold{x}) - \lambda_1g_1(\bold{x}) - ... -
-\lambda_mg_m(\bold{x})\)</span>,若<span
-class="math inline">\(\frac{\partial L}{\partial \bold{x}} =
-\bold{0}\)</span>，<span class="math inline">\(\forall i \in
+class="math inline">\(L(\mathbf{x}, \lambda_1, \lambda_2, ...,
+\lambda_m) = f(\mathbf{x}) - \lambda_1g_1(\mathbf{x}) - ... -
+\lambda_mg_m(\mathbf{x})\)</span>,若<span
+class="math inline">\(\frac{\partial L}{\partial \mathbf{x}} =
+\mathbf{0}\)</span>，<span class="math inline">\(\forall i \in
 [1,m],\frac{\partial L}{\partial \lambda_i} = 0\)</span>, 则此时的<span
-class="math inline">\(\bold{x}\)</span>是一个候选的极小值点（极小值点必定在这样的一个<span
-class="math inline">\(\bold{x}\)</span>中）</p>
+class="math inline">\(\mathbf{x}\)</span>是一个候选的极小值点（极小值点必定在这样的一个<span
+class="math inline">\(\mathbf{x}\)</span>中）</p>
 <p>证明：</p>
 <p><span class="math inline">\(\hspace{1cm}\)</span> 考虑<span
-class="math inline">\(\bold{x} = \bold{x_0}\)</span>时，此时<span
-class="math inline">\(\bold{x}\)</span>想要有任何的微小位移<span
-class="math inline">\(\Delta \bold{x}\)</span>,都必须满足： <span
+class="math inline">\(\mathbf{x} = \mathbf{x_0}\)</span>时，此时<span
+class="math inline">\(\mathbf{x}\)</span>想要有任何的微小位移<span
+class="math inline">\(\Delta \mathbf{x}\)</span>,都必须满足： <span
 class="math display">\[
-\Delta \bold{x} \cdot \nabla g_i(\bold{x_0}) = 0 \ \ \ \forall i
+\Delta \mathbf{x} \cdot \nabla g_i(\mathbf{x_0}) = 0 \ \ \ \forall i
 \in[1,m]
 \]</span> <span class="math inline">\(\hspace{1cm}\)</span>
 我们称任意一个满足上式的微小位移<span class="math inline">\(\Delta
-\bold{x}\)</span>为合法微小位移。</p>
+\mathbf{x}\)</span>为合法微小位移。</p>
 <p><span class="math inline">\(\hspace{1cm}\)</span> 若<span
-class="math inline">\(\bold{x_0}\)</span>还是一个最小值点，那么对于<strong>任意</strong>一个合法微小位移，它肯定需要满足：
+class="math inline">\(\mathbf{x_0}\)</span>还是一个最小值点，那么对于<strong>任意</strong>一个合法微小位移，它肯定需要满足：
 <span class="math display">\[
-\Delta \bold{x} \cdot \nabla f(\bold{x_0}) = 0
+\Delta \mathbf{x} \cdot \nabla f(\mathbf{x_0}) = 0
 \]</span> <span class="math inline">\(\hspace{1cm}\)</span>
 因为对于<strong>任意</strong>一个合法微小位移都需要满足，所以显然<span
-class="math inline">\(\nabla f(\bold{x_0})\)</span>必定在<span
+class="math inline">\(\nabla f(\mathbf{x_0})\)</span>必定在<span
 class="math inline">\(\nabla
-g_i(\bold{x_0})\)</span>张成的线性空间里。这就对应：<span
-class="math inline">\(\frac{\partial L}{\partial \bold{x}} =
-\bold{0}\)</span>的这个条件。至于<span class="math inline">\(\forall i
+g_i(\mathbf{x_0})\)</span>张成的线性空间里。这就对应：<span
+class="math inline">\(\frac{\partial L}{\partial \mathbf{x}} =
+\mathbf{0}\)</span>的这个条件。至于<span class="math inline">\(\forall i
 \in [1,m],\frac{\partial L}{\partial \lambda_i} =
 0\)</span>，这是为了满足约束条件而显然必须的条件。</p>
 ]]></content>

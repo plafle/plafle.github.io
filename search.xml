@@ -1569,8 +1569,8 @@ the most significant bits of the source operand.</p>
 <p>​ The operation <code>cltq</code> has the same effect of the operation
 <code>movslq</code>, but it has more compact encoding.</p>
 <blockquote>
-<p><code>cltq</code> is short for `convert l(double word) to q(quad
-word)</p>
+<p><code>cltq</code> is short for
+<code>convert l(double word) to q(quad word)</code></p>
 </blockquote>
 <ul>
 <li><p>The unary operation:</p>

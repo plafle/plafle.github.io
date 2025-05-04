@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,6 +170,232 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/10/20/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/10/20/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Git学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-20T00:00:00+08:00">2023-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-01-28 11:15:23" itemprop="dateModified" datetime="2025-01-28T11:15:23+08:00">2025-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="git本地基本操作">1. Git本地基本操作</h3>
+<h5 id="一些英语翻译">0. 一些英语翻译</h5>
+<ul>
+<li>stage : 暂存区</li>
+<li>index: 暂存区</li>
+<li>working tree: 当前HEAD指向的版本</li>
+<li>working directory: 工作区</li>
+</ul>
+<h5 id="创建本地仓库">1.创建本地仓库</h5>
+<p>​ 随便新建一个文件夹，然后执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+<p>​
+于是这个文件夹就变成了一个本地仓库（会出现一个叫做<code>.git</code>的隐藏文件夹）</p>
+<h5 id="一些术语">2. 一些术语</h5>
+<ul>
+<li>工作区：就是你在电脑中能看到的目录（即那个文件夹）</li>
+<li>暂存区：简单理解的话，就是文件被<code>add</code>之后就会被复制一份并且存储在暂存区</li>
+<li>github本地仓库：简单理解的话，就是<code>commit</code>之后文件去的地方</li>
+<li>版本库：包含了暂存区和本地仓库</li>
+</ul>
+<h5 id="四个状态一些操作">3. 四个状态，一些操作</h5>
+<ul>
+<li>四个状态：<code>untracked</code>，<code>unmodified</code>，<code>modified</code>，<code>staged</code></li>
+</ul>
+<hr />
+<ul>
+<li>在工作区中新建一个文件之后，输入<code>git status</code>，会发现这个文件是<code>untracked</code>状态</li>
+<li>当我们<code>add</code>了这个文件之后，这个文件的状态变为<code>staged</code>，进入了暂存区</li>
+<li>然后我们<code>commit</code>这个文件，完成<code>commit</code>之后这个文件库中的文件和本地文件又变为一致，此时这个文件状态变为<code>unmodified</code>。</li>
+</ul>
+<hr />
+<ul>
+<li>当我们在<code>add</code>完文件之后再对这个文件进行修改，此时这个文件会变成<code>modified</code>状态，并且使用<code>git status</code>命令时会提示我们这个文件被修改了。此时我们可以使用<code>git checkout -- 文件名</code>操作将这个文件回溯为暂存区中的版本。</li>
+<li>当我们<code>add</code>并且<code>commit</code>完文件之后再对这个文件进行修改，那么这个文件会变成<code>modified</code>状态。此时我们依旧可以使用<code>git checkout -- 文件名</code>操作将这个文件回溯为本地库中的版本。</li>
+<li>如果本地库中的文件版本与工作区的不同，即使我们<code>add</code>了工作区中的文件，这个文件的状态依旧是<code>modified</code>。此时如果我们对这个文件进行<code>checkout</code>，这个文件的内容不会有任何改变。</li>
+<li>如果工作区的文件，暂存区的文件和本地库中的文件版本各不相同，那么<code>git checkout -- 文件名</code>会把工作区的文件回溯为暂存区中的版本。</li>
+</ul>
+<blockquote>
+<p>一言以蔽之，在这个文件<code>add</code>或<code>commit</code>之后再做修改，这个文件的状态就会变成<code>modified</code>。然后如果对这个文件执行<code>git checkout --</code>，就会把这个文件回溯到最近一次<code>git commit</code>
+或<code>git add</code>时候的状态。</p>
+</blockquote>
+<h5 id="git-log命令">4. git log命令</h5>
+<p>​
+输入<code>git log</code>之后进入一个页面，可以按回车不停往下翻；可以按下键盘上的Q键退出日志；</p>
+<p>​
+<code>git log</code>中最重要的部分在于它会显示每个提交的<code>hash</code>值。</p>
+<h5 id="如何查看git中的文件内容和文件目录">5.
+如何查看Git中的文件内容和文件目录？</h5>
+<ul>
+<li><p>如何查看工作区的文件内容&amp;文件目录? 用文件资源管理器 或
+分别用<code>ls</code>和<code>cat</code>命令</p></li>
+<li><p>如何查看本地仓库中的文件目录？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git ls-tree HEAD</span><br></pre></td></tr></table></figure></li>
+<li><p>如何查看本地仓库中的某个文件内容？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git show &lt;commit&gt;:&lt;file&gt;   # &lt;commit&gt;是提交的hash值或分支名,&lt;file&gt;是文件名</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git show HEAD:&lt;file&gt;      # 直接查看当前分支中某个文件的内容</span><br></pre></td></tr></table></figure></li>
+<li><p>如何查看暂存区中的文件目录？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git ls-files</span><br></pre></td></tr></table></figure></li>
+<li><p>如何查看暂存区中的文件内容？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git show :&lt;file&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="git的撤销与回退">6. Git的撤销与回退</h5>
+<p><code>git reset</code>实现版本回退：</p>
+<ul>
+<li>版本回退可以用<code>git reset</code>命令。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD^    		# 撤销到上一个版本</span><br><span class="line">$ git reset HEAD^^          # 撤销到上两个版本</span><br><span class="line">$ git reset HEAD~100		# 撤销到上100个版本</span><br><span class="line">$ git reset &lt;commit hash&gt;   # 撤销至某一个提交（commit hash是git log中的那串16进制数字，不需要全部输完，只需要输前几个数字就可以了）</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>git reset</code>可以带一些参数，一般有三种版本：</p>
+<ul>
+<li><code>mixed</code>，即默认版本，最常用，执行之后移动HEAD指针，同时回溯暂存区，但不动工作区</li>
+<li><code>soft</code>，使用方法举例：<code>git reset --soft HEAD^</code>，执行之后移动HEAD指针，不动暂存区和工作区。</li>
+<li><code>hard</code>，使用方法举例：<code>git reset --hard HEAD^</code>，执行之后即移动HEAD指针，又动暂存区，还动工作区</li>
+</ul></li>
+<li><p><code>git reset</code>之后发现<code>reset</code>错了，想回到<code>reset</code>之前的较新的版本，怎么办？</p>
+<p>没事，只要找到较新的那个版本的<code>commit hash</code>，然后还是用<code>git reset &lt;commit hash&gt;</code>就可以了（这里的<code>&lt;commit hash&gt;</code>是那个较新版本的<code>commit hash</code>。</p></li>
+<li><p><code>git reset</code>之后发现<code>reset</code>错了，而且还手滑关掉了命令行窗口，重新打开之后输入<code>git log</code>发现找不到那个较新版本的<code>commit hash</code>，怎么办？</p>
+<p>没事，输入<code>git reflog</code>就可以看到之前提交的<code>commit hash</code>了。</p></li>
+</ul>
+<hr />
+<p><code>git reset</code>也可以实现把已经添加到暂存区的对于某个文件的修改撤销掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset HEAD &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="文件的删除与恢复">7. 文件的删除与恢复</h5>
+<ul>
+<li><p>删除工作区的文件：<code>rm &lt;filename&gt;</code></p></li>
+<li><p>删除完工作区的文件之后如果这个文件之前被<code>add</code>或者<code>commit</code>过，那么可以</p>
+<p><code>git checkout -- &lt;filename&gt;</code>来恢复。</p></li>
+</ul>
+<hr />
+<ul>
+<li><p>先执行<code>rm &lt;filename&gt;</code>，再执行<code>git rm &lt;filename&gt;</code>，那么执行完之后这个文件在工作区和暂存区中都被删掉了</p></li>
+<li><p>这个时候可以：先<code>git reset HEAD &lt;filename&gt;</code>将文件从本地仓库恢复到暂存区，然后再</p>
+<p><code>git checkout -- &lt;filename&gt;</code>将文件从暂存区恢复到工作区</p></li>
+</ul>
+<hr />
+<ul>
+<li>如果直接执行<code>git rm &lt;filename&gt;</code>，然后<code>git commit -m "message"</code>，那么文件会在工作区中保留，然后再暂存区和本地仓库中都消失。</li>
+</ul>
+<h3 id="git远程库">2. Git远程库</h3>
+<h5 id="建立ssh连接">1.建立SSH连接</h5>
+<p>​ 这一步是要让本地PC与远程github建立SSH连接，具体方法为：</p>
+<ul>
+<li><p>打开<code>powershell</code>管理员模式，输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C &quot;youremail@example.com&quot;</span><br></pre></td></tr></table></figure>
+<p>注意：这里的email地址就写注册github时候用的就可以</p></li>
+<li><p>在C盘用户主目录下找到<code>.ssh</code>文件夹，进入，打开<code>id_rsa.pub</code>，复制其中的内容</p></li>
+<li><p>登录github打开“Account settings”，“SSH Keys”页面：</p></li>
+</ul>
+<p>然后，点“Add SSH
+Key”，填上任意Title，在Key文本框里粘贴<code>id_rsa.pub</code>文件的内容：</p>
+<ul>
+<li>点“Add Key”，你就应该看到已经添加的Key：</li>
+</ul>
+<h5 id="连接远程仓库">2. 连接远程仓库</h5>
+<p>在本地仓库中<code>git bash here</code>，然后在<code>git</code>中输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin &lt;ssh&gt;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>&lt;ssh&gt;</code>是github上的仓库中的<code>ssh</code>端口地址</p>
+<p>然后这里的<code>origin</code>是我们给远程库设置的名字</p>
+<h5 id="将本地库的内容推送到远程仓库">3.
+将本地库的内容推送到远程仓库</h5>
+<ul>
+<li>第一次推送的时候用这个命令：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+<p>​
+注：<code>git push</code>命令实际上是把当前分支<code>master</code>推送到远程</p>
+<p>​
+由于远程库是空的，我们第一次推送<code>master</code>分支时，加上了<code>-u</code>参数，Git不但会把本地的<code>master</code>分支内容推送的远程新的<code>master</code>分支，还会把本地的<code>master</code>分支和远程的<code>master</code>分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
+<ul>
+<li>之后推送的时候就直接：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+<p>​ 可以把本地<code>master</code>分支的最新修改推送至GitHub</p>
+<h5 id="断开本地库和远程库之间的连接">4.
+断开本地库和远程库之间的连接</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote rm origin</span><br></pre></td></tr></table></figure>
+<p>用这个命令可以断开本地库和远程库之间的连接</p>
+<h3 id="在vscode中使用git">3.在Vscode中使用Git</h3>
+<h5 id="可能会遇到的第一个问题">1.可能会遇到的第一个问题</h5>
+<p>​
+当你打开vscode的<code>source control</code>模块时，vscode可能会认为你还没有安装git，并建议你安装git。可是你明明已经安装过了git，于是你觉得很奇怪。这里的原因在于你还没有更改vscode的路径。具体方法如下：</p>
+<ul>
+<li>打开vscode，按下<code>ctrl</code> +
+<code>,</code>，在<code>settings</code>中打开搜索栏，搜索<code>git.path</code></li>
+<li>点击<code>Edit in settings.json</code>文件，进入这个<code>json</code>文件</li>
+<li>复制你的<code>git.exe</code>的路径，它应该长成<code>D:\application\Git\bin\git.exe</code>这样。把这个路径复制到那个<code>json</code>文件"git.path"后面</li>
+<li>把你复制的路径中的<code>\</code>全部改成<code>\\</code>，不然会报错</li>
+<li>最终应该长成这样：<code>"git.path": "D:\\application\\Git\\bin\\git.exe"</code>（你的路径肯定跟我不一样）</li>
+<li>重启vscode</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1083,135 +1309,6 @@ class="math display">\[
 <p>5.将4中产物用裱花袋挤入烤盘，”一坨“就是一个泡芙。</p>
 <p>6.将1中冷冻后的产物切片，每一个泡芙上放一片。</p>
 <p>7.将烤盘送入烤箱。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/07/05/%E5%90%8C%E4%BD%99%E5%92%8C%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="plafle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="plafle's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | plafle's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/07/05/%E5%90%8C%E4%BD%99%E5%92%8C%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">同余&中国剩余定理&中国剩余定理の扩展</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-05T00:00:00+08:00">2023-07-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-01-28 11:44:58" itemprop="dateModified" datetime="2025-01-28T11:44:58+08:00">2025-01-28</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="同余">同余</h2>
-<h3 id="线性同余方程">1.线性同余方程</h3>
-<p>给定整数<span class="math inline">\(a,b,m\)</span>求一个整数<span
-class="math inline">\(x\)</span>满足<span class="math inline">\(ax
-\equiv b \pmod m\)</span>，或给出无解。</p>
-<p>设<span class="math inline">\(a \times x  = b + my\)</span>，则<span
-class="math inline">\(ax + my = b\)</span>，有解的充要条件是<span
-class="math inline">\(gcd(a,m)|b\)</span>.</p>
-<p>接下来只要用exgcd求出一个解，然后就可以求通解了。</p>
-<h3 id="中国剩余定理">2.中国剩余定理</h3>
-<p>设<span
-class="math inline">\(m_1,m_2,m_3,……,m_n\)</span>是两两互质的整数，对于任意的<span
-class="math inline">\(n\)</span>个整数<span
-class="math inline">\(a_1,a_2,……,a_n\)</span>，关于<span
-class="math inline">\(x\)</span>的方程组 <span class="math display">\[
-\begin{cases} x \equiv  a_1 \pmod {m_1}\\x \equiv a_2 \pmod {m_2}\\……\\x
-\equiv a_n \pmod{m_n}\end{cases}
-\]</span> 有整数解。</p>
-<p>证明：</p>
-<p>设<span class="math inline">\(m =  \prod_{i = 1}^nm_i,M_i = m /
-m_i\)</span>，<span
-class="math inline">\(t_i\)</span>是线性同余方程<span
-class="math inline">\(M_it_i \equiv 1 \pmod{m_i}\)</span>的一个解。</p>
-<p>则<span class="math inline">\(x_0 = \sum_{i = 1}^n
-a_iM_it_i\)</span>是一个解</p>
-<p>因为<span class="math inline">\(M_i\)</span>是除了<span
-class="math inline">\(m_i\)</span>以外所有数的倍数，所以<span
-class="math inline">\(\forall k \neq i,a_iM_it_i \equiv 0
-\pmod{m_k}\)</span>。而因为<span class="math inline">\(M_it_i \equiv  1
-\pmod {m_i}\)</span>，所以 $a_iM_it_i a_i $。</p>
-<p>这是一个特解。通解为<span class="math inline">\(x = x_0 + km(k \in
-Z)\)</span>。</p>
-<ul>
-<li><p>代码</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m[<span class="number">30</span>],a[<span class="number">30</span>],M = <span class="number">1</span>,v[<span class="number">30</span>],t[<span class="number">30</span>],V1,V2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>;</span><br><span class="line">		y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">	<span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;m[i],&amp;a[i]);</span><br><span class="line">		M = M * m[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		v[i] = M / m[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x0,y0;</span><br><span class="line">		<span class="type">int</span> gcd = <span class="built_in">exgcd</span>(v[i],m[i],x0,y0);</span><br><span class="line">		x0 %= m[i];</span><br><span class="line">		<span class="keyword">if</span> (x0 &lt;= <span class="number">0</span>)</span><br><span class="line">			x0 += m[i];</span><br><span class="line">		t[i] = x0; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		sum += a[i] * v[i] * t[i];</span><br><span class="line">	sum %= M;</span><br><span class="line">	<span class="keyword">if</span> (sum &lt; <span class="number">0</span>)</span><br><span class="line">		sum += M;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="中国剩余定理的扩展版本">3.中国剩余定理的扩展版本</h3>
-<p>上面的方法要求<span
-class="math inline">\(m_1,m_2,……,m_n\)</span>两两互质。现在给出一种对<span
-class="math inline">\(m_i\)</span>没有要求的算法。</p>
-<p>数学归纳法：假设前<span class="math inline">\(k -
-1\)</span>个方程已经求出了一个解<span
-class="math inline">\(x\)</span>。记<span class="math inline">\(m =
-lcm(m_1,m_2,……,m_{k - 1})\)</span>，则<span class="math inline">\(x + i
-\times m (i \in Z)\)</span>是前<span class="math inline">\(k -
-1\)</span>个方程的通解。</p>
-<p>考虑第<span class="math inline">\(k\)</span>个方程，求一个<span
-class="math inline">\(t\)</span>，使得<span class="math inline">\(x + t
-\times m \equiv a_k \pmod {m_k}\)</span>。将这个方程变换一下，得到<span
-class="math inline">\(m \times t \equiv a_{k} - x \pmod
-{m_k}\)</span>,求<span class="math inline">\(t\)</span>. <span
-class="math display">\[
-m \times t + m_{k} \times p = a_{k} - x
-\]</span></p>
 
       
     </div>

@@ -864,7 +864,7 @@ destination register.</li>
 <blockquote>
 <p>The condition move may not be valid if one expression is invalid.</p>
 <p>for example</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    reutnr *p;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> *p;</span><br></pre></td></tr></table></figure>
 <p>You can not calculate <code>*p</code> beforehand as <code>p</code>
 may be a null pointer, making the dereferencing invalid.</p>
 </blockquote>

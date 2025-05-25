@@ -2708,7 +2708,22 @@ a_{2,1} &amp; a_{2,2} &amp; a_{2,3} &amp; \cdots &amp; a_{2,n}&amp;b_2\\
 a_{n,1} &amp; a_{n,2} &amp; a_{n,3} &amp; \cdots &amp; a_{n,n}&amp;b_n\\
 
 \end{array}\]</span>
-<p>} $$ 我们循环一个变量<span class="math inline">\(i\)</span>（从<span
+<p>} $$</p>
+<p><span class="math display">\[
+\left \{
+\begin{array}{ccccc|c}
+a_{1,1} &amp; a_{1,2} &amp; a_{1,3} &amp; \cdots &amp; a_{1,n} &amp; b_1
+\\
+a_{2,1} &amp; a_{2,2} &amp; a_{2,3} &amp; \cdots &amp; a_{2,n} &amp; b_2
+\\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots
+\\
+a_{n,1} &amp; a_{n,2} &amp; a_{n,3} &amp; \cdots &amp; a_{n,n} &amp; b_n
+\\
+\end{array}
+\right \}
+\]</span></p>
+<p>我们循环一个变量<span class="math inline">\(i\)</span>（从<span
 class="math inline">\(1\)</span>到<span
 class="math inline">\(n\)</span>）</p>
 <p>先在矩阵中找到一行（设这行是第<span
@@ -2856,9 +2871,10 @@ b\ge\varphi(m)\text{时},a^b\equiv
 a^{\left(b\mod\varphi(m)\right)+\varphi(m)}\pmod m
 \]</span></p>
 <h2 id="证明">证明</h2>
-<p>先取 <span class="math inline">\(m\)</span>的一个质因数 <span
-class="math inline">\(p\)</span>，令$ m=p^rs<span
-class="math inline">\(,\)</span>gcd(p,s)=1$</p>
+<p>先取<span class="math inline">\(m\)</span>的一个质因数 <span
+class="math inline">\(p\)</span>，令<span
+class="math inline">\(m=p^r\times s\)</span>, <span
+class="math inline">\(gcd(p,s)=1\)</span></p>
 <p>由欧拉定理得 <span class="math inline">\(p^{\varphi(s)}\equiv1\pmod
 s\)</span>由欧拉函数的性质得 <span
 class="math inline">\(\varphi(m)=\varphi(s)\times\varphi(p^r)\)</span>，所以

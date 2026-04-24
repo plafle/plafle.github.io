@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>2023.8.23</title>
-    <url>/2023/08/23/2023.8.23/</url>
-    <content><![CDATA[<p>$\hspace{1cm}$设想在一条道路上随机选择一个位置，然后降落到这个位置。</p>
-<p>$\hspace{1cm}$接着你测量从这个位置到道路开始位置的距离（记为l1），以及从这个位置到道路结束位置的距离（记为l2)。</p>
-<p>$\hspace{1cm}$如果这条道路是无限长的，那么我们可以断言，l1和l2都是无穷大的概率为1</p>
-<p>$\hspace{1cm}$反过来说，如果l1或l2中的一个是有限的，那么我们可以断言，这条道路长度是有限的的概率是1</p>
-<p>$\hspace{1cm}$我的出生就好似在人类的历史进程中随机选择了一个时间降生</p>
-<p>$\hspace{1cm}$从人类出现到我出生所经过的时间好比上文中的l1，从我出生到人类灭绝所经过的时间好比上文中的l2</p>
-<p>$\hspace{1cm}$我无从得知l2是多少，但是我目前可以明确：l1是有限的</p>
-<p>$\hspace{1cm}$所以我可以得到推论：人类的历史极大可能是有限的，人类最终会灭绝的概率是1。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2024牛客D1</title>
     <url>/2024/08/25/2024%E7%89%9B%E5%AE%A2D1/</url>
     <content><![CDATA[<h3 id="A"><a href="#A" class="headerlink" title="A"></a>A</h3><p>​	Given two integer $n$ and $m$, among all the sequence containing n non-negative integers less than $2^m$, you need to count the number of such sequences $A$ that there exists a non-empty subsequence of $A$ in which the bitwise AND of the integers is $1$.</p>
@@ -74,47 +58,28 @@
       </tags>
   </entry>
   <entry>
-    <title>C语言指针相关</title>
-    <url>/2023/10/16/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88&amp;%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<p>1.<code>char *s[]</code>   若执行<code>s++</code>，则：</p>
-<p>2.<code>char **s </code>     若执行<code>s++</code>，则：向后一个指针的大小（一般为4个字节）</p>
-<p>3.<code>char (*s)[]</code> 则s是指向一行的指针，若执行<code>s++</code>，则s会指向下一行</p>
-<p>4.<code>int **a</code> 		若执行<code>a++</code>，则：向后一个指针的大小（一般为4个字节）</p>
-<p>5.<code>int *a[]</code> 	 若执行<code>a++</code>，则：</p>
-<p>6.<code>int (*a)[]</code>    则a是指向一行的指针，若执行<code>a++</code>，则a会指向下一行</p>
-<ul>
-<li>1和2如果写在函数的形参里面，那么是等价的。</li>
-<li>4和5如果写在函数的形参里面，那么是等价的。</li>
-<li>如果1不是写成函数的形参，那么s就是一个常量，不能更改。</li>
-<li>如果2不是写成函数的形参，那么s就是一个变量，可以更改。</li>
-<li>3和6都是指向一行的指针</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = b;</span><br><span class="line"><span class="comment">//不能这样写，因为b是指向行的指针</span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = &amp;b[<span class="number">0</span>];</span><br><span class="line"><span class="comment">//b[0]是常量，一般取不了</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>一般来说，二级指针是和指针数组相关联的</strong>，<code>int (*a)[]</code>  这种是和二维数组相关联的。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *s[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">char</span> **s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	s[<span class="number">0</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">	s[<span class="number">1</span>] = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	s[<span class="number">2</span>] = <span class="string">&quot;ABC&quot;</span>;</span><br><span class="line">	<span class="built_in">work</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">123</span><br><span class="line">abc</span><br><span class="line">ABC</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>观察这段程序，问题出在哪里？</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>问题：没有声明所指向的一行有多少个元素，改为：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[<span class="number">3</span>])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>即可。</p>
-<hr>
-<p>如果声明了<code>int *a = malloc(size);</code>，那么之后可以用<code>a[i]</code>表示<code>*(a + i)</code></p>
+    <title>Three Formulae</title>
+    <url>/2024/06/09/3formulae/</url>
+    <content><![CDATA[<p>$$<br>\int\sqrt{a^2 - x^2}dx &#x3D; \frac x2\sqrt{a^2 - x^2} + \frac {a^2}2\arcsin(\frac xa) + C<br>$$<br>$$<br>\int \frac 1{\sqrt{x^2 \pm a^2}}dx &#x3D; \ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$<br>$$<br>\int \sqrt{x^2 \pm a^2}dx &#x3D; \frac x2 \sqrt{x^2 \pm a^2} \pm\frac {a^2}2\ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$</p>
 ]]></content>
       <tags>
-        <tag>CS</tag>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2023.8.23</title>
+    <url>/2023/08/23/2023.8.23/</url>
+    <content><![CDATA[<p>$\hspace{1cm}$设想在一条道路上随机选择一个位置，然后降落到这个位置。</p>
+<p>$\hspace{1cm}$接着你测量从这个位置到道路开始位置的距离（记为l1），以及从这个位置到道路结束位置的距离（记为l2)。</p>
+<p>$\hspace{1cm}$如果这条道路是无限长的，那么我们可以断言，l1和l2都是无穷大的概率为1</p>
+<p>$\hspace{1cm}$反过来说，如果l1或l2中的一个是有限的，那么我们可以断言，这条道路长度是有限的的概率是1</p>
+<p>$\hspace{1cm}$我的出生就好似在人类的历史进程中随机选择了一个时间降生</p>
+<p>$\hspace{1cm}$从人类出现到我出生所经过的时间好比上文中的l1，从我出生到人类灭绝所经过的时间好比上文中的l2</p>
+<p>$\hspace{1cm}$我无从得知l2是多少，但是我目前可以明确：l1是有限的</p>
+<p>$\hspace{1cm}$所以我可以得到推论：人类的历史极大可能是有限的，人类最终会灭绝的概率是1。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -254,186 +219,47 @@
       </tags>
   </entry>
   <entry>
-    <title>Three Formulae</title>
-    <url>/2024/06/09/3formulae/</url>
-    <content><![CDATA[<p>$$<br>\int\sqrt{a^2 - x^2}dx &#x3D; \frac x2\sqrt{a^2 - x^2} + \frac {a^2}2\arcsin(\frac xa) + C<br>$$<br>$$<br>\int \frac 1{\sqrt{x^2 \pm a^2}}dx &#x3D; \ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$<br>$$<br>\int \sqrt{x^2 \pm a^2}dx &#x3D; \frac x2 \sqrt{x^2 \pm a^2} \pm\frac {a^2}2\ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git学习笔记</title>
-    <url>/2023/10/20/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h3 id="1-Git本地基本操作"><a href="#1-Git本地基本操作" class="headerlink" title="1. Git本地基本操作"></a>1. Git本地基本操作</h3><h5 id="0-一些英语翻译"><a href="#0-一些英语翻译" class="headerlink" title="0. 一些英语翻译"></a>0. 一些英语翻译</h5><ul>
-<li>stage : 暂存区</li>
-<li>index: 暂存区</li>
-<li>working tree: 当前HEAD指向的版本</li>
-<li>working directory: 工作区</li>
+    <title>C语言指针相关</title>
+    <url>/2023/10/16/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88&amp;%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<p>1.<code>char *s[]</code>   若执行<code>s++</code>，则：</p>
+<p>2.<code>char **s </code>     若执行<code>s++</code>，则：向后一个指针的大小（一般为4个字节）</p>
+<p>3.<code>char (*s)[]</code> 则s是指向一行的指针，若执行<code>s++</code>，则s会指向下一行</p>
+<p>4.<code>int **a</code> 		若执行<code>a++</code>，则：向后一个指针的大小（一般为4个字节）</p>
+<p>5.<code>int *a[]</code> 	 若执行<code>a++</code>，则：</p>
+<p>6.<code>int (*a)[]</code>    则a是指向一行的指针，若执行<code>a++</code>，则a会指向下一行</p>
+<ul>
+<li>1和2如果写在函数的形参里面，那么是等价的。</li>
+<li>4和5如果写在函数的形参里面，那么是等价的。</li>
+<li>如果1不是写成函数的形参，那么s就是一个常量，不能更改。</li>
+<li>如果2不是写成函数的形参，那么s就是一个变量，可以更改。</li>
+<li>3和6都是指向一行的指针</li>
 </ul>
-<h5 id="1-创建本地仓库"><a href="#1-创建本地仓库" class="headerlink" title="1.创建本地仓库"></a>1.创建本地仓库</h5><p>​	随便新建一个文件夹，然后执行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = b;</span><br><span class="line"><span class="comment">//不能这样写，因为b是指向行的指针</span></span><br></pre></td></tr></table></figure>
 
-<p>​	于是这个文件夹就变成了一个本地仓库（会出现一个叫做<code>.git</code>的隐藏文件夹）</p>
-<h5 id="2-一些术语"><a href="#2-一些术语" class="headerlink" title="2. 一些术语"></a>2. 一些术语</h5><ul>
-<li>工作区：就是你在电脑中能看到的目录（即那个文件夹）</li>
-<li>暂存区：简单理解的话，就是文件被<code>add</code>之后就会被复制一份并且存储在暂存区</li>
-<li>github本地仓库：简单理解的话，就是<code>commit</code>之后文件去的地方</li>
-<li>版本库：包含了暂存区和本地仓库</li>
-</ul>
-<h5 id="3-四个状态，一些操作"><a href="#3-四个状态，一些操作" class="headerlink" title="3. 四个状态，一些操作"></a>3. 四个状态，一些操作</h5><ul>
-<li>四个状态：<code>untracked</code>，<code>unmodified</code>，<code>modified</code>，<code>staged</code></li>
-</ul>
+
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = &amp;b[<span class="number">0</span>];</span><br><span class="line"><span class="comment">//b[0]是常量，一般取不了</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>一般来说，二级指针是和指针数组相关联的</strong>，<code>int (*a)[]</code>  这种是和二维数组相关联的。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *s[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">char</span> **s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	s[<span class="number">0</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">	s[<span class="number">1</span>] = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	s[<span class="number">2</span>] = <span class="string">&quot;ABC&quot;</span>;</span><br><span class="line">	<span class="built_in">work</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">123</span><br><span class="line">abc</span><br><span class="line">ABC</span><br></pre></td></tr></table></figure>
+
 <hr>
-<ul>
-<li>在工作区中新建一个文件之后，输入<code>git status</code>，会发现这个文件是<code>untracked</code>状态</li>
-<li>当我们<code>add</code>了这个文件之后，这个文件的状态变为<code>staged</code>，进入了暂存区</li>
-<li>然后我们<code>commit</code>这个文件，完成<code>commit</code>之后这个文件库中的文件和本地文件又变为一致，此时这个文件状态变为<code>unmodified</code>。</li>
-</ul>
+<p>观察这段程序，问题出在哪里？</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题：没有声明所指向的一行有多少个元素，改为：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[<span class="number">3</span>])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
 <hr>
-<ul>
-<li>当我们在<code>add</code>完文件之后再对这个文件进行修改，此时这个文件会变成<code>modified</code>状态，并且使用<code>git status</code>命令时会提示我们这个文件被修改了。此时我们可以使用<code>git checkout -- 文件名</code>操作将这个文件回溯为暂存区中的版本。</li>
-<li>当我们<code>add</code>并且<code>commit</code>完文件之后再对这个文件进行修改，那么这个文件会变成<code>modified</code>状态。此时我们依旧可以使用<code>git checkout -- 文件名</code>操作将这个文件回溯为本地库中的版本。</li>
-<li>如果本地库中的文件版本与工作区的不同，即使我们<code>add</code>了工作区中的文件，这个文件的状态依旧是<code>modified</code>。此时如果我们对这个文件进行<code>checkout</code>，这个文件的内容不会有任何改变。</li>
-<li>如果工作区的文件，暂存区的文件和本地库中的文件版本各不相同，那么<code>git checkout -- 文件名</code>会把工作区的文件回溯为暂存区中的版本。</li>
-</ul>
-<blockquote>
-<p>一言以蔽之，在这个文件<code>add</code>或<code>commit</code>之后再做修改，这个文件的状态就会变成<code>modified</code>。然后如果对这个文件执行<code>git checkout --</code>，就会把这个文件回溯到最近一次<code>git commit</code> 或<code>git add</code>时候的状态。</p>
-</blockquote>
-<h5 id="4-git-log命令"><a href="#4-git-log命令" class="headerlink" title="4. git log命令"></a>4. git log命令</h5><p>​	输入<code>git log</code>之后进入一个页面，可以按回车不停往下翻；可以按下键盘上的Q键退出日志；</p>
-<p>​	<code>git log</code>中最重要的部分在于它会显示每个提交的<code>hash</code>值。</p>
-<h5 id="5-如何查看Git中的文件内容和文件目录？"><a href="#5-如何查看Git中的文件内容和文件目录？" class="headerlink" title="5. 如何查看Git中的文件内容和文件目录？"></a>5. 如何查看Git中的文件内容和文件目录？</h5><ul>
-<li><p>如何查看工作区的文件内容&amp;文件目录? 用文件资源管理器 或 分别用<code>ls</code>和<code>cat</code>命令</p>
-</li>
-<li><p>如何查看本地仓库中的文件目录？</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git ls-tree HEAD</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如何查看本地仓库中的某个文件内容？</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git show &lt;commit&gt;:&lt;file&gt;   # &lt;commit&gt;是提交的hash值或分支名,&lt;file&gt;是文件名</span><br></pre></td></tr></table></figure>
-
-<p>或</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git show HEAD:&lt;file&gt;      # 直接查看当前分支中某个文件的内容</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如何查看暂存区中的文件目录？</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git ls-files</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如何查看暂存区中的文件内容？</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git show :&lt;file&gt;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="6-Git的撤销与回退"><a href="#6-Git的撤销与回退" class="headerlink" title="6. Git的撤销与回退"></a>6. Git的撤销与回退</h5><p><code>git reset</code>实现版本回退：</p>
-<ul>
-<li>版本回退可以用<code>git reset</code>命令。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git reset HEAD^    		# 撤销到上一个版本</span><br><span class="line">$ git reset HEAD^^          # 撤销到上两个版本</span><br><span class="line">$ git reset HEAD~100		# 撤销到上100个版本</span><br><span class="line">$ git reset &lt;commit hash&gt;   # 撤销至某一个提交（commit hash是git log中的那串16进制数字，不需要全部输完，只需要输前几个数字就可以了）</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>git reset</code>可以带一些参数，一般有三种版本：</p>
-<ul>
-<li><code>mixed</code>，即默认版本，最常用，执行之后移动HEAD指针，同时回溯暂存区，但不动工作区</li>
-<li><code>soft</code>，使用方法举例：<code>git reset --soft HEAD^</code>，执行之后移动HEAD指针，不动暂存区和工作区。</li>
-<li><code>hard</code>，使用方法举例：<code>git reset --hard HEAD^</code>，执行之后即移动HEAD指针，又动暂存区，还动工作区</li>
-</ul>
-</li>
-<li><p><code>git reset</code>之后发现<code>reset</code>错了，想回到<code>reset</code>之前的较新的版本，怎么办？</p>
-<p>没事，只要找到较新的那个版本的<code>commit hash</code>，然后还是用<code>git reset &lt;commit hash&gt;</code>就可以了（这里的<code>&lt;commit hash&gt;</code>是那个较新版本的<code>commit hash</code>。</p>
-</li>
-<li><p><code>git reset</code>之后发现<code>reset</code>错了，而且还手滑关掉了命令行窗口，重新打开之后输入<code>git log</code>发现找不到那个较新版本的<code>commit hash</code>，怎么办？</p>
-<p>没事，输入<code>git reflog</code>就可以看到之前提交的<code>commit hash</code>了。</p>
-</li>
-</ul>
-<hr>
-<p><code>git reset</code>也可以实现把已经添加到暂存区的对于某个文件的修改撤销掉：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git reset HEAD &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h5 id="7-文件的删除与恢复"><a href="#7-文件的删除与恢复" class="headerlink" title="7. 文件的删除与恢复"></a>7. 文件的删除与恢复</h5><ul>
-<li><p>删除工作区的文件：<code>rm &lt;filename&gt;</code></p>
-</li>
-<li><p>删除完工作区的文件之后如果这个文件之前被<code>add</code>或者<code>commit</code>过，那么可以</p>
-<p><code>git checkout -- &lt;filename&gt;</code>来恢复。</p>
-</li>
-</ul>
-<hr>
-<ul>
-<li><p>先执行<code>rm &lt;filename&gt;</code>，再执行<code>git rm &lt;filename&gt;</code>，那么执行完之后这个文件在工作区和暂存区中都被删掉了</p>
-</li>
-<li><p>这个时候可以：先<code>git reset HEAD &lt;filename&gt;</code>将文件从本地仓库恢复到暂存区，然后再</p>
-<p><code>git checkout -- &lt;filename&gt;</code>将文件从暂存区恢复到工作区</p>
-</li>
-</ul>
-<hr>
-<ul>
-<li>如果直接执行<code>git rm &lt;filename&gt;</code>，然后<code>git commit -m &quot;message&quot;</code>，那么文件会在工作区中保留，然后再暂存区和本地仓库中都消失。</li>
-</ul>
-<h3 id="2-Git远程库"><a href="#2-Git远程库" class="headerlink" title="2. Git远程库"></a>2. Git远程库</h3><h5 id="1-建立SSH连接"><a href="#1-建立SSH连接" class="headerlink" title="1.建立SSH连接"></a>1.建立SSH连接</h5><p>​	这一步是要让本地PC与远程github建立SSH连接，具体方法为：</p>
-<ul>
-<li><p>打开<code>powershell</code>管理员模式，输入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C &quot;youremail@example.com&quot;</span><br></pre></td></tr></table></figure>
-
-<p>注意：这里的email地址就写注册github时候用的就可以</p>
-</li>
-<li><p>在C盘用户主目录下找到<code>.ssh</code>文件夹，进入，打开<code>id_rsa.pub</code>，复制其中的内容</p>
-</li>
-<li><p>登录github打开“Account settings”，“SSH Keys”页面：</p>
-</li>
-</ul>
-<p>然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴<code>id_rsa.pub</code>文件的内容：</p>
-<ul>
-<li>点“Add Key”，你就应该看到已经添加的Key：</li>
-</ul>
-<h5 id="2-连接远程仓库"><a href="#2-连接远程仓库" class="headerlink" title="2. 连接远程仓库"></a>2. 连接远程仓库</h5><p>在本地仓库中<code>git bash here</code>，然后在<code>git</code>中输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote add origin &lt;ssh&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这里的<code>&lt;ssh&gt;</code>是github上的仓库中的<code>ssh</code>端口地址</p>
-<p>然后这里的<code>origin</code>是我们给远程库设置的名字</p>
-<h5 id="3-将本地库的内容推送到远程仓库"><a href="#3-将本地库的内容推送到远程仓库" class="headerlink" title="3. 将本地库的内容推送到远程仓库"></a>3. 将本地库的内容推送到远程仓库</h5><ul>
-<li>第一次推送的时候用这个命令：</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
-
-<p>​	注：<code>git push</code>命令实际上是把当前分支<code>master</code>推送到远程</p>
-<p>​			由于远程库是空的，我们第一次推送<code>master</code>分支时，加上了<code>-u</code>参数，Git不但会把本地的<code>master</code>分支内容推送的远程新的<code>master</code>分支，还会把本地的<code>master</code>分支和远程的<code>master</code>分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
-<ul>
-<li>之后推送的时候就直接：</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>​	可以把本地<code>master</code>分支的最新修改推送至GitHub</p>
-<h5 id="4-断开本地库和远程库之间的连接"><a href="#4-断开本地库和远程库之间的连接" class="headerlink" title="4. 断开本地库和远程库之间的连接"></a>4. 断开本地库和远程库之间的连接</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote rm origin</span><br></pre></td></tr></table></figure>
-
-<p>用这个命令可以断开本地库和远程库之间的连接</p>
-<h3 id="3-在Vscode中使用Git"><a href="#3-在Vscode中使用Git" class="headerlink" title="3.在Vscode中使用Git"></a>3.在Vscode中使用Git</h3><h5 id="1-可能会遇到的第一个问题"><a href="#1-可能会遇到的第一个问题" class="headerlink" title="1.可能会遇到的第一个问题"></a>1.可能会遇到的第一个问题</h5><p>​	当你打开vscode的<code>source control</code>模块时，vscode可能会认为你还没有安装git，并建议你安装git。可是你明明已经安装过了git，于是你觉得很奇怪。这里的原因在于你还没有更改vscode的路径。具体方法如下：</p>
-<ul>
-<li>打开vscode，按下<code>ctrl</code> + <code>,</code>，在<code>settings</code>中打开搜索栏，搜索<code>git.path</code></li>
-<li>点击<code>Edit in settings.json</code>文件，进入这个<code>json</code>文件</li>
-<li>复制你的<code>git.exe</code>的路径，它应该长成<code>D:\application\Git\bin\git.exe</code>这样。把这个路径复制到那个<code>json</code>文件”git.path”后面</li>
-<li>把你复制的路径中的<code>\</code>全部改成<code>\\</code>，不然会报错</li>
-<li>最终应该长成这样：<code>&quot;git.path&quot;: &quot;D:\\application\\Git\\bin\\git.exe&quot;</code>（你的路径肯定跟我不一样）</li>
-<li>重启vscode</li>
-</ul>
+<p>如果声明了<code>int *a = malloc(size);</code>，那么之后可以用<code>a[i]</code>表示<code>*(a + i)</code></p>
 ]]></content>
       <tags>
         <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>P6175题解</title>
-    <url>/2023/06/19/P6175%E9%A2%98%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="P6175（数学化语言表述，较严谨且易理解）"><a href="#P6175（数学化语言表述，较严谨且易理解）" class="headerlink" title="P6175（数学化语言表述，较严谨且易理解）"></a>P6175（数学化语言表述，较严谨且易理解）</h1><p>  考虑一个环：$a_1- &gt;a_2 -&gt;a_3 -&gt;…… -&gt;a_n -&gt; a_1$ $(n \ge 3)$，设$max(a_i)(1 \le i \le n) &#x3D; a_k$，设$a_k$在环中相邻的两个点分别是$a_v$和$a_w$。</p>
-<p>  对于任意的几个环，如果它们的$a_k,a_v,a_w$都分别相等，我们就把这几个环都放入一个集合，并设这个集合为  $S(a_k,a_v,a_w)$。</p>
-<p>  <strong>可以发现，任意一个环都属于一个集合。</strong></p>
-<p>  令$d(x,y)$表示$x$和$y$之间直接距离（不经过其他点）。令$f(x,y,k)$表示x和y之间经过若干个编号$&lt;k$的点得到的最短距离。</p>
-<p>  则易证，对于任意一个集合（设这个集合为$S(a_k,a_v,a_w)$)，该集合中的最小环的长度为$d(a_v,a_k) + d(a_k,a_w) + f(a_v,a_w,a_k)$。</p>
-<p>  <strong>因为任意一个环都属于一个集合</strong>，所以我们只要枚举所有的集合，将该集合中最小环的长度作为可能的答案进行比较，即可得到最终答案。</p>
-<p>  现在还有一个问题，那就是如何求出$f(a_v,a_w,a_k)$。</p>
-<p>  我们可以发现$floyd$算法的外循环$k$枚举到$a_k$时，$a_v,a_w$之间的最短路径即为所求。</p>
-<p>  综上，时间复杂度$O(n^3)$.</p>
-<h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>OI题目训练</tag>
       </tags>
   </entry>
   <entry>
@@ -883,6 +709,163 @@
       </tags>
   </entry>
   <entry>
+    <title>Git学习笔记</title>
+    <url>/2023/10/20/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h3 id="1-Git本地基本操作"><a href="#1-Git本地基本操作" class="headerlink" title="1. Git本地基本操作"></a>1. Git本地基本操作</h3><h5 id="0-一些英语翻译"><a href="#0-一些英语翻译" class="headerlink" title="0. 一些英语翻译"></a>0. 一些英语翻译</h5><ul>
+<li>stage : 暂存区</li>
+<li>index: 暂存区</li>
+<li>working tree: 当前HEAD指向的版本</li>
+<li>working directory: 工作区</li>
+</ul>
+<h5 id="1-创建本地仓库"><a href="#1-创建本地仓库" class="headerlink" title="1.创建本地仓库"></a>1.创建本地仓库</h5><p>​	随便新建一个文件夹，然后执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+
+<p>​	于是这个文件夹就变成了一个本地仓库（会出现一个叫做<code>.git</code>的隐藏文件夹）</p>
+<h5 id="2-一些术语"><a href="#2-一些术语" class="headerlink" title="2. 一些术语"></a>2. 一些术语</h5><ul>
+<li>工作区：就是你在电脑中能看到的目录（即那个文件夹）</li>
+<li>暂存区：简单理解的话，就是文件被<code>add</code>之后就会被复制一份并且存储在暂存区</li>
+<li>github本地仓库：简单理解的话，就是<code>commit</code>之后文件去的地方</li>
+<li>版本库：包含了暂存区和本地仓库</li>
+</ul>
+<h5 id="3-四个状态，一些操作"><a href="#3-四个状态，一些操作" class="headerlink" title="3. 四个状态，一些操作"></a>3. 四个状态，一些操作</h5><ul>
+<li>四个状态：<code>untracked</code>，<code>unmodified</code>，<code>modified</code>，<code>staged</code></li>
+</ul>
+<hr>
+<ul>
+<li>在工作区中新建一个文件之后，输入<code>git status</code>，会发现这个文件是<code>untracked</code>状态</li>
+<li>当我们<code>add</code>了这个文件之后，这个文件的状态变为<code>staged</code>，进入了暂存区</li>
+<li>然后我们<code>commit</code>这个文件，完成<code>commit</code>之后这个文件库中的文件和本地文件又变为一致，此时这个文件状态变为<code>unmodified</code>。</li>
+</ul>
+<hr>
+<ul>
+<li>当我们在<code>add</code>完文件之后再对这个文件进行修改，此时这个文件会变成<code>modified</code>状态，并且使用<code>git status</code>命令时会提示我们这个文件被修改了。此时我们可以使用<code>git checkout -- 文件名</code>操作将这个文件回溯为暂存区中的版本。</li>
+<li>当我们<code>add</code>并且<code>commit</code>完文件之后再对这个文件进行修改，那么这个文件会变成<code>modified</code>状态。此时我们依旧可以使用<code>git checkout -- 文件名</code>操作将这个文件回溯为本地库中的版本。</li>
+<li>如果本地库中的文件版本与工作区的不同，即使我们<code>add</code>了工作区中的文件，这个文件的状态依旧是<code>modified</code>。此时如果我们对这个文件进行<code>checkout</code>，这个文件的内容不会有任何改变。</li>
+<li>如果工作区的文件，暂存区的文件和本地库中的文件版本各不相同，那么<code>git checkout -- 文件名</code>会把工作区的文件回溯为暂存区中的版本。</li>
+</ul>
+<blockquote>
+<p>一言以蔽之，在这个文件<code>add</code>或<code>commit</code>之后再做修改，这个文件的状态就会变成<code>modified</code>。然后如果对这个文件执行<code>git checkout --</code>，就会把这个文件回溯到最近一次<code>git commit</code> 或<code>git add</code>时候的状态。</p>
+</blockquote>
+<h5 id="4-git-log命令"><a href="#4-git-log命令" class="headerlink" title="4. git log命令"></a>4. git log命令</h5><p>​	输入<code>git log</code>之后进入一个页面，可以按回车不停往下翻；可以按下键盘上的Q键退出日志；</p>
+<p>​	<code>git log</code>中最重要的部分在于它会显示每个提交的<code>hash</code>值。</p>
+<h5 id="5-如何查看Git中的文件内容和文件目录？"><a href="#5-如何查看Git中的文件内容和文件目录？" class="headerlink" title="5. 如何查看Git中的文件内容和文件目录？"></a>5. 如何查看Git中的文件内容和文件目录？</h5><ul>
+<li><p>如何查看工作区的文件内容&amp;文件目录? 用文件资源管理器 或 分别用<code>ls</code>和<code>cat</code>命令</p>
+</li>
+<li><p>如何查看本地仓库中的文件目录？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git ls-tree HEAD</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何查看本地仓库中的某个文件内容？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git show &lt;commit&gt;:&lt;file&gt;   # &lt;commit&gt;是提交的hash值或分支名,&lt;file&gt;是文件名</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git show HEAD:&lt;file&gt;      # 直接查看当前分支中某个文件的内容</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何查看暂存区中的文件目录？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git ls-files</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何查看暂存区中的文件内容？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git show :&lt;file&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="6-Git的撤销与回退"><a href="#6-Git的撤销与回退" class="headerlink" title="6. Git的撤销与回退"></a>6. Git的撤销与回退</h5><p><code>git reset</code>实现版本回退：</p>
+<ul>
+<li>版本回退可以用<code>git reset</code>命令。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git reset HEAD^    		# 撤销到上一个版本</span><br><span class="line">$ git reset HEAD^^          # 撤销到上两个版本</span><br><span class="line">$ git reset HEAD~100		# 撤销到上100个版本</span><br><span class="line">$ git reset &lt;commit hash&gt;   # 撤销至某一个提交（commit hash是git log中的那串16进制数字，不需要全部输完，只需要输前几个数字就可以了）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>git reset</code>可以带一些参数，一般有三种版本：</p>
+<ul>
+<li><code>mixed</code>，即默认版本，最常用，执行之后移动HEAD指针，同时回溯暂存区，但不动工作区</li>
+<li><code>soft</code>，使用方法举例：<code>git reset --soft HEAD^</code>，执行之后移动HEAD指针，不动暂存区和工作区。</li>
+<li><code>hard</code>，使用方法举例：<code>git reset --hard HEAD^</code>，执行之后即移动HEAD指针，又动暂存区，还动工作区</li>
+</ul>
+</li>
+<li><p><code>git reset</code>之后发现<code>reset</code>错了，想回到<code>reset</code>之前的较新的版本，怎么办？</p>
+<p>没事，只要找到较新的那个版本的<code>commit hash</code>，然后还是用<code>git reset &lt;commit hash&gt;</code>就可以了（这里的<code>&lt;commit hash&gt;</code>是那个较新版本的<code>commit hash</code>。</p>
+</li>
+<li><p><code>git reset</code>之后发现<code>reset</code>错了，而且还手滑关掉了命令行窗口，重新打开之后输入<code>git log</code>发现找不到那个较新版本的<code>commit hash</code>，怎么办？</p>
+<p>没事，输入<code>git reflog</code>就可以看到之前提交的<code>commit hash</code>了。</p>
+</li>
+</ul>
+<hr>
+<p><code>git reset</code>也可以实现把已经添加到暂存区的对于某个文件的修改撤销掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git reset HEAD &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="7-文件的删除与恢复"><a href="#7-文件的删除与恢复" class="headerlink" title="7. 文件的删除与恢复"></a>7. 文件的删除与恢复</h5><ul>
+<li><p>删除工作区的文件：<code>rm &lt;filename&gt;</code></p>
+</li>
+<li><p>删除完工作区的文件之后如果这个文件之前被<code>add</code>或者<code>commit</code>过，那么可以</p>
+<p><code>git checkout -- &lt;filename&gt;</code>来恢复。</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>先执行<code>rm &lt;filename&gt;</code>，再执行<code>git rm &lt;filename&gt;</code>，那么执行完之后这个文件在工作区和暂存区中都被删掉了</p>
+</li>
+<li><p>这个时候可以：先<code>git reset HEAD &lt;filename&gt;</code>将文件从本地仓库恢复到暂存区，然后再</p>
+<p><code>git checkout -- &lt;filename&gt;</code>将文件从暂存区恢复到工作区</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>如果直接执行<code>git rm &lt;filename&gt;</code>，然后<code>git commit -m &quot;message&quot;</code>，那么文件会在工作区中保留，然后再暂存区和本地仓库中都消失。</li>
+</ul>
+<h3 id="2-Git远程库"><a href="#2-Git远程库" class="headerlink" title="2. Git远程库"></a>2. Git远程库</h3><h5 id="1-建立SSH连接"><a href="#1-建立SSH连接" class="headerlink" title="1.建立SSH连接"></a>1.建立SSH连接</h5><p>​	这一步是要让本地PC与远程github建立SSH连接，具体方法为：</p>
+<ul>
+<li><p>打开<code>powershell</code>管理员模式，输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C &quot;youremail@example.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里的email地址就写注册github时候用的就可以</p>
+</li>
+<li><p>在C盘用户主目录下找到<code>.ssh</code>文件夹，进入，打开<code>id_rsa.pub</code>，复制其中的内容</p>
+</li>
+<li><p>登录github打开“Account settings”，“SSH Keys”页面：</p>
+</li>
+</ul>
+<p>然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴<code>id_rsa.pub</code>文件的内容：</p>
+<ul>
+<li>点“Add Key”，你就应该看到已经添加的Key：</li>
+</ul>
+<h5 id="2-连接远程仓库"><a href="#2-连接远程仓库" class="headerlink" title="2. 连接远程仓库"></a>2. 连接远程仓库</h5><p>在本地仓库中<code>git bash here</code>，然后在<code>git</code>中输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote add origin &lt;ssh&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>&lt;ssh&gt;</code>是github上的仓库中的<code>ssh</code>端口地址</p>
+<p>然后这里的<code>origin</code>是我们给远程库设置的名字</p>
+<h5 id="3-将本地库的内容推送到远程仓库"><a href="#3-将本地库的内容推送到远程仓库" class="headerlink" title="3. 将本地库的内容推送到远程仓库"></a>3. 将本地库的内容推送到远程仓库</h5><ul>
+<li>第一次推送的时候用这个命令：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>​	注：<code>git push</code>命令实际上是把当前分支<code>master</code>推送到远程</p>
+<p>​			由于远程库是空的，我们第一次推送<code>master</code>分支时，加上了<code>-u</code>参数，Git不但会把本地的<code>master</code>分支内容推送的远程新的<code>master</code>分支，还会把本地的<code>master</code>分支和远程的<code>master</code>分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
+<ul>
+<li>之后推送的时候就直接：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>​	可以把本地<code>master</code>分支的最新修改推送至GitHub</p>
+<h5 id="4-断开本地库和远程库之间的连接"><a href="#4-断开本地库和远程库之间的连接" class="headerlink" title="4. 断开本地库和远程库之间的连接"></a>4. 断开本地库和远程库之间的连接</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote rm origin</span><br></pre></td></tr></table></figure>
+
+<p>用这个命令可以断开本地库和远程库之间的连接</p>
+<h3 id="3-在Vscode中使用Git"><a href="#3-在Vscode中使用Git" class="headerlink" title="3.在Vscode中使用Git"></a>3.在Vscode中使用Git</h3><h5 id="1-可能会遇到的第一个问题"><a href="#1-可能会遇到的第一个问题" class="headerlink" title="1.可能会遇到的第一个问题"></a>1.可能会遇到的第一个问题</h5><p>​	当你打开vscode的<code>source control</code>模块时，vscode可能会认为你还没有安装git，并建议你安装git。可是你明明已经安装过了git，于是你觉得很奇怪。这里的原因在于你还没有更改vscode的路径。具体方法如下：</p>
+<ul>
+<li>打开vscode，按下<code>ctrl</code> + <code>,</code>，在<code>settings</code>中打开搜索栏，搜索<code>git.path</code></li>
+<li>点击<code>Edit in settings.json</code>文件，进入这个<code>json</code>文件</li>
+<li>复制你的<code>git.exe</code>的路径，它应该长成<code>D:\application\Git\bin\git.exe</code>这样。把这个路径复制到那个<code>json</code>文件”git.path”后面</li>
+<li>把你复制的路径中的<code>\</code>全部改成<code>\\</code>，不然会报错</li>
+<li>最终应该长成这样：<code>&quot;git.path&quot;: &quot;D:\\application\\Git\\bin\\git.exe&quot;</code>（你的路径肯定跟我不一样）</li>
+<li>重启vscode</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OI题单</title>
     <url>/2023/06/18/OI%E9%A2%98%E5%8D%95/</url>
     <content><![CDATA[<p>p6186</p>
@@ -891,104 +874,6 @@
       <tags>
         <tag>OI题目训练</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>gdb过程中的一些碎碎念</title>
-    <url>/2024/11/03/gdb/</url>
-    <content><![CDATA[<h3 id="gdb"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</h3><ul>
-<li><p><code>$esp</code>表示寄存器<code>%esp</code></p>
-</li>
-<li><p>可以在特定机器指令的地址上打断点，例如</p>
-<p><code>b *0xff3ef23f</code></p>
-<p>也可以这样：</p>
-<p><code>b *phase_1 + 22</code></p>
-</li>
-<li><p>寄存器<code>%pc</code>和<code>%eip</code>中存放的值貌似都是将要执行的下一条指令所在地址</p>
-<blockquote>
-<p><code>x/1i $pc</code>可以显示将要执行的下一条指令</p>
-</blockquote>
-</li>
-<li><p>call命令会先把寄存器<code>%ip</code>压栈，然后把<code>%ip</code>赋值为调用的函数开头命令的地址</p>
-</li>
-<li><p><code>ret</code>命令相当于就是pop %ip</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于$x^y$和$y^x$的大小判断问题的一点思考</title>
-    <url>/2023/06/22/x%5Eyy%5Ex/</url>
-    <content><![CDATA[<h3 id="关于-x-y-和-y-x-的大小判断问题的一点思考"><a href="#关于-x-y-和-y-x-的大小判断问题的一点思考" class="headerlink" title="关于$x^y$和$y^x$的大小判断问题的一点思考"></a>关于$x^y$和$y^x$的大小判断问题的一点思考</h3><p>不妨令$x &lt; y$。</p>
-<p>则设$x &#x3D; a,y &#x3D; a + b,(a &gt; 0,b &gt; 0)$。<br>$$<br>a^{a + b} &gt; (a + b)^a<br>$$<br>$$<br>\Leftrightarrow a &gt; (a + b) ^ {\frac a {a + b}}<br>$$<br>$$<br>\Leftrightarrow a &gt; (a + b) ^ {(1 - \frac b{a + b})}<br>$$<br>$$<br>\Leftrightarrow a &gt; (a + b) &#x2F; ((a+b)^{\frac b{a + b}})<br>$$</p>
-<p>$$<br>\Leftrightarrow (a+b)^{\frac b{a + b}} &gt; (1 + \frac ba)<br>$$</p>
-<p>$$<br>\Leftrightarrow a + b &gt; (1 + \frac ba) ^ {\frac {a + b}b}<br>$$</p>
-<p>$$<br>\Leftrightarrow a + b &gt; (1 + \frac ba) ^ \frac ab  \times \frac{a + b}{a}<br>$$</p>
-<p>$$<br>\Leftrightarrow a &gt; (1 + \frac ba) ^ \frac ab<br>$$</p>
-<p>接下来对$a$,$b$进行分类讨论：</p>
-<ul>
-<li><p>$a &gt; b$。则$(1 + \frac ba) ^ \frac ab &lt; e$，所以$a$只要大于$e$，那么$x^y &gt; y^x$.若$a &lt;&#x3D; 2$，那么$x^y &lt; y^x$.</p>
-</li>
-<li><p>$a &#x3D; b$。则$(1 + \frac ba) ^ \frac ab &#x3D; 2$,$a$只要大于2，$x^y &gt; y^x$.</p>
-</li>
-<li><p>$a &lt; b$。则$(1 + \frac ba) ^ \frac ab &#x3D; (1 + k)^\frac 1k ,(k &gt; 1)$,此时易证$(1 + k)^\frac 1k &lt; 2 ,(k &gt; 1)$。</p>
-<blockquote>
-<p>反证法证明该结论：设$(1 + k)^\frac 1k &#x3D; v (v \ge 2)$,则$v^k &#x3D; 1 + k$。当$v &#x3D; 2,k &#x3D; 1时$,$v^1 &#x3D; 2 &#x3D; 1 + k$，而指数函数增长迅速，所以当$v &#x3D; 2,k &gt; 1$时，$v^k &gt; 1 + k$。而$v \ge 2$,所以$v^k &gt; 2^k &gt; 1 + k$，两者不可能相等。</p>
-</blockquote>
-<p>  所以此时只要$a \ge 2$，即可保证$x^y &gt; y^x$.</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>exgcd&amp;二元一次丢番图方程</title>
-    <url>/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/</url>
-    <content><![CDATA[<h1 id="exgcd-二元一次丢番图方程"><a href="#exgcd-二元一次丢番图方程" class="headerlink" title="exgcd,二元一次丢番图方程"></a>exgcd,二元一次丢番图方程</h1><h3 id="1-定理"><a href="#1-定理" class="headerlink" title="1.定理"></a>1.定理</h3><p>对于任意<strong>整数</strong>$a,b$，存在一对<strong>整数</strong>$x,y$,满足$ax + by &#x3D; gcd(a,b)$.</p>
-<h3 id="2-证明"><a href="#2-证明" class="headerlink" title="2.证明"></a>2.证明</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">   	<span class="keyword">return</span> <span class="built_in">gcd</span>(b,a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是辗转相除法求gcd的代码。<br>	<br>我们可以发现当$b &#x3D; 0$时，有一组$x &#x3D; 1,y &#x3D; 0$，使得$ax + by &#x3D; a \times 1 + b \times 0 &#x3D; gcd(a,b) &#x3D; a$。<br>	<br>对于任意一组$a,b$，假设存在一对整数$x,y$使得$bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)$，对它变形：<br>$$<br>bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)\bx + (a  - b \times \lfloor a &#x2F; b \rfloor)y &#x3D; gcd(a,b)\ya + (x - y \times \lfloor a &#x2F; b \rfloor)b &#x3D; gcd(a,b)<br>$$<br>所以我们有了一对$x’ &#x3D; y,y’ &#x3D; x - y * \lfloor a &#x2F; b \rfloor$使得$ax’ + by’ &#x3D; gcd(a,b)$。</p>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,x,y,gcd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>,y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);	</span><br><span class="line">	gcd = <span class="built_in">exgcd</span>(a,b,x,y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,x,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-求通解"><a href="#4-求通解" class="headerlink" title="4.求通解"></a>4.求通解</h3><p>上文中我们求出了一对$x_0,y_0$满足$ax_0 + by_0 &#x3D; gcd(a,b)$,现在来求通解。</p>
-<p>取一组解$(x_1,y_1)$，再任取一组解$(x_2,y_2)$，有：<br>$$<br>ax_1 + by_1 &#x3D; ax_2 + by_2 &#x3D; gcd(a,b)\a(x_1 - x_2) &#x3D; b(y_2 - y_1)\两边同时除以gcd(a,b),设a &#x2F; gcd(a,b) &#x3D; a’,b &#x2F; gcd (a,b) &#x3D; b’\a’(x_1 - x_2) &#x3D; b’(y_2 - y_1)\此时gcd(a’,b’) &#x3D; 1\所以x_1 - x_2 &#x3D; kb’,y_2 - y_1 &#x3D; ka’<br>$$</p>
-<h3 id="5-另外一个定理"><a href="#5-另外一个定理" class="headerlink" title="5.另外一个定理"></a>5.另外一个定理</h3><p>关于<strong>整数</strong>$x,y$的方程$ax + by &#x3D; c$有解的充要条件是$gcd(a,b)|c$。</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2023.6.20</title>
-    <url>/2023/07/10/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
-    <content><![CDATA[<p>想法来自一个同学的说说，稍微做了一点改动：</p>
-<p>我们总是觉得年纪越大时间过得越快，其实不然。童年时觉得时间过得很慢，是因为我们在彼时将精力全部投入在观察现实世界中。而随着年龄的增长，我们会把越来越多的时间用来回忆过去和遥想未来。关照现在的时间变少了，就会感到时间变得飞快，仿佛俯仰之间白驹已过隙。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2025/01/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>ICS Notes</title>
@@ -1126,36 +1011,114 @@
       </tags>
   </entry>
   <entry>
-    <title>一个不等式</title>
-    <url>/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/</url>
-    <content><![CDATA[<p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
+    <title>exgcd&amp;二元一次丢番图方程</title>
+    <url>/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="exgcd-二元一次丢番图方程"><a href="#exgcd-二元一次丢番图方程" class="headerlink" title="exgcd,二元一次丢番图方程"></a>exgcd,二元一次丢番图方程</h1><h3 id="1-定理"><a href="#1-定理" class="headerlink" title="1.定理"></a>1.定理</h3><p>对于任意<strong>整数</strong>$a,b$，存在一对<strong>整数</strong>$x,y$,满足$ax + by &#x3D; gcd(a,b)$.</p>
+<h3 id="2-证明"><a href="#2-证明" class="headerlink" title="2.证明"></a>2.证明</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">   	<span class="keyword">return</span> <span class="built_in">gcd</span>(b,a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是辗转相除法求gcd的代码。<br>	<br>我们可以发现当$b &#x3D; 0$时，有一组$x &#x3D; 1,y &#x3D; 0$，使得$ax + by &#x3D; a \times 1 + b \times 0 &#x3D; gcd(a,b) &#x3D; a$。<br>	<br>对于任意一组$a,b$，假设存在一对整数$x,y$使得$bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)$，对它变形：<br>$$<br>bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)\bx + (a  - b \times \lfloor a &#x2F; b \rfloor)y &#x3D; gcd(a,b)\ya + (x - y \times \lfloor a &#x2F; b \rfloor)b &#x3D; gcd(a,b)<br>$$<br>所以我们有了一对$x’ &#x3D; y,y’ &#x3D; x - y * \lfloor a &#x2F; b \rfloor$使得$ax’ + by’ &#x3D; gcd(a,b)$。</p>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,x,y,gcd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>,y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);	</span><br><span class="line">	gcd = <span class="built_in">exgcd</span>(a,b,x,y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,x,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-求通解"><a href="#4-求通解" class="headerlink" title="4.求通解"></a>4.求通解</h3><p>上文中我们求出了一对$x_0,y_0$满足$ax_0 + by_0 &#x3D; gcd(a,b)$,现在来求通解。</p>
+<p>取一组解$(x_1,y_1)$，再任取一组解$(x_2,y_2)$，有：<br>$$<br>ax_1 + by_1 &#x3D; ax_2 + by_2 &#x3D; gcd(a,b)\a(x_1 - x_2) &#x3D; b(y_2 - y_1)\两边同时除以gcd(a,b),设a &#x2F; gcd(a,b) &#x3D; a’,b &#x2F; gcd (a,b) &#x3D; b’\a’(x_1 - x_2) &#x3D; b’(y_2 - y_1)\此时gcd(a’,b’) &#x3D; 1\所以x_1 - x_2 &#x3D; kb’,y_2 - y_1 &#x3D; ka’<br>$$</p>
+<h3 id="5-另外一个定理"><a href="#5-另外一个定理" class="headerlink" title="5.另外一个定理"></a>5.另外一个定理</h3><p>关于<strong>整数</strong>$x,y$的方程$ax + by &#x3D; c$有解的充要条件是$gcd(a,b)|c$。</p>
 ]]></content>
       <tags>
         <tag>数学</tag>
       </tags>
   </entry>
   <entry>
-    <title>一个经典期望问题的分治想法</title>
-    <url>/2023/07/08/%E4%B8%80%E4%B8%AA%E6%9C%9F%E6%9C%9B%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<ul>
-<li><p>问题： 在一条长度为1的线段上随机撒两个点$A$,$B$, 求线段$AB$的期望长度</p>
-</li>
-<li><p>解：设在一条长度为1的线段上随机撒的两个点$A$,$B$所截得的线段期望长度为$x$</p>
-<p>​        然后将这条长度为1的线段均分成左右两段：</p>
+    <title>P6175题解</title>
+    <url>/2023/06/19/P6175%E9%A2%98%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="P6175（数学化语言表述，较严谨且易理解）"><a href="#P6175（数学化语言表述，较严谨且易理解）" class="headerlink" title="P6175（数学化语言表述，较严谨且易理解）"></a>P6175（数学化语言表述，较严谨且易理解）</h1><p>  考虑一个环：$a_1- &gt;a_2 -&gt;a_3 -&gt;…… -&gt;a_n -&gt; a_1$ $(n \ge 3)$，设$max(a_i)(1 \le i \le n) &#x3D; a_k$，设$a_k$在环中相邻的两个点分别是$a_v$和$a_w$。</p>
+<p>  对于任意的几个环，如果它们的$a_k,a_v,a_w$都分别相等，我们就把这几个环都放入一个集合，并设这个集合为  $S(a_k,a_v,a_w)$。</p>
+<p>  <strong>可以发现，任意一个环都属于一个集合。</strong></p>
+<p>  令$d(x,y)$表示$x$和$y$之间直接距离（不经过其他点）。令$f(x,y,k)$表示x和y之间经过若干个编号$&lt;k$的点得到的最短距离。</p>
+<p>  则易证，对于任意一个集合（设这个集合为$S(a_k,a_v,a_w)$)，该集合中的最小环的长度为$d(a_v,a_k) + d(a_k,a_w) + f(a_v,a_w,a_k)$。</p>
+<p>  <strong>因为任意一个环都属于一个集合</strong>，所以我们只要枚举所有的集合，将该集合中最小环的长度作为可能的答案进行比较，即可得到最终答案。</p>
+<p>  现在还有一个问题，那就是如何求出$f(a_v,a_w,a_k)$。</p>
+<p>  我们可以发现$floyd$算法的外循环$k$枚举到$a_k$时，$a_v,a_w$之间的最短路径即为所求。</p>
+<p>  综上，时间复杂度$O(n^3)$.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>OI题目训练</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于$x^y$和$y^x$的大小判断问题的一点思考</title>
+    <url>/2023/06/22/x%5Eyy%5Ex/</url>
+    <content><![CDATA[<h3 id="关于-x-y-和-y-x-的大小判断问题的一点思考"><a href="#关于-x-y-和-y-x-的大小判断问题的一点思考" class="headerlink" title="关于$x^y$和$y^x$的大小判断问题的一点思考"></a>关于$x^y$和$y^x$的大小判断问题的一点思考</h3><p>不妨令$x &lt; y$。</p>
+<p>则设$x &#x3D; a,y &#x3D; a + b,(a &gt; 0,b &gt; 0)$。<br>$$<br>a^{a + b} &gt; (a + b)^a<br>$$<br>$$<br>\Leftrightarrow a &gt; (a + b) ^ {\frac a {a + b}}<br>$$<br>$$<br>\Leftrightarrow a &gt; (a + b) ^ {(1 - \frac b{a + b})}<br>$$<br>$$<br>\Leftrightarrow a &gt; (a + b) &#x2F; ((a+b)^{\frac b{a + b}})<br>$$</p>
+<p>$$<br>\Leftrightarrow (a+b)^{\frac b{a + b}} &gt; (1 + \frac ba)<br>$$</p>
+<p>$$<br>\Leftrightarrow a + b &gt; (1 + \frac ba) ^ {\frac {a + b}b}<br>$$</p>
+<p>$$<br>\Leftrightarrow a + b &gt; (1 + \frac ba) ^ \frac ab  \times \frac{a + b}{a}<br>$$</p>
+<p>$$<br>\Leftrightarrow a &gt; (1 + \frac ba) ^ \frac ab<br>$$</p>
+<p>接下来对$a$,$b$进行分类讨论：</p>
 <ul>
-<li><p>若$A,B$两点都在左半部分，那么发生这种情况的概率为0.25，期望长度为$\frac 12 x$</p>
+<li><p>$a &gt; b$。则$(1 + \frac ba) ^ \frac ab &lt; e$，所以$a$只要大于$e$，那么$x^y &gt; y^x$.若$a &lt;&#x3D; 2$，那么$x^y &lt; y^x$.</p>
 </li>
-<li><p>若$A,B$两点都在右半部分，那么发生这种情况的概率为0.25，期望长度为$\frac 12 x$</p>
+<li><p>$a &#x3D; b$。则$(1 + \frac ba) ^ \frac ab &#x3D; 2$,$a$只要大于2，$x^y &gt; y^x$.</p>
 </li>
-<li><p>若$A,B$两点横跨线段中点，那么发生这种情况的概率为0.5</p>
-<p>​    设线段中点为$M$，那么$E(|AB|) &#x3D; E(|AM|) + E(|MB|)$ $&#x3D; 0.25 + 0.25 &#x3D; 0.5$</p>
-<p>​    所以这种情况下期望长度为0.5</p>
-</li>
-</ul>
-<p>所以，根据期望的定义，我们可以得到$x &#x3D; 0.25 \times \frac 12 x + 0.25 \times $ $\frac 12 x + 0.5\times 0.5$</p>
-<p>解得：$x &#x3D; \frac 13$</p>
+<li><p>$a &lt; b$。则$(1 + \frac ba) ^ \frac ab &#x3D; (1 + k)^\frac 1k ,(k &gt; 1)$,此时易证$(1 + k)^\frac 1k &lt; 2 ,(k &gt; 1)$。</p>
+<blockquote>
+<p>反证法证明该结论：设$(1 + k)^\frac 1k &#x3D; v (v \ge 2)$,则$v^k &#x3D; 1 + k$。当$v &#x3D; 2,k &#x3D; 1时$,$v^1 &#x3D; 2 &#x3D; 1 + k$，而指数函数增长迅速，所以当$v &#x3D; 2,k &gt; 1$时，$v^k &gt; 1 + k$。而$v \ge 2$,所以$v^k &gt; 2^k &gt; 1 + k$，两者不可能相等。</p>
+</blockquote>
+<p>  所以此时只要$a \ge 2$，即可保证$x^y &gt; y^x$.</p>
 </li>
 </ul>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gdb过程中的一些碎碎念</title>
+    <url>/2024/11/03/gdb/</url>
+    <content><![CDATA[<h3 id="gdb"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</h3><ul>
+<li><p><code>$esp</code>表示寄存器<code>%esp</code></p>
+</li>
+<li><p>可以在特定机器指令的地址上打断点，例如</p>
+<p><code>b *0xff3ef23f</code></p>
+<p>也可以这样：</p>
+<p><code>b *phase_1 + 22</code></p>
+</li>
+<li><p>寄存器<code>%pc</code>和<code>%eip</code>中存放的值貌似都是将要执行的下一条指令所在地址</p>
+<blockquote>
+<p><code>x/1i $pc</code>可以显示将要执行的下一条指令</p>
+</blockquote>
+</li>
+<li><p>call命令会先把寄存器<code>%ip</code>压栈，然后把<code>%ip</code>赋值为调用的函数开头命令的地址</p>
+</li>
+<li><p><code>ret</code>命令相当于就是pop %ip</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/01/27/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>一个不等式</title>
+    <url>/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/</url>
+    <content><![CDATA[<p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
 ]]></content>
       <tags>
         <tag>数学</tag>
@@ -1340,6 +1303,52 @@
       </tags>
   </entry>
   <entry>
+    <title>初心</title>
+    <url>/2023/06/12/%E5%88%9D%E5%BF%83/</url>
+    <content><![CDATA[<p>​	希望能够幸福地做人，合理地度日，内心安定平和，即使身处逆境也始终保持追求。同时也希望能够通过文字与各位交流这方面的经验，于苦难中彼此慰藉。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一个经典期望问题的分治想法</title>
+    <url>/2023/07/08/%E4%B8%80%E4%B8%AA%E6%9C%9F%E6%9C%9B%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<ul>
+<li><p>问题： 在一条长度为1的线段上随机撒两个点$A$,$B$, 求线段$AB$的期望长度</p>
+</li>
+<li><p>解：设在一条长度为1的线段上随机撒的两个点$A$,$B$所截得的线段期望长度为$x$</p>
+<p>​        然后将这条长度为1的线段均分成左右两段：</p>
+<ul>
+<li><p>若$A,B$两点都在左半部分，那么发生这种情况的概率为0.25，期望长度为$\frac 12 x$</p>
+</li>
+<li><p>若$A,B$两点都在右半部分，那么发生这种情况的概率为0.25，期望长度为$\frac 12 x$</p>
+</li>
+<li><p>若$A,B$两点横跨线段中点，那么发生这种情况的概率为0.5</p>
+<p>​    设线段中点为$M$，那么$E(|AB|) &#x3D; E(|AM|) + E(|MB|)$ $&#x3D; 0.25 + 0.25 &#x3D; 0.5$</p>
+<p>​    所以这种情况下期望长度为0.5</p>
+</li>
+</ul>
+<p>所以，根据期望的定义，我们可以得到$x &#x3D; 0.25 \times \frac 12 x + 0.25 \times $ $\frac 12 x + 0.5\times 0.5$</p>
+<p>解得：$x &#x3D; \frac 13$</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2023.6.20</title>
+    <url>/2023/07/10/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
+    <content><![CDATA[<p>想法来自一个同学的说说，稍微做了一点改动：</p>
+<p>我们总是觉得年纪越大时间过得越快，其实不然。童年时觉得时间过得很慢，是因为我们在彼时将精力全部投入在观察现实世界中。而随着年龄的增长，我们会把越来越多的时间用来回忆过去和遥想未来。关照现在的时间变少了，就会感到时间变得飞快，仿佛俯仰之间白驹已过隙。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>卡塔兰猜想的一个特殊情况的证明</title>
     <url>/2023/06/25/%E5%8D%A1%E5%A1%94%E5%85%B0%E7%8C%9C%E6%83%B3%E7%9A%84%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E7%9A%84%E8%AF%81%E6%98%8E/</url>
     <content><![CDATA[<h1 id="卡塔兰猜想的一个特殊情况的证明"><a href="#卡塔兰猜想的一个特殊情况的证明" class="headerlink" title="卡塔兰猜想的一个特殊情况的证明"></a>卡塔兰猜想的一个特殊情况的证明</h1><p> 命题：$x,y$都是正整数，求证不存在$x&gt;2,y&gt;3$使得$3^x-2^y&#x3D;\pm 1$</p>
@@ -1378,23 +1387,6 @@
 <p>$$ \therefore 无解。$$ </p>
 <p> Q.E.D.</p>
 <p> —–2020.1.18 20:50</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>扩展欧拉定理</title>
-    <url>/2023/07/01/%E6%89%A9%E5%B1%95%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86/</url>
-    <content><![CDATA[<h1 id="扩展欧拉定理"><a href="#扩展欧拉定理" class="headerlink" title="扩展欧拉定理"></a>扩展欧拉定理</h1><p>扩展欧拉定理无需 <em>a</em>,<em>m</em> 互质。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>$$<br>b\ge\varphi(m)\text{时},a^b\equiv a^{\left(b\mod\varphi(m)\right)+\varphi(m)}\pmod m<br>$$</p>
-<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>先取$m$的一个质因数 $p$，令$m&#x3D;p^r\times s$, $gcd(p,s)&#x3D;1$</p>
-<p>由欧拉定理得 $p^{\varphi(s)}\equiv1\pmod s$由欧拉函数的性质得 $\varphi(m)&#x3D;\varphi(s)\times\varphi(p^r)$，所以 $p^{\varphi(m)}\equiv1\pmod s$ 。</p>
-<p>设 $p^{\varphi(m)}&#x3D;ks+1$，那么 $p^{\varphi(m)+r}&#x3D;km+p^r$，所以 $p^{\varphi(m)+r}\equiv p^r\pmod m$ 。</p>
-<p>当 $b\ge r$ 时，$p^b\equiv p^{b-r}\times p^r\equiv p^{b-r}\times p^{\varphi(m)+r}$ $\equiv p^{b+\varphi(m)}\pmod m$。</p>
-<p>因为 $r\le\varphi(p^r)\le\varphi(m)$，所以当 $b\ge 2\varphi(m)$ 时 $b-\varphi(m)\ge r$，所以 $p^b\equiv p^{b-\varphi(m)}\pmod m$，即 $p^b\equiv p^{(b\mod\varphi(m))+\phi(m)}\pmod m$。</p>
-<p>将 $a$ 质因数分解后乘起来，就可以得到 $a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$.</p>
-<p><strong>需要注意的是，$b&lt;\varphi(m)$ 时，$a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$不一定正确。</strong></p>
 ]]></content>
       <tags>
         <tag>数学</tag>
@@ -1561,25 +1553,20 @@
       </tags>
   </entry>
   <entry>
-    <title>拉格朗日乘数法复习</title>
-    <url>/2025/05/04/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95/</url>
-    <content><![CDATA[<h3 id="拉格朗日乘数法复习"><a href="#拉格朗日乘数法复习" class="headerlink" title="拉格朗日乘数法复习"></a>拉格朗日乘数法复习</h3><p>$\hspace{1cm}$ 给定一个多元函数$f(\mathbf{x})$, 和若干个限制：$g_1(\mathbf{x}) &#x3D; g_2(\mathbf{x}) &#x3D; … &#x3D; g_m(\mathbf{x}) &#x3D; 0$, 求$f(\mathbf{x})$的最小值。这里的$\mathbf{x}$是一个向量。$\mathbf{x} &#x3D; {x_1,x_2,…x_n}$ </p>
-<p>$\hspace{1cm}$ 设$L(\mathbf{x}, \lambda_1, \lambda_2, …, \lambda_m) &#x3D; f(\mathbf{x}) - \lambda_1g_1(\mathbf{x}) - … - \lambda_mg_m(\mathbf{x})$,若$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$，$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$, 则此时的$\mathbf{x}$是一个候选的极小值点（极小值点必定在这样的一个$\mathbf{x}$中）</p>
-<p>证明：</p>
-<p>$\hspace{1cm}$ 考虑$\mathbf{x} &#x3D; \mathbf{x_0}$时，此时$\mathbf{x}$想要有任何的微小位移$\Delta \mathbf{x}$,都必须满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla g_i(\mathbf{x_0}) &#x3D; 0 \ \ \ \forall i \in[1,m]<br>$$<br>$\hspace{1cm}$ 我们称任意一个满足上式的微小位移$\Delta \mathbf{x}$为合法微小位移。</p>
-<p>$\hspace{1cm}$ 若$\mathbf{x_0}$还是一个最小值点，那么对于<strong>任意</strong>一个合法微小位移，它肯定需要满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla f(\mathbf{x_0}) &#x3D; 0<br>$$<br>$\hspace{1cm}$ 因为对于<strong>任意</strong>一个合法微小位移都需要满足，所以显然$\nabla f(\mathbf{x_0})$必定在$\nabla g_i(\mathbf{x_0})$张成的线性空间里。这就对应：$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$的这个条件。至于$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$，这是为了满足约束条件而显然必须的条件。</p>
+    <title>扩展欧拉定理</title>
+    <url>/2023/07/01/%E6%89%A9%E5%B1%95%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86/</url>
+    <content><![CDATA[<h1 id="扩展欧拉定理"><a href="#扩展欧拉定理" class="headerlink" title="扩展欧拉定理"></a>扩展欧拉定理</h1><p>扩展欧拉定理无需 <em>a</em>,<em>m</em> 互质。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>$$<br>b\ge\varphi(m)\text{时},a^b\equiv a^{\left(b\mod\varphi(m)\right)+\varphi(m)}\pmod m<br>$$</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>先取$m$的一个质因数 $p$，令$m&#x3D;p^r\times s$, $gcd(p,s)&#x3D;1$</p>
+<p>由欧拉定理得 $p^{\varphi(s)}\equiv1\pmod s$由欧拉函数的性质得 $\varphi(m)&#x3D;\varphi(s)\times\varphi(p^r)$，所以 $p^{\varphi(m)}\equiv1\pmod s$ 。</p>
+<p>设 $p^{\varphi(m)}&#x3D;ks+1$，那么 $p^{\varphi(m)+r}&#x3D;km+p^r$，所以 $p^{\varphi(m)+r}\equiv p^r\pmod m$ 。</p>
+<p>当 $b\ge r$ 时，$p^b\equiv p^{b-r}\times p^r\equiv p^{b-r}\times p^{\varphi(m)+r}$ $\equiv p^{b+\varphi(m)}\pmod m$。</p>
+<p>因为 $r\le\varphi(p^r)\le\varphi(m)$，所以当 $b\ge 2\varphi(m)$ 时 $b-\varphi(m)\ge r$，所以 $p^b\equiv p^{b-\varphi(m)}\pmod m$，即 $p^b\equiv p^{(b\mod\varphi(m))+\phi(m)}\pmod m$。</p>
+<p>将 $a$ 质因数分解后乘起来，就可以得到 $a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$.</p>
+<p><strong>需要注意的是，$b&lt;\varphi(m)$ 时，$a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$不一定正确。</strong></p>
 ]]></content>
       <tags>
         <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初心</title>
-    <url>/2023/06/12/%E5%88%9D%E5%BF%83/</url>
-    <content><![CDATA[<p>​	希望能够幸福地做人，合理地度日，内心安定平和，即使身处逆境也始终保持追求。同时也希望能够通过文字与各位交流这方面的经验，于苦难中彼此慰藉。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -1608,6 +1595,91 @@
 ]]></content>
       <tags>
         <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>拉格朗日乘数法复习</title>
+    <url>/2025/05/04/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="拉格朗日乘数法复习"><a href="#拉格朗日乘数法复习" class="headerlink" title="拉格朗日乘数法复习"></a>拉格朗日乘数法复习</h3><p>$\hspace{1cm}$ 给定一个多元函数$f(\mathbf{x})$, 和若干个限制：$g_1(\mathbf{x}) &#x3D; g_2(\mathbf{x}) &#x3D; … &#x3D; g_m(\mathbf{x}) &#x3D; 0$, 求$f(\mathbf{x})$的最小值。这里的$\mathbf{x}$是一个向量。$\mathbf{x} &#x3D; {x_1,x_2,…x_n}$ </p>
+<p>$\hspace{1cm}$ 设$L(\mathbf{x}, \lambda_1, \lambda_2, …, \lambda_m) &#x3D; f(\mathbf{x}) - \lambda_1g_1(\mathbf{x}) - … - \lambda_mg_m(\mathbf{x})$,若$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$，$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$, 则此时的$\mathbf{x}$是一个候选的极小值点（极小值点必定在这样的一个$\mathbf{x}$中）</p>
+<p>证明：</p>
+<p>$\hspace{1cm}$ 考虑$\mathbf{x} &#x3D; \mathbf{x_0}$时，此时$\mathbf{x}$想要有任何的微小位移$\Delta \mathbf{x}$,都必须满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla g_i(\mathbf{x_0}) &#x3D; 0 \ \ \ \forall i \in[1,m]<br>$$<br>$\hspace{1cm}$ 我们称任意一个满足上式的微小位移$\Delta \mathbf{x}$为合法微小位移。</p>
+<p>$\hspace{1cm}$ 若$\mathbf{x_0}$还是一个最小值点，那么对于<strong>任意</strong>一个合法微小位移，它肯定需要满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla f(\mathbf{x_0}) &#x3D; 0<br>$$<br>$\hspace{1cm}$ 因为对于<strong>任意</strong>一个合法微小位移都需要满足，所以显然$\nabla f(\mathbf{x_0})$必定在$\nabla g_i(\mathbf{x_0})$张成的线性空间里。这就对应：$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$的这个条件。至于$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$，这是为了满足约束条件而显然必须的条件。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>特征值的一些</title>
+    <url>/2026/04/24/%E7%89%B9%E5%BE%81%E5%80%BC%E7%9A%84%E4%B8%80%E4%BA%9B/</url>
+    <content><![CDATA[<h3 id="关于特征值的一些"><a href="#关于特征值的一些" class="headerlink" title="关于特征值的一些"></a>关于特征值的一些</h3><ul>
+<li>Notation<br>对于一个矩阵$A$，其第$i$列记作$A_{c(i)}$，第$i$行记作$A_{r(j)}$</li>
+</ul>
+<hr>
+<ul>
+<li><p>Theorem 1: 实对称矩阵的所有特征值都是实数。</p>
+<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \mathbf{0})<br>$$<br>目标要证明$\lambda \in \mathbb{R}$。</p>
+<p>对该式左右同时左乘$\alpha^H$：<br>$$<br>\alpha ^H A \alpha &#x3D; \lambda \alpha^H \alpha<br>$$</p>
+<p>由于$\alpha^H \alpha &gt; 0$</p>
+<p>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha}<br>$$</p>
+<p>接下来要证明$\alpha ^H A \alpha \in \mathbb{R}$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \mathbb{R}$，而$\alpha^H \alpha \in \mathbb{R}$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \mathbb{R}<br>$$</p>
+</li>
+</ul>
+<blockquote>
+<p>对于一般矩阵而言，$A^H &#x3D; A$无法推出$A$是实矩阵，但是上例中$\alpha ^H A \alpha$是一个1 * 1的矩阵（也就是一个数），所以才可以推出其是实数。</p>
+</blockquote>
+<blockquote>
+<p>另，Theorem 1还可以有更强的版本：所有满足$A^H &#x3D; A$的矩阵的所有特征值都为实数。</p>
+</blockquote>
+<hr>
+<ul>
+<li><p>Theorem 2: 对于任意一个矩阵的任意一个特征值，其几何重数小于等于代数重数。</p>
+<p>对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>设$v_1, v_2, … v_k$为$E$的一组基，则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组基。</p>
+<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
+<blockquote>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：<br>$$<br>\forall i \in [1,k] \ \ \  T_{j,i} &#x3D; \left{<br>\begin{array}{l}<br>1  \ \ \ \ \ j &#x3D; i\cr<br>0 \ \ \ \ \ j \neq i\cr<br>\end{array}<br>\right.<br>$$</p>
+</blockquote>
+</li>
+</ul>
+<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1})<br>$$</p>
+<p>$$<br> &#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix} - xI)&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \cr<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
+<p>​	因此，A的特征多项式中至少有$k$次$(\lambda_0 - x)$作为因子，所以$\lambda_0$的代数重数大于等于$k$。而其几何重数为$k$，所以我们几何重数小于等于代数重数。</p>
+<hr>
+<ul>
+<li>Theorem 3：对于实对称矩阵的任意一个特征值，其几何重数等于代数重数。</li>
+</ul>
+<p>​    对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>​    设$v_1, v_2, … v_k$为$E$ 的一组标准正交基（两两正交且模长为1），则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组标准正交基。设$F$为$\text{span}(v_{k + 1}, …, v_n)$，则$F &#x3D; E^\perp$。</p>
+<p>​    Lemma 3.1 $\forall x \in F, Ax \in F$。</p>
+<blockquote>
+<p>证明：只需证明$\forall i \in [1,k], v_i \perp (Ax)$即可。</p>
+<p>$$<br>x^T A^Tv_i &#x3D; x^TAv_i &#x3D; x^T (Av_i) &#x3D; \lambda_0 x^T v_i &#x3D; 0<br>$$</p>
+</blockquote>
+<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
+<blockquote>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
+<p>$PT$的后$n - k$列应该是$[Av_{k + 1}, Av_{k + 2}, … , Av_n]$，而因为$Av_{k + 1}, Av_{k + 2}, … , Av_n \in F$, 即$Av_{k + 1}, Av_{k + 2}, … , Av_n \in \text{span}(v_{k + 1}, …, v_n)$，所以这里的线性组合完全不需要$v_1,v_2,…,v_k$，所以矩阵的右上角为0。</p>
+</blockquote>
+<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \mathbf{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\mathbf{0}_{k\times 1}\cr<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\mathbf{0}\cr<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\mathbf{0}\cr<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\mathbf{0}\cr<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
+<p>​	但是我们又因为$w$的前$k$个分量都是0，所以$Pw$就是对$v_{k + 1}, … v_n$的线性组合。显然这个线性组合属于$F$，故$Pw \in F$。</p>
+<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \mathbf{0} \to w &#x3D; \mathbf{0}$，矛盾。</p>
+<hr>
+<ul>
+<li>Theorem 4：对于一个实对称矩阵，若其两个特征向量对应两个不同的特征值，那么这两个特征向量一定正交。</li>
+</ul>
+<p>​       设$A\alpha_1 &#x3D; \lambda_1 \alpha_1, A\alpha_2 &#x3D; \lambda_2 \alpha_2, \lambda_1  \neq \lambda_2$，则：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D; \lambda_1 \alpha_1^T\alpha_2<br>$$<br>​	而：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D;  \alpha_1^TA^T\alpha_2 &#x3D;  \alpha_1^TA\alpha_2 &#x3D;  \alpha_1^T(A\alpha_2) &#x3D; \lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	于是：<br>$$<br>\lambda_1 \alpha_1^T\alpha_2 &#x3D;\lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	而$\lambda_1 \neq \lambda_2$，故$\alpha_1^T\alpha_2 &#x3D; 0$。</p>
+<hr>
+<ul>
+<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\mathbb{R}^n$。</p>
+<p>首先，根据代数基本定理，这个实对称矩阵一定有$n$个特征根。</p>
+<p>其次根据Theorem 1，这n个特征根都是实数，所以这个矩阵的各特征根的代数重数相加等于$n$。</p>
+</li>
+</ul>
+<p>​	又因为实对称矩阵的代数重数等于几何重数 (Theorem 3)，所以代数重数为$k$的特征值对应的有$k$个线性无关的特征向量。</p>
+<p>​	又因为Theorem 4，所以实对称矩阵可以有$n$个彼此正交的特征向量，自然他们是线性无关的，故可以span。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1887,78 +1959,6 @@
       </tags>
   </entry>
   <entry>
-    <title>特征值的一些</title>
-    <url>/2026/04/24/%E7%89%B9%E5%BE%81%E5%80%BC%E7%9A%84%E4%B8%80%E4%BA%9B/</url>
-    <content><![CDATA[<h3 id="关于特征值的一些"><a href="#关于特征值的一些" class="headerlink" title="关于特征值的一些"></a>关于特征值的一些</h3><ul>
-<li>Notation<br>对于一个矩阵$A$，其第$i$列记作$A_{c(i)}$，第$i$行记作$A_{r(j)}$</li>
-</ul>
-<hr>
-<ul>
-<li><p>Theorem 1: 实对称矩阵的所有特征值都是实数。</p>
-<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \mathbf{0})<br>$$<br>目标要证明$\lambda \in \mathbb{R}$。</p>
-<p>对该式左右同时左乘$\alpha^H$：<br>$$<br>\alpha ^H A \alpha &#x3D; \lambda \alpha^H \alpha<br>$$</p>
-<p>由于$\alpha^H \alpha &gt; 0$</p>
-<p>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha}<br>$$</p>
-<p>接下来要证明$\alpha ^H A \alpha \in \mathbb{R}$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \mathbb{R}$，而$\alpha^H \alpha \in \mathbb{R}$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \mathbb{R}<br>$$</p>
-</li>
-</ul>
-<blockquote>
-<p>对于一般矩阵而言，$A^H &#x3D; A$无法推出$A$是实矩阵，但是上例中$\alpha ^H A \alpha$是一个1 * 1的矩阵（也就是一个数），所以才可以推出其是实数。</p>
-</blockquote>
-<blockquote>
-<p>另，Theorem 1还可以有更强的版本：所有满足$A^H &#x3D; A$的矩阵的所有特征值都为实数。</p>
-</blockquote>
-<hr>
-<ul>
-<li><p>Theorem 2: 对于任意一个矩阵的任意一个特征值，其几何重数小于等于代数重数。</p>
-<p>对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>设$v_1, v_2, … v_k$为$E$的一组基，则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组基。</p>
-<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
-<blockquote>
-<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：<br>$$<br>\forall i \in [1,k]\ \ \  T_{j,i} &#x3D; \left{<br>\begin{array}{l}<br>1  \ \ \ \ \ j &#x3D; i\<br>0 \ \ \ \ \ j \neq i\<br>\end{array}<br>\right.<br>$$</p>
-</blockquote>
-</li>
-</ul>
-<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1})<br>$$</p>
-<p>$$<br> &#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix} - xI)&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \cr<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
-<p>​	因此，A的特征多项式中至少有$k$次$(\lambda_0 - x)$作为因子，所以$\lambda_0$的代数重数大于等于$k$。而其几何重数为$k$，所以我们几何重数小于等于代数重数。</p>
-<hr>
-<ul>
-<li>Theorem 3：对于实对称矩阵的任意一个特征值，其几何重数等于代数重数。</li>
-</ul>
-<p>​    对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>​    设$v_1, v_2, … v_k$为$E$ 的一组标准正交基（两两正交且模长为1），则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组标准正交基。设$F$为$\text{span}(v_{k + 1}, …, v_n)$，则$F &#x3D; E^\perp$。</p>
-<p>​    Lemma 3.1 $\forall x \in F, Ax \in F$。</p>
-<blockquote>
-<p>证明：只需证明$\forall i \in [1,k], v_i \perp (Ax)$即可。</p>
-<p>$$<br>x^T A^Tv_i &#x3D; x^TAv_i &#x3D; x^T (Av_i) &#x3D; \lambda_0 x^T v_i &#x3D; 0<br>$$</p>
-</blockquote>
-<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
-<blockquote>
-<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
-<p>$PT$的后$n - k$列应该是$[Av_{k + 1}, Av_{k + 2}, … , Av_n]$，而因为$Av_{k + 1}, Av_{k + 2}, … , Av_n \in F$, 即$Av_{k + 1}, Av_{k + 2}, … , Av_n \in \text{span}(v_{k + 1}, …, v_n)$，所以这里的线性组合完全不需要$v_1,v_2,…,v_k$，所以矩阵的右上角为0。</p>
-</blockquote>
-<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \mathbf{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\mathbb{0}_{k\times 1}\cr<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\mathbb{0}\cr<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\mathbb{0}\cr<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\mathbb{0}\cr<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
-<p>​	但是我们又因为$w$的前$k$个分量都是0，所以$Pw$就是对$v_{k + 1}, … v_n$的线性组合。显然这个线性组合属于$F$，故$Pw \in F$。</p>
-<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \mathbf{0} \to w &#x3D; \mathbf{0}$，矛盾。</p>
-<hr>
-<ul>
-<li>Theorem 4：对于一个实对称矩阵，若其两个特征向量对应两个不同的特征值，那么这两个特征向量一定正交。</li>
-</ul>
-<p>​       设$A\alpha_1 &#x3D; \lambda_1 \alpha_1, A\alpha_2 &#x3D; \lambda_2 \alpha_2, \lambda_1  \neq \lambda_2$，则：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D; \lambda_1 \alpha_1^T\alpha_2<br>$$<br>​	而：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D;  \alpha_1^TA^T\alpha_2 &#x3D;  \alpha_1^TA\alpha_2 &#x3D;  \alpha_1^T(A\alpha_2) &#x3D; \lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	于是：<br>$$<br>\lambda_1 \alpha_1^T\alpha_2 &#x3D;\lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	而$\lambda_1 \neq \lambda_2$，故$\alpha_1^T\alpha_2 &#x3D; 0$。</p>
-<hr>
-<ul>
-<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\mathbb{R}^n$。</p>
-<p>首先，根据代数基本定理，这个实对称矩阵一定有$n$个特征根。</p>
-<p>其次根据Theorem 1，这n个特征根都是实数，所以这个矩阵的各特征根的代数重数相加等于$n$。</p>
-</li>
-</ul>
-<p>​	又因为实对称矩阵的代数重数等于几何重数 (Theorem 3)，所以代数重数为$k$的特征值对应的有$k$个线性无关的特征向量。</p>
-<p>​	又因为Theorem 4，所以实对称矩阵可以有$n$个彼此正交的特征向量，自然他们是线性无关的，故可以span。</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《算法竞赛进阶指南》笔记</title>
     <url>/2023/07/04/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<h1 id="《算法竞赛进阶指南》笔记"><a href="#《算法竞赛进阶指南》笔记" class="headerlink" title="《算法竞赛进阶指南》笔记"></a>《算法竞赛进阶指南》笔记</h1><h2 id="0x00基本算法"><a href="#0x00基本算法" class="headerlink" title="0x00基本算法"></a>0x00基本算法</h2><h3 id="0X01位运算"><a href="#0X01位运算" class="headerlink" title="0X01位运算"></a>0X01位运算</h3><ul>
@@ -2175,36 +2175,6 @@
       </tags>
   </entry>
   <entry>
-    <title>逆序对与交换</title>
-    <url>/2026/03/15/%E9%80%86%E5%BA%8F%E5%AF%B9%E4%B8%8E%E4%BA%A4%E6%8D%A2/</url>
-    <content><![CDATA[<h3 id="逆序对与交换"><a href="#逆序对与交换" class="headerlink" title="逆序对与交换"></a>逆序对与交换</h3><p>$\hspace{1cm}$一些非常基础的性质。约定一个排列是形如<code>1,3,2,4</code>这样的数列。</p>
-<ul>
-<li><p>对任意一个排列，交换其两个数的位置，对逆序对造成的变化量的值都是奇数。</p>
-<p>设两个要交换的数分别是 $\varphi$ 和 $\theta$，他们中间夹着$a_1, a_2, a_3, … ,a_n$，也就是形如：<br>$$<br>\varphi, a_1, a_2, a_3, .., a_n, \theta<br>$$<br>因为我们关心的是逆序对的变化量，所以和逆序对变化量有关的逆序对中至少有一方得是$\varphi$或$\theta$，且两方都在$\varphi, a_1, a_2, ..,a_n, \theta$这个序列内部。</p>
-<p>先考虑$\varphi &lt; \theta$的情况：</p>
-<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\varphi$，有$y$个数大于$\varphi$小于$\theta$，则有$n-x-y$个数大于$\theta$。</p>
-<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + n - x - y &#x3D; n - y$。</p>
-<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + n - x + 1 &#x3D; n + y + 1$</p>
-<p>因此变化量为$2y + 1$，为奇数。</p>
-<p>再考虑$\varphi &gt; \theta$的情况：</p>
-<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\theta$，有$y$个数大于$\theta$小于$\varphi$，则有$n-x-y$个数大于$\varphi$。</p>
-<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + y + n - x - y + 1 &#x3D; n + y+ 1$。</p>
-<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x+ n - x - y &#x3D; n - y$</p>
-<p>因此变化量为$-2y - 1$，为奇数。</p>
-</li>
-</ul>
-<p>​	</p>
-<ul>
-<li><p>如果只通过交换元素位置的方式，将一个排列变换为另外一个排列，那么需要交换的次数的奇偶性和两个排列的逆序对的差值的奇偶性相同。</p>
-<p>有上面那个定理之后，这个就非常明晰了。每次交换对逆序对造成的变化量的值都是奇数，因此每次交换都会改变逆序对数量的奇偶性。如果前后两个排列的逆序对的奇偶性相同，那么交换的次数必定是偶数次。反之，如果前后两个排列的逆序对的奇偶性不同，那么交换的次数必定是奇数次。</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>OI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>西点</title>
     <url>/2023/07/06/%E8%A5%BF%E7%82%B9/</url>
     <content><![CDATA[<h1 id="西点"><a href="#西点" class="headerlink" title="西点"></a>西点</h1><h2 id="1-卷"><a href="#1-卷" class="headerlink" title="1.卷"></a>1.卷</h2><h4 id="原料："><a href="#原料：" class="headerlink" title="原料："></a>原料：</h4><ul>
@@ -2240,6 +2210,36 @@
 ]]></content>
       <tags>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逆序对与交换</title>
+    <url>/2026/03/15/%E9%80%86%E5%BA%8F%E5%AF%B9%E4%B8%8E%E4%BA%A4%E6%8D%A2/</url>
+    <content><![CDATA[<h3 id="逆序对与交换"><a href="#逆序对与交换" class="headerlink" title="逆序对与交换"></a>逆序对与交换</h3><p>$\hspace{1cm}$一些非常基础的性质。约定一个排列是形如<code>1,3,2,4</code>这样的数列。</p>
+<ul>
+<li><p>对任意一个排列，交换其两个数的位置，对逆序对造成的变化量的值都是奇数。</p>
+<p>设两个要交换的数分别是 $\varphi$ 和 $\theta$，他们中间夹着$a_1, a_2, a_3, … ,a_n$，也就是形如：<br>$$<br>\varphi, a_1, a_2, a_3, .., a_n, \theta<br>$$<br>因为我们关心的是逆序对的变化量，所以和逆序对变化量有关的逆序对中至少有一方得是$\varphi$或$\theta$，且两方都在$\varphi, a_1, a_2, ..,a_n, \theta$这个序列内部。</p>
+<p>先考虑$\varphi &lt; \theta$的情况：</p>
+<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\varphi$，有$y$个数大于$\varphi$小于$\theta$，则有$n-x-y$个数大于$\theta$。</p>
+<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + n - x - y &#x3D; n - y$。</p>
+<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + n - x + 1 &#x3D; n + y + 1$</p>
+<p>因此变化量为$2y + 1$，为奇数。</p>
+<p>再考虑$\varphi &gt; \theta$的情况：</p>
+<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\theta$，有$y$个数大于$\theta$小于$\varphi$，则有$n-x-y$个数大于$\varphi$。</p>
+<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + y + n - x - y + 1 &#x3D; n + y+ 1$。</p>
+<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x+ n - x - y &#x3D; n - y$</p>
+<p>因此变化量为$-2y - 1$，为奇数。</p>
+</li>
+</ul>
+<p>​	</p>
+<ul>
+<li><p>如果只通过交换元素位置的方式，将一个排列变换为另外一个排列，那么需要交换的次数的奇偶性和两个排列的逆序对的差值的奇偶性相同。</p>
+<p>有上面那个定理之后，这个就非常明晰了。每次交换对逆序对造成的变化量的值都是奇数，因此每次交换都会改变逆序对数量的奇偶性。如果前后两个排列的逆序对的奇偶性相同，那么交换的次数必定是偶数次。反之，如果前后两个排列的逆序对的奇偶性不同，那么交换的次数必定是奇数次。</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>OI</tag>
       </tags>
   </entry>
   <entry>

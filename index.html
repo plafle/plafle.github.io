@@ -209,7 +209,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2026-04-24 00:00:00 / 修改时间：17:19:33" itemprop="dateCreated datePublished" datetime="2026-04-24T00:00:00+08:00">2026-04-24</time>
+      <time title="创建时间：2026-04-24 00:00:00 / 修改时间：17:28:02" itemprop="dateCreated datePublished" datetime="2026-04-24T00:00:00+08:00">2026-04-24</time>
     </span>
 
   
@@ -228,11 +228,11 @@
 <hr>
 <ul>
 <li><p>Theorem 1: 实对称矩阵的所有特征值都是实数。</p>
-<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \bold{0})<br>$$<br>目标要证明$\lambda \in \R$。</p>
+<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \bold{0})<br>$$<br>目标要证明$\lambda \in \mathbb{R}$。</p>
 <p>对该式左右同时左乘$\alpha^H$：<br>$$<br>\alpha ^H A \alpha &#x3D; \lambda \alpha^H \alpha<br>$$</p>
 <p>由于$\alpha^H \alpha &gt; 0$</p>
 <p>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha}<br>$$</p>
-<p>接下来要证明$\alpha ^H A \alpha \in \R$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \R$，而$\alpha^H \alpha \in \R$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \R<br>$$</p>
+<p>接下来要证明$\alpha ^H A \alpha \in \mathbb{R}$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \mathbb{R}$，而$\alpha^H \alpha \in \mathbb{R}$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \R<br>$$</p>
 </li>
 </ul>
 <blockquote>
@@ -245,14 +245,14 @@
 <ul>
 <li><p>Theorem 2: 对于任意一个矩阵的任意一个特征值，其几何重数小于等于代数重数。</p>
 <p>对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>设$v_1, v_2, … v_k$为$E$的一组基，则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组基。</p>
-<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
+<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
 <blockquote>
-<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：<br>$$<br>\forall i \in [1,k]\ \ \  T_{j,i} &#x3D; \left{<br>\begin{array}{l}<br>1  \ \ \ \ \ j &#x3D; i\<br>0 \ \ \ \ \ j \neq i\<br>\end{array}<br>\right.<br>$$</p>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：<br>$$<br>\forall i \in [1,k]\ \ \  T_{j,i} &#x3D; \left{<br>\begin{array}{l}<br>1  \ \ \ \ \ j &#x3D; i\<br>0 \ \ \ \ \ j \neq i\<br>\end{array}<br>\right.<br>$$</p>
 </blockquote>
 </li>
 </ul>
-<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1}) &#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B	<br>\end{bmatrix} - xI)<br>$$</p>
-<p>$$<br>&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
+<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1}) &#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix} - xI)<br>$$</p>
+<p>$$<br>&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \cr<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
 <p>​	因此，A的特征多项式中至少有$k$次$(\lambda_0 - x)$作为因子，所以$\lambda_0$的代数重数大于等于$k$。而其几何重数为$k$，所以我们几何重数小于等于代数重数。</p>
 <hr>
 <ul>
@@ -264,14 +264,14 @@
 <p>证明：只需证明$\forall i \in [1,k], v_i \perp (Ax)$即可。</p>
 <p>$$<br>x^T A^Tv_i &#x3D; x^TAv_i &#x3D; x^T (Av_i) &#x3D; \lambda_0 x^T v_i &#x3D; 0<br>$$</p>
 </blockquote>
-<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
+<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
 <blockquote>
-<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
 <p>$PT$的后$n - k$列应该是$[Av_{k + 1}, Av_{k + 2}, … , Av_n]$，而因为$Av_{k + 1}, Av_{k + 2}, … , Av_n \in F$, 即$Av_{k + 1}, Av_{k + 2}, … , Av_n \in \text{span}(v_{k + 1}, …, v_n)$，所以这里的线性组合完全不需要$v_1,v_2,…,v_k$，所以矩阵的右上角为0。</p>
 </blockquote>
-<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \bold{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\bold0_{k\times 1}\<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\bold0\<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\bold0\<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\bold0\<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
+<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \mathbf{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\bold0_{k\times 1}\cr<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\bold0\cr<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\bold0\cr<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\bold0\cr<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
 <p>​	但是我们又因为$w$的前$k$个分量都是0，所以$Pw$就是对$v_{k + 1}, … v_n$的线性组合。显然这个线性组合属于$F$，故$Pw \in F$。</p>
-<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \bold{0} \to w &#x3D; \bold{0}$，矛盾。</p>
+<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \mathbf{0} \to w &#x3D; \mathbf{0}$，矛盾。</p>
 <hr>
 <ul>
 <li>Theorem 4：对于一个实对称矩阵，若其两个特征向量对应两个不同的特征值，那么这两个特征向量一定正交。</li>
@@ -279,7 +279,7 @@
 <p>​       设$A\alpha_1 &#x3D; \lambda_1 \alpha_1, A\alpha_2 &#x3D; \lambda_2 \alpha_2, \lambda_1  \neq \lambda_2$，则：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D; \lambda_1 \alpha_1^T\alpha_2<br>$$<br>​	而：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D;  \alpha_1^TA^T\alpha_2 &#x3D;  \alpha_1^TA\alpha_2 &#x3D;  \alpha_1^T(A\alpha_2) &#x3D; \lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	于是：<br>$$<br>\lambda_1 \alpha_1^T\alpha_2 &#x3D;\lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	而$\lambda_1 \neq \lambda_2$，故$\alpha_1^T\alpha_2 &#x3D; 0$。</p>
 <hr>
 <ul>
-<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\R^n$。</p>
+<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\mathbb{R}^n$。</p>
 <p>首先，根据代数基本定理，这个实对称矩阵一定有$n$个特征根。</p>
 <p>其次根据Theorem 1，这n个特征根都是实数，所以这个矩阵的各特征根的代数重数相加等于$n$。</p>
 </li>

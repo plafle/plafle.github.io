@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Three Formulae</title>
-    <url>/2024/06/09/3formulae/</url>
-    <content><![CDATA[<p>$$<br>\int\sqrt{a^2 - x^2}dx &#x3D; \frac x2\sqrt{a^2 - x^2} + \frac {a^2}2\arcsin(\frac xa) + C<br>$$<br>$$<br>\int \frac 1{\sqrt{x^2 \pm a^2}}dx &#x3D; \ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$<br>$$<br>\int \sqrt{x^2 \pm a^2}dx &#x3D; \frac x2 \sqrt{x^2 \pm a^2} \pm\frac {a^2}2\ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2023.8.23</title>
     <url>/2023/08/23/2023.8.23/</url>
     <content><![CDATA[<p>$\hspace{1cm}$设想在一条道路上随机选择一个位置，然后降落到这个位置。</p>
@@ -128,6 +119,94 @@
 ]]></content>
       <tags>
         <tag>2024多校</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSAPP-lecture-6</title>
+    <url>/2024/08/02/CSAPP%20lecture%206/</url>
+    <content><![CDATA[<h3 id="CSAPP-lecture-6"><a href="#CSAPP-lecture-6" class="headerlink" title="CSAPP lecture 6"></a>CSAPP lecture 6</h3><h4 id="1-Condition-code"><a href="#1-Condition-code" class="headerlink" title="1. Condition code"></a>1. Condition code</h4><ul>
+<li><p>Four condition codes:</p>
+<ul>
+<li>CF: Carry Flag.  Will be 1 if there is a carry out of the most significant bit. Used to detect the overflow of the unsigned number</li>
+<li>ZF: Zero Flag. Will be 1 if the most recent operation yield 0.</li>
+<li>SF: Sign Flag. Will be 1 if the most recent operation yield a value with the sign bit being 1.</li>
+<li>OF: Overflow Flag. Will be 1 if the most recent operation caused an overflow (for two’s complement), either positive overflow or negative overflow.</li>
+</ul>
+<blockquote>
+<p>The leaq operation would not alter any of the condition code. All other arithmetic operation would make these condition code to change.</p>
+</blockquote>
+</li>
+<li><p>For the logical operation (such as <code>xor</code> <code>or</code> <code>add</code>), they will leave the CF and OF to be 0.</p>
+</li>
+<li><p>For the shift operation, the CF will be set to the last digit shifted out, and the OF will be set to 0.</p>
+</li>
+<li><p>For the <code>inc</code> and <code>dec</code> operation, they will set the OF and ZF, but they will leave the CF unchanged.</p>
+</li>
+<li><p>There are two instruction classes which can only alter the condition codes without changing the other value.</p>
+</li>
+</ul>
+<p>​	</p>
+<p>​	We can check the sign of a value or whether this value is 0 by <code>test %rax %rax</code>. (Suppose this value is stored in register <code>%rax</code>)</p>
+<h3 id="2-Access-the-condition-code"><a href="#2-Access-the-condition-code" class="headerlink" title="2. Access the condition code"></a>2. Access the condition code</h3><ul>
+<li>Access the condition code: Rather than directly access the condition code, we prefer to access the condition code indirectly, using the following 3 methods:<ul>
+<li>We can set a single byte to 0 or 1, depending on some combination of the condition codes.</li>
+<li>We can conditionally jump to some part of the program</li>
+<li>We can conditionally transfer data.</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-1-How-to-set-a-single-byte-according-to-the-condition-code"><a href="#2-1-How-to-set-a-single-byte-according-to-the-condition-code" class="headerlink" title="2.1 How to set a single byte according to the condition code"></a>2.1 How to set a single byte according to the condition code</h5><p>​	These <code>set</code> class of instruction have a single operand <code>D</code> indicating the destination. The destination have to be a register or a memory location. If it is a register, then it would set the least significant byte of the register to 1 (usually this register have to be  <code>%al</code> kind rather than <code>%rax</code> kind.) </p>
+<p>​	an example:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">comp:</span><br><span class="line">	cmpq	%rsi %rdi</span><br><span class="line">	setl	%al</span><br><span class="line">	movzbq	%al %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="2-2-Conditionally-jump-to-some-part-of-the-program"><a href="#2-2-Conditionally-jump-to-some-part-of-the-program" class="headerlink" title="2.2 (Conditionally) jump to some part of the program"></a>2.2 (Conditionally) jump to some part of the program</h5><p><strong>Unconditionally jump:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	movq $0, %rax</span><br><span class="line">	jmp .L1</span><br><span class="line">	movq (%rax), %rdx</span><br><span class="line">.L1:</span><br><span class="line">	popq %rdx</span><br></pre></td></tr></table></figure>
+
+<p>The <code>jmp</code> instruction would jump to <code>.L1</code> label</p>
+<p><code>jmp</code> is the unconditional jump operation. It can jump directly or indirectly. When it is directly, it’s something like <code>jmp .L1</code>. When it is indirectly, it is something like <code>jmp *%rax</code> or <code>jmp *(%rax)</code>, where the label is stored in the register <code>%rax</code> or the memory location <code>(%rax)</code></p>
+<p><strong>Conditional jump:</strong></p>
+<h5 id="2-3-Jump-instruction-encodings"><a href="#2-3-Jump-instruction-encodings" class="headerlink" title="2.3 Jump instruction encodings"></a>2.3 Jump instruction encodings</h5><p>​	In assembly code, to specify where we want to jump to we can simply write something like <code>.L1</code> happily.        In the disassembled machinery code <em><strong>(the assemble code translated from the machinery code)</strong></em>, the <code>jump</code> operation would written in the form like <code>jmp 0x1137</code>. There will be an address operand like <code>0x1137</code> to specify which operation will the program jump to. In this case, the jump operation would jump to <code>0x1137</code> and do the operation in <code>0x1137</code></p>
+<p>​	But in machinery code, how to specify where we want to jump to? There are two ways to do this, first is so called <code>PC relatives</code>.  That is saying, they encode the target address as the difference between the target address and the address of the instruction immediately following the jump instruction. </p>
+<blockquote>
+<p>The difference between a and b is a - b</p>
+</blockquote>
+<p>​	The reason why we try to use this kind of notation is that the jump target would remain unchanged when the whole program is shifted to another address.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eb 03 # In this case, 0x03 is the encoded jump target. 0x03 has to be 							added by the address of the next instruction to get the 								target address. </span><br><span class="line"># &quot;eb 03&quot; is a machine code in binary. &quot;eb&quot; specifies the type of the operation and &quot;03&quot; specifies the encoded jump target</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Note: this <code>0x03</code> is a two’s complement number, so for example, if now it is <code>0xFF</code>, then it is actually -1, and the actual jump target would be the address of the next instruction minus 1.</p>
+</blockquote>
+<p><em><strong>Question</strong></em></p>
+<p>​	Sometimes we would see operation <code>jmp .L1</code> and sometimes we would see operation <code>jmp 0x1137</code>. Which one (probably both) is the assembly code? What’s difference between these two command?</p>
+<h5 id="2-4-Conditional-Move"><a href="#2-4-Conditional-Move" class="headerlink" title="2.4 Conditional Move"></a>2.4 Conditional Move</h5><p>​	Apart from the <code>jump</code> operation, we have an operation called conditional move.</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">comp</span><span class="params">(<span class="type">long</span> x,<span class="type">long</span> y)</span> &#123;</span><br><span class="line">    <span class="type">long</span> res;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; y)</span><br><span class="line">        res = y - x; <span class="keyword">else</span></span><br><span class="line">        res = x - y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For example, this C code might be translated into the following assembly code:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">absdiff:</span><br><span class="line">	movq 	%rsi, %rax</span><br><span class="line">	subq	%rdi, %rax</span><br><span class="line">	movq	%rdi, %rdx</span><br><span class="line">	subq	%rsi, %rdx</span><br><span class="line">	cmpq	%rsi, %rdi</span><br><span class="line">	cmovge	%rdx, %rax	#If the last comparison said &quot;%rdi &gt;= %rsi&quot;, then this move will 						  conditional move will apply. Otherwise nothing will happen.</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+
+
+<p><em><strong>Question</strong></em></p>
+<p>​	Why will the conditional move operation reduce the penalty for misprediction? It also need to decide whether to do the move instruction, and the misprediction should affect the following pipeline as well.</p>
+<p><strong>The class of conditional move:</strong></p>
+<p>​	Some property for the conditional move:</p>
+<ul>
+<li>The destination must be register</li>
+<li>The data type can be 2,4,8 bytes long, but can’t be 1 byte long</li>
+<li>The instruction don’t need a suffix to specify the data type. The processor could infer the operand length from the name of the destination register.</li>
+</ul>
+<blockquote>
+<p>The condition move may not be valid if one expression is invalid.</p>
+<p>for example</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> *p;</span><br></pre></td></tr></table></figure>
+
+<p>You can not calculate <code>*p</code> beforehand as <code>p</code> may be a null pointer, making the dereferencing invalid.</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>CS</tag>
       </tags>
   </entry>
   <entry>
@@ -577,135 +656,12 @@
       </tags>
   </entry>
   <entry>
-    <title>C语言指针相关</title>
-    <url>/2023/10/16/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88&amp;%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<p>1.<code>char *s[]</code>   若执行<code>s++</code>，则：</p>
-<p>2.<code>char **s </code>     若执行<code>s++</code>，则：向后一个指针的大小（一般为4个字节）</p>
-<p>3.<code>char (*s)[]</code> 则s是指向一行的指针，若执行<code>s++</code>，则s会指向下一行</p>
-<p>4.<code>int **a</code> 		若执行<code>a++</code>，则：向后一个指针的大小（一般为4个字节）</p>
-<p>5.<code>int *a[]</code> 	 若执行<code>a++</code>，则：</p>
-<p>6.<code>int (*a)[]</code>    则a是指向一行的指针，若执行<code>a++</code>，则a会指向下一行</p>
-<ul>
-<li>1和2如果写在函数的形参里面，那么是等价的。</li>
-<li>4和5如果写在函数的形参里面，那么是等价的。</li>
-<li>如果1不是写成函数的形参，那么s就是一个常量，不能更改。</li>
-<li>如果2不是写成函数的形参，那么s就是一个变量，可以更改。</li>
-<li>3和6都是指向一行的指针</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = b;</span><br><span class="line"><span class="comment">//不能这样写，因为b是指向行的指针</span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = &amp;b[<span class="number">0</span>];</span><br><span class="line"><span class="comment">//b[0]是常量，一般取不了</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>一般来说，二级指针是和指针数组相关联的</strong>，<code>int (*a)[]</code>  这种是和二维数组相关联的。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *s[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">char</span> **s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	s[<span class="number">0</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">	s[<span class="number">1</span>] = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	s[<span class="number">2</span>] = <span class="string">&quot;ABC&quot;</span>;</span><br><span class="line">	<span class="built_in">work</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">123</span><br><span class="line">abc</span><br><span class="line">ABC</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>观察这段程序，问题出在哪里？</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>问题：没有声明所指向的一行有多少个元素，改为：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[<span class="number">3</span>])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>即可。</p>
-<hr>
-<p>如果声明了<code>int *a = malloc(size);</code>，那么之后可以用<code>a[i]</code>表示<code>*(a + i)</code></p>
+    <title>Three Formulae</title>
+    <url>/2024/06/09/3formulae/</url>
+    <content><![CDATA[<p>$$<br>\int\sqrt{a^2 - x^2}dx &#x3D; \frac x2\sqrt{a^2 - x^2} + \frac {a^2}2\arcsin(\frac xa) + C<br>$$<br>$$<br>\int \frac 1{\sqrt{x^2 \pm a^2}}dx &#x3D; \ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$<br>$$<br>\int \sqrt{x^2 \pm a^2}dx &#x3D; \frac x2 \sqrt{x^2 \pm a^2} \pm\frac {a^2}2\ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$</p>
 ]]></content>
       <tags>
-        <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSAPP-lecture-6</title>
-    <url>/2024/08/02/CSAPP%20lecture%206/</url>
-    <content><![CDATA[<h3 id="CSAPP-lecture-6"><a href="#CSAPP-lecture-6" class="headerlink" title="CSAPP lecture 6"></a>CSAPP lecture 6</h3><h4 id="1-Condition-code"><a href="#1-Condition-code" class="headerlink" title="1. Condition code"></a>1. Condition code</h4><ul>
-<li><p>Four condition codes:</p>
-<ul>
-<li>CF: Carry Flag.  Will be 1 if there is a carry out of the most significant bit. Used to detect the overflow of the unsigned number</li>
-<li>ZF: Zero Flag. Will be 1 if the most recent operation yield 0.</li>
-<li>SF: Sign Flag. Will be 1 if the most recent operation yield a value with the sign bit being 1.</li>
-<li>OF: Overflow Flag. Will be 1 if the most recent operation caused an overflow (for two’s complement), either positive overflow or negative overflow.</li>
-</ul>
-<blockquote>
-<p>The leaq operation would not alter any of the condition code. All other arithmetic operation would make these condition code to change.</p>
-</blockquote>
-</li>
-<li><p>For the logical operation (such as <code>xor</code> <code>or</code> <code>add</code>), they will leave the CF and OF to be 0.</p>
-</li>
-<li><p>For the shift operation, the CF will be set to the last digit shifted out, and the OF will be set to 0.</p>
-</li>
-<li><p>For the <code>inc</code> and <code>dec</code> operation, they will set the OF and ZF, but they will leave the CF unchanged.</p>
-</li>
-<li><p>There are two instruction classes which can only alter the condition codes without changing the other value.</p>
-</li>
-</ul>
-<p>​	</p>
-<p>​	We can check the sign of a value or whether this value is 0 by <code>test %rax %rax</code>. (Suppose this value is stored in register <code>%rax</code>)</p>
-<h3 id="2-Access-the-condition-code"><a href="#2-Access-the-condition-code" class="headerlink" title="2. Access the condition code"></a>2. Access the condition code</h3><ul>
-<li>Access the condition code: Rather than directly access the condition code, we prefer to access the condition code indirectly, using the following 3 methods:<ul>
-<li>We can set a single byte to 0 or 1, depending on some combination of the condition codes.</li>
-<li>We can conditionally jump to some part of the program</li>
-<li>We can conditionally transfer data.</li>
-</ul>
-</li>
-</ul>
-<h5 id="2-1-How-to-set-a-single-byte-according-to-the-condition-code"><a href="#2-1-How-to-set-a-single-byte-according-to-the-condition-code" class="headerlink" title="2.1 How to set a single byte according to the condition code"></a>2.1 How to set a single byte according to the condition code</h5><p>​	These <code>set</code> class of instruction have a single operand <code>D</code> indicating the destination. The destination have to be a register or a memory location. If it is a register, then it would set the least significant byte of the register to 1 (usually this register have to be  <code>%al</code> kind rather than <code>%rax</code> kind.) </p>
-<p>​	an example:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">comp:</span><br><span class="line">	cmpq	%rsi %rdi</span><br><span class="line">	setl	%al</span><br><span class="line">	movzbq	%al %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="2-2-Conditionally-jump-to-some-part-of-the-program"><a href="#2-2-Conditionally-jump-to-some-part-of-the-program" class="headerlink" title="2.2 (Conditionally) jump to some part of the program"></a>2.2 (Conditionally) jump to some part of the program</h5><p><strong>Unconditionally jump:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	movq $0, %rax</span><br><span class="line">	jmp .L1</span><br><span class="line">	movq (%rax), %rdx</span><br><span class="line">.L1:</span><br><span class="line">	popq %rdx</span><br></pre></td></tr></table></figure>
-
-<p>The <code>jmp</code> instruction would jump to <code>.L1</code> label</p>
-<p><code>jmp</code> is the unconditional jump operation. It can jump directly or indirectly. When it is directly, it’s something like <code>jmp .L1</code>. When it is indirectly, it is something like <code>jmp *%rax</code> or <code>jmp *(%rax)</code>, where the label is stored in the register <code>%rax</code> or the memory location <code>(%rax)</code></p>
-<p><strong>Conditional jump:</strong></p>
-<h5 id="2-3-Jump-instruction-encodings"><a href="#2-3-Jump-instruction-encodings" class="headerlink" title="2.3 Jump instruction encodings"></a>2.3 Jump instruction encodings</h5><p>​	In assembly code, to specify where we want to jump to we can simply write something like <code>.L1</code> happily.        In the disassembled machinery code <em><strong>(the assemble code translated from the machinery code)</strong></em>, the <code>jump</code> operation would written in the form like <code>jmp 0x1137</code>. There will be an address operand like <code>0x1137</code> to specify which operation will the program jump to. In this case, the jump operation would jump to <code>0x1137</code> and do the operation in <code>0x1137</code></p>
-<p>​	But in machinery code, how to specify where we want to jump to? There are two ways to do this, first is so called <code>PC relatives</code>.  That is saying, they encode the target address as the difference between the target address and the address of the instruction immediately following the jump instruction. </p>
-<blockquote>
-<p>The difference between a and b is a - b</p>
-</blockquote>
-<p>​	The reason why we try to use this kind of notation is that the jump target would remain unchanged when the whole program is shifted to another address.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eb 03 # In this case, 0x03 is the encoded jump target. 0x03 has to be 							added by the address of the next instruction to get the 								target address. </span><br><span class="line"># &quot;eb 03&quot; is a machine code in binary. &quot;eb&quot; specifies the type of the operation and &quot;03&quot; specifies the encoded jump target</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Note: this <code>0x03</code> is a two’s complement number, so for example, if now it is <code>0xFF</code>, then it is actually -1, and the actual jump target would be the address of the next instruction minus 1.</p>
-</blockquote>
-<p><em><strong>Question</strong></em></p>
-<p>​	Sometimes we would see operation <code>jmp .L1</code> and sometimes we would see operation <code>jmp 0x1137</code>. Which one (probably both) is the assembly code? What’s difference between these two command?</p>
-<h5 id="2-4-Conditional-Move"><a href="#2-4-Conditional-Move" class="headerlink" title="2.4 Conditional Move"></a>2.4 Conditional Move</h5><p>​	Apart from the <code>jump</code> operation, we have an operation called conditional move.</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">comp</span><span class="params">(<span class="type">long</span> x,<span class="type">long</span> y)</span> &#123;</span><br><span class="line">    <span class="type">long</span> res;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; y)</span><br><span class="line">        res = y - x; <span class="keyword">else</span></span><br><span class="line">        res = x - y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>For example, this C code might be translated into the following assembly code:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">absdiff:</span><br><span class="line">	movq 	%rsi, %rax</span><br><span class="line">	subq	%rdi, %rax</span><br><span class="line">	movq	%rdi, %rdx</span><br><span class="line">	subq	%rsi, %rdx</span><br><span class="line">	cmpq	%rsi, %rdi</span><br><span class="line">	cmovge	%rdx, %rax	#If the last comparison said &quot;%rdi &gt;= %rsi&quot;, then this move will 						  conditional move will apply. Otherwise nothing will happen.</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
-
-
-
-<p><em><strong>Question</strong></em></p>
-<p>​	Why will the conditional move operation reduce the penalty for misprediction? It also need to decide whether to do the move instruction, and the misprediction should affect the following pipeline as well.</p>
-<p><strong>The class of conditional move:</strong></p>
-<p>​	Some property for the conditional move:</p>
-<ul>
-<li>The destination must be register</li>
-<li>The data type can be 2,4,8 bytes long, but can’t be 1 byte long</li>
-<li>The instruction don’t need a suffix to specify the data type. The processor could infer the operand length from the name of the destination register.</li>
-</ul>
-<blockquote>
-<p>The condition move may not be valid if one expression is invalid.</p>
-<p>for example</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> *p;</span><br></pre></td></tr></table></figure>
-
-<p>You can not calculate <code>*p</code> beforehand as <code>p</code> may be a null pointer, making the dereferencing invalid.</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>CS</tag>
+        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1011,6 +967,102 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2025/01/27/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>exgcd&amp;二元一次丢番图方程</title>
+    <url>/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="exgcd-二元一次丢番图方程"><a href="#exgcd-二元一次丢番图方程" class="headerlink" title="exgcd,二元一次丢番图方程"></a>exgcd,二元一次丢番图方程</h1><h3 id="1-定理"><a href="#1-定理" class="headerlink" title="1.定理"></a>1.定理</h3><p>对于任意<strong>整数</strong>$a,b$，存在一对<strong>整数</strong>$x,y$,满足$ax + by &#x3D; gcd(a,b)$.</p>
+<h3 id="2-证明"><a href="#2-证明" class="headerlink" title="2.证明"></a>2.证明</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">   	<span class="keyword">return</span> <span class="built_in">gcd</span>(b,a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是辗转相除法求gcd的代码。<br>	<br>我们可以发现当$b &#x3D; 0$时，有一组$x &#x3D; 1,y &#x3D; 0$，使得$ax + by &#x3D; a \times 1 + b \times 0 &#x3D; gcd(a,b) &#x3D; a$。<br>	<br>对于任意一组$a,b$，假设存在一对整数$x,y$使得$bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)$，对它变形：<br>$$<br>bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)\bx + (a  - b \times \lfloor a &#x2F; b \rfloor)y &#x3D; gcd(a,b)\ya + (x - y \times \lfloor a &#x2F; b \rfloor)b &#x3D; gcd(a,b)<br>$$<br>所以我们有了一对$x’ &#x3D; y,y’ &#x3D; x - y * \lfloor a &#x2F; b \rfloor$使得$ax’ + by’ &#x3D; gcd(a,b)$。</p>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,x,y,gcd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>,y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);	</span><br><span class="line">	gcd = <span class="built_in">exgcd</span>(a,b,x,y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,x,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-求通解"><a href="#4-求通解" class="headerlink" title="4.求通解"></a>4.求通解</h3><p>上文中我们求出了一对$x_0,y_0$满足$ax_0 + by_0 &#x3D; gcd(a,b)$,现在来求通解。</p>
+<p>取一组解$(x_1,y_1)$，再任取一组解$(x_2,y_2)$，有：<br>$$<br>ax_1 + by_1 &#x3D; ax_2 + by_2 &#x3D; gcd(a,b)\a(x_1 - x_2) &#x3D; b(y_2 - y_1)\两边同时除以gcd(a,b),设a &#x2F; gcd(a,b) &#x3D; a’,b &#x2F; gcd (a,b) &#x3D; b’\a’(x_1 - x_2) &#x3D; b’(y_2 - y_1)\此时gcd(a’,b’) &#x3D; 1\所以x_1 - x_2 &#x3D; kb’,y_2 - y_1 &#x3D; ka’<br>$$</p>
+<h3 id="5-另外一个定理"><a href="#5-另外一个定理" class="headerlink" title="5.另外一个定理"></a>5.另外一个定理</h3><p>关于<strong>整数</strong>$x,y$的方程$ax + by &#x3D; c$有解的充要条件是$gcd(a,b)|c$。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C语言指针相关</title>
+    <url>/2023/10/16/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88&amp;%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<p>1.<code>char *s[]</code>   若执行<code>s++</code>，则：</p>
+<p>2.<code>char **s </code>     若执行<code>s++</code>，则：向后一个指针的大小（一般为4个字节）</p>
+<p>3.<code>char (*s)[]</code> 则s是指向一行的指针，若执行<code>s++</code>，则s会指向下一行</p>
+<p>4.<code>int **a</code> 		若执行<code>a++</code>，则：向后一个指针的大小（一般为4个字节）</p>
+<p>5.<code>int *a[]</code> 	 若执行<code>a++</code>，则：</p>
+<p>6.<code>int (*a)[]</code>    则a是指向一行的指针，若执行<code>a++</code>，则a会指向下一行</p>
+<ul>
+<li>1和2如果写在函数的形参里面，那么是等价的。</li>
+<li>4和5如果写在函数的形参里面，那么是等价的。</li>
+<li>如果1不是写成函数的形参，那么s就是一个常量，不能更改。</li>
+<li>如果2不是写成函数的形参，那么s就是一个变量，可以更改。</li>
+<li>3和6都是指向一行的指针</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = b;</span><br><span class="line"><span class="comment">//不能这样写，因为b是指向行的指针</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = &amp;b[<span class="number">0</span>];</span><br><span class="line"><span class="comment">//b[0]是常量，一般取不了</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>一般来说，二级指针是和指针数组相关联的</strong>，<code>int (*a)[]</code>  这种是和二维数组相关联的。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *s[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">char</span> **s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	s[<span class="number">0</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">	s[<span class="number">1</span>] = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	s[<span class="number">2</span>] = <span class="string">&quot;ABC&quot;</span>;</span><br><span class="line">	<span class="built_in">work</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">123</span><br><span class="line">abc</span><br><span class="line">ABC</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>观察这段程序，问题出在哪里？</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题：没有声明所指向的一行有多少个元素，改为：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[<span class="number">3</span>])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
+<hr>
+<p>如果声明了<code>int *a = malloc(size);</code>，那么之后可以用<code>a[i]</code>表示<code>*(a + i)</code></p>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>P6175题解</title>
+    <url>/2023/06/19/P6175%E9%A2%98%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="P6175（数学化语言表述，较严谨且易理解）"><a href="#P6175（数学化语言表述，较严谨且易理解）" class="headerlink" title="P6175（数学化语言表述，较严谨且易理解）"></a>P6175（数学化语言表述，较严谨且易理解）</h1><p>  考虑一个环：$a_1- &gt;a_2 -&gt;a_3 -&gt;…… -&gt;a_n -&gt; a_1$ $(n \ge 3)$，设$max(a_i)(1 \le i \le n) &#x3D; a_k$，设$a_k$在环中相邻的两个点分别是$a_v$和$a_w$。</p>
+<p>  对于任意的几个环，如果它们的$a_k,a_v,a_w$都分别相等，我们就把这几个环都放入一个集合，并设这个集合为  $S(a_k,a_v,a_w)$。</p>
+<p>  <strong>可以发现，任意一个环都属于一个集合。</strong></p>
+<p>  令$d(x,y)$表示$x$和$y$之间直接距离（不经过其他点）。令$f(x,y,k)$表示x和y之间经过若干个编号$&lt;k$的点得到的最短距离。</p>
+<p>  则易证，对于任意一个集合（设这个集合为$S(a_k,a_v,a_w)$)，该集合中的最小环的长度为$d(a_v,a_k) + d(a_k,a_w) + f(a_v,a_w,a_k)$。</p>
+<p>  <strong>因为任意一个环都属于一个集合</strong>，所以我们只要枚举所有的集合，将该集合中最小环的长度作为可能的答案进行比较，即可得到最终答案。</p>
+<p>  现在还有一个问题，那就是如何求出$f(a_v,a_w,a_k)$。</p>
+<p>  我们可以发现$floyd$算法的外循环$k$枚举到$a_k$时，$a_v,a_w$之间的最短路径即为所求。</p>
+<p>  综上，时间复杂度$O(n^3)$.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>OI题目训练</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gdb过程中的一些碎碎念</title>
     <url>/2024/11/03/gdb/</url>
     <content><![CDATA[<h3 id="gdb"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</h3><ul>
@@ -1034,58 +1086,6 @@
 ]]></content>
       <tags>
         <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2025/01/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>P6175题解</title>
-    <url>/2023/06/19/P6175%E9%A2%98%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="P6175（数学化语言表述，较严谨且易理解）"><a href="#P6175（数学化语言表述，较严谨且易理解）" class="headerlink" title="P6175（数学化语言表述，较严谨且易理解）"></a>P6175（数学化语言表述，较严谨且易理解）</h1><p>  考虑一个环：$a_1- &gt;a_2 -&gt;a_3 -&gt;…… -&gt;a_n -&gt; a_1$ $(n \ge 3)$，设$max(a_i)(1 \le i \le n) &#x3D; a_k$，设$a_k$在环中相邻的两个点分别是$a_v$和$a_w$。</p>
-<p>  对于任意的几个环，如果它们的$a_k,a_v,a_w$都分别相等，我们就把这几个环都放入一个集合，并设这个集合为  $S(a_k,a_v,a_w)$。</p>
-<p>  <strong>可以发现，任意一个环都属于一个集合。</strong></p>
-<p>  令$d(x,y)$表示$x$和$y$之间直接距离（不经过其他点）。令$f(x,y,k)$表示x和y之间经过若干个编号$&lt;k$的点得到的最短距离。</p>
-<p>  则易证，对于任意一个集合（设这个集合为$S(a_k,a_v,a_w)$)，该集合中的最小环的长度为$d(a_v,a_k) + d(a_k,a_w) + f(a_v,a_w,a_k)$。</p>
-<p>  <strong>因为任意一个环都属于一个集合</strong>，所以我们只要枚举所有的集合，将该集合中最小环的长度作为可能的答案进行比较，即可得到最终答案。</p>
-<p>  现在还有一个问题，那就是如何求出$f(a_v,a_w,a_k)$。</p>
-<p>  我们可以发现$floyd$算法的外循环$k$枚举到$a_k$时，$a_v,a_w$之间的最短路径即为所求。</p>
-<p>  综上，时间复杂度$O(n^3)$.</p>
-<h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>OI题目训练</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>exgcd&amp;二元一次丢番图方程</title>
-    <url>/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/</url>
-    <content><![CDATA[<h1 id="exgcd-二元一次丢番图方程"><a href="#exgcd-二元一次丢番图方程" class="headerlink" title="exgcd,二元一次丢番图方程"></a>exgcd,二元一次丢番图方程</h1><h3 id="1-定理"><a href="#1-定理" class="headerlink" title="1.定理"></a>1.定理</h3><p>对于任意<strong>整数</strong>$a,b$，存在一对<strong>整数</strong>$x,y$,满足$ax + by &#x3D; gcd(a,b)$.</p>
-<h3 id="2-证明"><a href="#2-证明" class="headerlink" title="2.证明"></a>2.证明</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">   	<span class="keyword">return</span> <span class="built_in">gcd</span>(b,a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是辗转相除法求gcd的代码。<br>	<br>我们可以发现当$b &#x3D; 0$时，有一组$x &#x3D; 1,y &#x3D; 0$，使得$ax + by &#x3D; a \times 1 + b \times 0 &#x3D; gcd(a,b) &#x3D; a$。<br>	<br>对于任意一组$a,b$，假设存在一对整数$x,y$使得$bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)$，对它变形：<br>$$<br>bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)\bx + (a  - b \times \lfloor a &#x2F; b \rfloor)y &#x3D; gcd(a,b)\ya + (x - y \times \lfloor a &#x2F; b \rfloor)b &#x3D; gcd(a,b)<br>$$<br>所以我们有了一对$x’ &#x3D; y,y’ &#x3D; x - y * \lfloor a &#x2F; b \rfloor$使得$ax’ + by’ &#x3D; gcd(a,b)$。</p>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,x,y,gcd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>,y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);	</span><br><span class="line">	gcd = <span class="built_in">exgcd</span>(a,b,x,y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,x,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-求通解"><a href="#4-求通解" class="headerlink" title="4.求通解"></a>4.求通解</h3><p>上文中我们求出了一对$x_0,y_0$满足$ax_0 + by_0 &#x3D; gcd(a,b)$,现在来求通解。</p>
-<p>取一组解$(x_1,y_1)$，再任取一组解$(x_2,y_2)$，有：<br>$$<br>ax_1 + by_1 &#x3D; ax_2 + by_2 &#x3D; gcd(a,b)\a(x_1 - x_2) &#x3D; b(y_2 - y_1)\两边同时除以gcd(a,b),设a &#x2F; gcd(a,b) &#x3D; a’,b &#x2F; gcd (a,b) &#x3D; b’\a’(x_1 - x_2) &#x3D; b’(y_2 - y_1)\此时gcd(a’,b’) &#x3D; 1\所以x_1 - x_2 &#x3D; kb’,y_2 - y_1 &#x3D; ka’<br>$$</p>
-<h3 id="5-另外一个定理"><a href="#5-另外一个定理" class="headerlink" title="5.另外一个定理"></a>5.另外一个定理</h3><p>关于<strong>整数</strong>$x,y$的方程$ax + by &#x3D; c$有解的充要条件是$gcd(a,b)|c$。</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1116,40 +1116,6 @@
       </tags>
   </entry>
   <entry>
-    <title>一个不等式</title>
-    <url>/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/</url>
-    <content><![CDATA[<p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一些文字</title>
-    <url>/2023/07/09/%E4%B8%80%E4%BA%9B%E6%96%87%E5%AD%97/</url>
-    <content><![CDATA[<p>1938年11月，一间禅房中，两人以跪姿相对而坐。右首脊背笔挺，手摇折扇的是本因坊世家第二十一代”不败名人“，本因坊秀哉九段。虽仍为一头黑发，却早已年过花甲。秀哉自知年岁已大，且疾病缠身，大约大限之期不远矣，遂有意下一盘隐退棋。这盘棋的对手是从数百名职业棋手中脱颖而出青年棋手，木谷实七段。比赛于6月24日开始，木谷实执黑，秀哉执白。<br>	<br>2小时前，秀哉从容落下白96手，蛤基石与榧木棋盘间发出碰撞声。接下来2小时，两人好似入定，禅院中空气似乎也已凝固。这样的状态已持续4个月，并且还会再延续2个月。6个月的时间中，禅院外是隆隆的火炮爆裂声，而禅院的灯光下，只有清脆的落子声，其余便是时间积淀成的寂静。</p>
-<p><img src="https://s1.ax1x.com/2020/08/16/dEWVG4.png"></p>
-<p>1992年，大洋彼岸的英国牛津，37岁的数学教授Andrew Wiles正坐在自己的阁楼中。5年前，随着一系列的学术进展，已经尘封358年的费马大定理似乎有了研究的方向。Wiles 在那时感觉到证明费马大定理的时间已经来到，遂推掉了其他所有学术研讨会，钻进自己的阁楼中，对大定理发起冲击。5年来，他每天只做一件事：证明费马大定理。除了睡觉和吃饭，他将自己所有的时间都埋入阁楼里的草稿纸中。</p>
-<p>1995年，Andrew Wiles终于成功证明了费马大定理，8年阁楼中的研究岁月换来的是一份写满138页A4纸的证明。2005年，Wiles来到北大交流时，北大数学系院长张继平感慨到：”如今还有多少人能静下心来，花8年时间认认真真只做一件事情呢？“</p>
-<p>的确，现在这样的人已经很鲜见了。一盘围棋赛的时间从半年变为区区5小时，一项研究的平均时间也从8年变为如今的一个月甚至更少。随着社会的发展，我们要做的事情越来越多，而做每件事情的时间却越来越少，对应的，生活也变得越来越琐碎。时代的快车拽着我们一路飞奔，时间被划分成越来越小的片段。</p>
-<p>或许，我们真的应该慢下来，用一生时间做一件事情，这样的生活或许难以实现，但真的很浪漫。</p>
-<p>​	</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2023.6.20</title>
-    <url>/2023/07/10/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
-    <content><![CDATA[<p>想法来自一个同学的说说，稍微做了一点改动：</p>
-<p>我们总是觉得年纪越大时间过得越快，其实不然。童年时觉得时间过得很慢，是因为我们在彼时将精力全部投入在观察现实世界中。而随着年龄的增长，我们会把越来越多的时间用来回忆过去和遥想未来。关照现在的时间变少了，就会感到时间变得飞快，仿佛俯仰之间白驹已过隙。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一个经典期望问题的分治想法</title>
     <url>/2023/07/08/%E4%B8%80%E4%B8%AA%E6%9C%9F%E6%9C%9B%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<ul>
@@ -1174,6 +1140,49 @@
 ]]></content>
       <tags>
         <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一个不等式</title>
+    <url>/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/</url>
+    <content><![CDATA[<p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2023.6.20</title>
+    <url>/2023/07/10/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
+    <content><![CDATA[<p>想法来自一个同学的说说，稍微做了一点改动：</p>
+<p>我们总是觉得年纪越大时间过得越快，其实不然。童年时觉得时间过得很慢，是因为我们在彼时将精力全部投入在观察现实世界中。而随着年龄的增长，我们会把越来越多的时间用来回忆过去和遥想未来。关照现在的时间变少了，就会感到时间变得飞快，仿佛俯仰之间白驹已过隙。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一些文字</title>
+    <url>/2023/07/09/%E4%B8%80%E4%BA%9B%E6%96%87%E5%AD%97/</url>
+    <content><![CDATA[<p>1938年11月，一间禅房中，两人以跪姿相对而坐。右首脊背笔挺，手摇折扇的是本因坊世家第二十一代”不败名人“，本因坊秀哉九段。虽仍为一头黑发，却早已年过花甲。秀哉自知年岁已大，且疾病缠身，大约大限之期不远矣，遂有意下一盘隐退棋。这盘棋的对手是从数百名职业棋手中脱颖而出青年棋手，木谷实七段。比赛于6月24日开始，木谷实执黑，秀哉执白。<br>	<br>2小时前，秀哉从容落下白96手，蛤基石与榧木棋盘间发出碰撞声。接下来2小时，两人好似入定，禅院中空气似乎也已凝固。这样的状态已持续4个月，并且还会再延续2个月。6个月的时间中，禅院外是隆隆的火炮爆裂声，而禅院的灯光下，只有清脆的落子声，其余便是时间积淀成的寂静。</p>
+<p><img src="https://s1.ax1x.com/2020/08/16/dEWVG4.png"></p>
+<p>1992年，大洋彼岸的英国牛津，37岁的数学教授Andrew Wiles正坐在自己的阁楼中。5年前，随着一系列的学术进展，已经尘封358年的费马大定理似乎有了研究的方向。Wiles 在那时感觉到证明费马大定理的时间已经来到，遂推掉了其他所有学术研讨会，钻进自己的阁楼中，对大定理发起冲击。5年来，他每天只做一件事：证明费马大定理。除了睡觉和吃饭，他将自己所有的时间都埋入阁楼里的草稿纸中。</p>
+<p>1995年，Andrew Wiles终于成功证明了费马大定理，8年阁楼中的研究岁月换来的是一份写满138页A4纸的证明。2005年，Wiles来到北大交流时，北大数学系院长张继平感慨到：”如今还有多少人能静下心来，花8年时间认认真真只做一件事情呢？“</p>
+<p>的确，现在这样的人已经很鲜见了。一盘围棋赛的时间从半年变为区区5小时，一项研究的平均时间也从8年变为如今的一个月甚至更少。随着社会的发展，我们要做的事情越来越多，而做每件事情的时间却越来越少，对应的，生活也变得越来越琐碎。时代的快车拽着我们一路飞奔，时间被划分成越来越小的片段。</p>
+<p>或许，我们真的应该慢下来，用一生时间做一件事情，这样的生活或许难以实现，但真的很浪漫。</p>
+<p>​	</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初心</title>
+    <url>/2023/06/12/%E5%88%9D%E5%BF%83/</url>
+    <content><![CDATA[<p>​	希望能够幸福地做人，合理地度日，内心安定平和，即使身处逆境也始终保持追求。同时也希望能够通过文字与各位交流这方面的经验，于苦难中彼此慰藉。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -1384,38 +1393,6 @@
       </tags>
   </entry>
   <entry>
-    <title>初心</title>
-    <url>/2023/06/12/%E5%88%9D%E5%BF%83/</url>
-    <content><![CDATA[<p>​	希望能够幸福地做人，合理地度日，内心安定平和，即使身处逆境也始终保持追求。同时也希望能够通过文字与各位交流这方面的经验，于苦难中彼此慰藉。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>同余&amp;中国剩余定理&amp;中国剩余定理の扩展</title>
-    <url>/2023/07/05/%E5%90%8C%E4%BD%99%E5%92%8C%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/</url>
-    <content><![CDATA[<h2 id="同余"><a href="#同余" class="headerlink" title="同余"></a>同余</h2><h3 id="1-线性同余方程"><a href="#1-线性同余方程" class="headerlink" title="1.线性同余方程"></a>1.线性同余方程</h3><p>给定整数$a,b,m$求一个整数$x$满足$ax \equiv b \pmod m$，或给出无解。</p>
-<p>设$a \times x  &#x3D; b + my$，则$ax + my &#x3D; b$，有解的充要条件是$gcd(a,m)|b$.</p>
-<p>接下来只要用exgcd求出一个解，然后就可以求通解了。</p>
-<h3 id="2-中国剩余定理"><a href="#2-中国剩余定理" class="headerlink" title="2.中国剩余定理"></a>2.中国剩余定理</h3><p>设$m_1,m_2,m_3,……,m_n$是两两互质的整数，对于任意的$n$个整数$a_1,a_2,……,a_n$，关于$x$的方程组<br>$$<br>\begin{cases} x \equiv  a_1 \pmod {m_1}\x \equiv a_2 \pmod {m_2}\……\x \equiv a_n \pmod{m_n}\end{cases}<br>$$<br>有整数解。</p>
-<p>证明：</p>
-<p>设$m &#x3D;  \prod_{i &#x3D; 1}^nm_i,M_i &#x3D; m &#x2F; m_i$，$t_i$是线性同余方程$M_it_i \equiv 1 \pmod{m_i}$的一个解。</p>
-<p>则$x_0 &#x3D; \sum_{i &#x3D; 1}^n a_iM_it_i$是一个解</p>
-<p>因为$M_i$是除了$m_i$以外所有数的倍数，所以$\forall k \neq i,a_iM_it_i \equiv 0 \pmod{m_k}$。而因为$M_it_i \equiv  1 \pmod {m_i}$，所以 $a_iM_it_i \equiv a_i \pmod {a_i} $。<br>	<br>这是一个特解。通解为$x &#x3D; x_0 + km(k \in Z)$。</p>
-<ul>
-<li><p>代码</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m[<span class="number">30</span>],a[<span class="number">30</span>],M = <span class="number">1</span>,v[<span class="number">30</span>],t[<span class="number">30</span>],V1,V2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>;</span><br><span class="line">		y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">	<span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;m[i],&amp;a[i]);</span><br><span class="line">		M = M * m[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		v[i] = M / m[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x0,y0;</span><br><span class="line">		<span class="type">int</span> gcd = <span class="built_in">exgcd</span>(v[i],m[i],x0,y0);</span><br><span class="line">		x0 %= m[i];</span><br><span class="line">		<span class="keyword">if</span> (x0 &lt;= <span class="number">0</span>)</span><br><span class="line">			x0 += m[i];</span><br><span class="line">		t[i] = x0; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		sum += a[i] * v[i] * t[i];</span><br><span class="line">	sum %= M;</span><br><span class="line">	<span class="keyword">if</span> (sum &lt; <span class="number">0</span>)</span><br><span class="line">		sum += M;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="3-中国剩余定理的扩展版本"><a href="#3-中国剩余定理的扩展版本" class="headerlink" title="3.中国剩余定理的扩展版本"></a>3.中国剩余定理的扩展版本</h3><p>上面的方法要求$m_1,m_2,……,m_n$两两互质。现在给出一种对$m_i$没有要求的算法。</p>
-<p>数学归纳法：假设前$k - 1$个方程已经求出了一个解$x$。记$m &#x3D; lcm(m_1,m_2,……,m_{k - 1})$，则$x + i \times m (i \in Z)$是前$k - 1$个方程的通解。</p>
-<p>考虑第$k$个方程，求一个$t$，使得$x + t \times m \equiv a_k \pmod {m_k}$。将这个方程变换一下，得到$m \times t \equiv a_{k} - x \pmod {m_k}$,求$t$.<br>$$<br>m \times t + m_{k} \times p &#x3D; a_{k} - x<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>应该要掌握的STL</title>
     <url>/2023/07/12/%E5%BA%94%E8%AF%A5%E8%A6%81%E6%8E%8C%E6%8F%A1%E7%9A%84STL/</url>
     <content><![CDATA[<h3 id="应该要掌握的STL"><a href="#应该要掌握的STL" class="headerlink" title="应该要掌握的STL"></a>应该要掌握的STL</h3><h4 id="1-vector"><a href="#1-vector" class="headerlink" title="1. vector"></a>1. vector</h4><p>​	假设我们有一个<code>vector&lt;typename&gt;</code> 变量<code>v</code>，那么我们就可以有如下操作：</p>
@@ -1553,6 +1530,29 @@
       </tags>
   </entry>
   <entry>
+    <title>同余&amp;中国剩余定理&amp;中国剩余定理の扩展</title>
+    <url>/2023/07/05/%E5%90%8C%E4%BD%99%E5%92%8C%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/</url>
+    <content><![CDATA[<h2 id="同余"><a href="#同余" class="headerlink" title="同余"></a>同余</h2><h3 id="1-线性同余方程"><a href="#1-线性同余方程" class="headerlink" title="1.线性同余方程"></a>1.线性同余方程</h3><p>给定整数$a,b,m$求一个整数$x$满足$ax \equiv b \pmod m$，或给出无解。</p>
+<p>设$a \times x  &#x3D; b + my$，则$ax + my &#x3D; b$，有解的充要条件是$gcd(a,m)|b$.</p>
+<p>接下来只要用exgcd求出一个解，然后就可以求通解了。</p>
+<h3 id="2-中国剩余定理"><a href="#2-中国剩余定理" class="headerlink" title="2.中国剩余定理"></a>2.中国剩余定理</h3><p>设$m_1,m_2,m_3,……,m_n$是两两互质的整数，对于任意的$n$个整数$a_1,a_2,……,a_n$，关于$x$的方程组<br>$$<br>\begin{cases} x \equiv  a_1 \pmod {m_1}\x \equiv a_2 \pmod {m_2}\……\x \equiv a_n \pmod{m_n}\end{cases}<br>$$<br>有整数解。</p>
+<p>证明：</p>
+<p>设$m &#x3D;  \prod_{i &#x3D; 1}^nm_i,M_i &#x3D; m &#x2F; m_i$，$t_i$是线性同余方程$M_it_i \equiv 1 \pmod{m_i}$的一个解。</p>
+<p>则$x_0 &#x3D; \sum_{i &#x3D; 1}^n a_iM_it_i$是一个解</p>
+<p>因为$M_i$是除了$m_i$以外所有数的倍数，所以$\forall k \neq i,a_iM_it_i \equiv 0 \pmod{m_k}$。而因为$M_it_i \equiv  1 \pmod {m_i}$，所以 $a_iM_it_i \equiv a_i \pmod {a_i} $。<br>	<br>这是一个特解。通解为$x &#x3D; x_0 + km(k \in Z)$。</p>
+<ul>
+<li><p>代码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m[<span class="number">30</span>],a[<span class="number">30</span>],M = <span class="number">1</span>,v[<span class="number">30</span>],t[<span class="number">30</span>],V1,V2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>;</span><br><span class="line">		y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">	<span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;m[i],&amp;a[i]);</span><br><span class="line">		M = M * m[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		v[i] = M / m[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x0,y0;</span><br><span class="line">		<span class="type">int</span> gcd = <span class="built_in">exgcd</span>(v[i],m[i],x0,y0);</span><br><span class="line">		x0 %= m[i];</span><br><span class="line">		<span class="keyword">if</span> (x0 &lt;= <span class="number">0</span>)</span><br><span class="line">			x0 += m[i];</span><br><span class="line">		t[i] = x0; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		sum += a[i] * v[i] * t[i];</span><br><span class="line">	sum %= M;</span><br><span class="line">	<span class="keyword">if</span> (sum &lt; <span class="number">0</span>)</span><br><span class="line">		sum += M;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-中国剩余定理的扩展版本"><a href="#3-中国剩余定理的扩展版本" class="headerlink" title="3.中国剩余定理的扩展版本"></a>3.中国剩余定理的扩展版本</h3><p>上面的方法要求$m_1,m_2,……,m_n$两两互质。现在给出一种对$m_i$没有要求的算法。</p>
+<p>数学归纳法：假设前$k - 1$个方程已经求出了一个解$x$。记$m &#x3D; lcm(m_1,m_2,……,m_{k - 1})$，则$x + i \times m (i \in Z)$是前$k - 1$个方程的通解。</p>
+<p>考虑第$k$个方程，求一个$t$，使得$x + t \times m \equiv a_k \pmod {m_k}$。将这个方程变换一下，得到$m \times t \equiv a_{k} - x \pmod {m_k}$,求$t$.<br>$$<br>m \times t + m_{k} \times p &#x3D; a_{k} - x<br>$$</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>扩展欧拉定理</title>
     <url>/2023/07/01/%E6%89%A9%E5%B1%95%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86/</url>
     <content><![CDATA[<h1 id="扩展欧拉定理"><a href="#扩展欧拉定理" class="headerlink" title="扩展欧拉定理"></a>扩展欧拉定理</h1><p>扩展欧拉定理无需 <em>a</em>,<em>m</em> 互质。</p>
@@ -1608,299 +1608,6 @@
 ]]></content>
       <tags>
         <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率论</title>
-    <url>/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/</url>
-    <content><![CDATA[<h3 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h3><h4 id="1-泊松分布"><a href="#1-泊松分布" class="headerlink" title="1. 泊松分布"></a>1. 泊松分布</h4><p>$\hspace{1cm}$ 定义为$P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}$，$\lambda &gt; 0$，也可以记作$X$ ~ $P(\lambda)$</p>
-<p>$\hspace{1cm}$ 对于一个二项分布$B(n,p)$，如果$n$比较大，$np$适中（$n \ge 100， np \le 10$）那么可以把二项分布$B(n,p)$近似为$P(np)$</p>
-<h4 id="2-超几何分布"><a href="#2-超几何分布" class="headerlink" title="2. 超几何分布"></a>2. 超几何分布</h4><p>$\hspace{1cm}$ 定义为$H(N,M,n)$，表示从有限$N$个物品中（其中包含$M$个指定种类的物件）中抽出$n$个物件，成功抽出该指定种类的物件的次数（不放回）</p>
-<h4 id="3-均匀分布"><a href="#3-均匀分布" class="headerlink" title="3. 均匀分布"></a>3. 均匀分布</h4><p>$\hspace{1cm}$ 即在$[a,b]$范围内等概率分布的情况，记作$X$ ~ $U(a,b)$</p>
-<h4 id="4-指数分布"><a href="#4-指数分布" class="headerlink" title="4. 指数分布"></a>4. 指数分布</h4><p> $\hspace{1cm}$ 其概率密度函数为<br>$$<br>f(x) &#x3D; \begin{cases}\lambda e^{-\lambda x}\ \ \ \ x &gt; 0\ 0 \ \ \ \ \ \ \ \ \ \ \ \ x \le 0 \end{cases}<br>$$<br>$\hspace{1cm}$ 记作$X$ ~ $Exp(\lambda)$</p>
-<h4 id="5-几何分布"><a href="#5-几何分布" class="headerlink" title="5. 几何分布"></a>5. 几何分布</h4><p>$\hspace{1cm}$ 定义为$P(X &#x3D; k) &#x3D; (1 - p)^{k - 1} \times p$，也可记作$X$ ~ $G(p)$，表示第$k$次刚好第一次发生概率为$p$的事</p>
-<h4 id="6-正态分布"><a href="#6-正态分布" class="headerlink" title="6. 正态分布"></a>6. 正态分布</h4><p>$\hspace{1cm}$ 其密度函数记为<br>$$<br>\varphi(x) &#x3D; \frac 1{\sqrt{2\pi} \sigma}e^{-\frac{(x - \mu)^2}{2\sigma^2}}<br>$$<br>$\hspace{1cm}$ 记作$X$ ~ $N(\mu, \sigma^2)$</p>
-<p>$\hspace{1cm}$ 其分布函数记为$\Phi(x) &#x3D; \int_{-\infty}^x \phi(t) dt$</p>
-<p>$\hspace{1cm}$ 当$\mu &#x3D; 0, \sigma &#x3D; 1$时，认为是标准正态分布，其概率密度函数记为$\varphi_0(x)$，分布函数记为$\Phi_0(x)$</p>
-<p>$\hspace{1cm}$ 对于任何任意一个$\varphi(x)$，有$\varphi(x) &#x3D; \frac 1 \sigma \varphi_0(\frac {x - \mu}{\sigma})$，以及$\Phi(x) &#x3D; \Phi_0(\frac{x - \mu}{\sigma})$</p>
-<h3 id="多维随机变量相关"><a href="#多维随机变量相关" class="headerlink" title="多维随机变量相关"></a>多维随机变量相关</h3><h4 id="1-多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）"><a href="#1-多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）" class="headerlink" title="1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）"></a>1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</h4><p>$\hspace{1cm}$ 仿照单元模式，我们有如下定义：$F(x,y) &#x3D; P(X \le x, Y \le y)$ 为$(X,Y)$的联合分布函数</p>
-<p>$\hspace{1cm}$ 根据定义，容易证明</p>
-<p>$$<br>P(x_1 &lt; X \le x_2, y_1 &lt; Y \le y_2) &#x3D; F(x_2,y_2) - F(x_1,y_2) - F(x_2,y_1) + F(x_1,y_1)<br>$$</p>
-<p>$\hspace{1cm}$ 注意到$F(x,y)$有如下性质：</p>
-<p>$$<br>F(-\infty,y) &#x3D; F(x, -\infty) &#x3D; 0<br>$$</p>
-<p>$$<br>F(-\infty,-\infty) &#x3D; 0, F(+\infty,+\infty) &#x3D; 1<br>$$</p>
-<p>$\hspace{1cm}$ 定义边缘分布函数：称$F_X(x),F_Y(y)$分别为$(X,Y)$关于$X$和$Y$的边缘分布函数，其中$F_X(x) &#x3D; F(x,+\infty)$，$F_Y(y) &#x3D; F(y, +\infty)$。</p>
-<h4 id="2-多维随机变量的联合概率密度以及边缘概率密度（连续型）"><a href="#2-多维随机变量的联合概率密度以及边缘概率密度（连续型）" class="headerlink" title="2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）"></a>2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）</h4><p>$\hspace{1cm}$ 若存在二元函数$f(x,y)$使得$\int_{-\infty}^x \int_{-\infty}^y f(u,v)dudv &#x3D; F(x,y)$，则称$f(x,y)$为联合概率密度</p>
-<p>$\hspace{1cm}$ 定义边缘概率密度函数：称$f_X(x), f_Y(y)$分别为$(X,Y)$关于$X$和$Y$的边缘密度函数，其中$f_X(x) &#x3D; \int_{-\infty}^{+\infty}f(x,y)dy$, $f_Y(y) &#x3D; \int_{-\infty}^{+\infty}f(x,y)dx$</p>
-<p>​	</p>
-<h4 id="3-多维随机变量的联合分布列以及边缘分布列（离散型）"><a href="#3-多维随机变量的联合分布列以及边缘分布列（离散型）" class="headerlink" title="3. 多维随机变量的联合分布列以及边缘分布列（离散型）"></a>3. 多维随机变量的联合分布列以及边缘分布列（离散型）</h4><p>$\hspace{1cm}$ 若$(X,Y)$均是离散的，那么定义$p_{ij} &#x3D;P(X &#x3D; x_i, Y &#x3D; y_i)$为联合分布列</p>
-<p>$\hspace{1cm}$ 同时定义$p_{i·} &#x3D; \sum_j p_{ij}$为$(X,Y)$关于$X$的边缘分布列，$p_{·j} &#x3D;\sum <em>i p</em>{ij}$ 为$(X,Y)$关于$Y$的边缘分布列</p>
-<h4 id="4-多维变量的分布"><a href="#4-多维变量的分布" class="headerlink" title="4. 多维变量的分布"></a>4. 多维变量的分布</h4><p>$\hspace{1cm}$ 设$Z &#x3D; \frac XY$，且$f(x,y)$表示变量$X,Y$的联合概率密度函数，则有：<br>$$<br>f_Z(z) &#x3D; \int_{-\infty}^{+\infty} |y| f(yz,y)dy<br>$$</p>
-<h3 id="期望，方差，协方差"><a href="#期望，方差，协方差" class="headerlink" title="期望，方差，协方差"></a>期望，方差，协方差</h3><ul>
-<li><p>常见分布的期望和方差：</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>E:期望</th>
-<th>D：方差</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>$U(a,b)$</td>
-<td>$\frac {a + b}2$</td>
-<td>$\frac{(b - a)^2}{12}$</td>
-</tr>
-<tr>
-<td>$P(\lambda)$</td>
-<td>$\lambda$</td>
-<td>$\lambda$</td>
-</tr>
-<tr>
-<td>$E(\lambda)$</td>
-<td>$\frac 1\lambda$</td>
-<td>$\frac 1{\lambda^2}$</td>
-</tr>
-<tr>
-<td>$G(p)$</td>
-<td>$\frac 1p$</td>
-<td>$\frac q{p^2}$</td>
-</tr>
-<tr>
-<td>$N(\mu, \sigma^2)$</td>
-<td>$\mu$</td>
-<td>$\sigma^2$</td>
-</tr>
-<tr>
-<td>$B(n,p)$</td>
-<td>$np$</td>
-<td>$npq$</td>
-</tr>
-</tbody></table>
-<p>注：$E(\lambda)$为指数分布，$G(p)$为几何分布，$q &#x3D; 1 - p$</p>
-</li>
-<li><p>切比雪夫不等式： 对于一切分布$X$，有：<br>$$<br>P(|X - EX| &gt; \varepsilon) \le \frac {DX}{\varepsilon^2}<br>$$</p>
-</li>
-<li><p>注意：如果随机变量$X,Y$满足$E(XY) &#x3D; E(X)E(Y)$那么不能说明$X$和$Y$是独立的！</p>
-</li>
-<li><p>对于任意随机变量$X_1,X_2,…,X_n$以及任意常数$k_0,k_1,…,k_n$，我们有：<br>$$<br>D(k_0 + k_1X_1+ k_2X_2 + … + k_nX_n) &#x3D; \sum_{i &#x3D; 1}^n{k_i}^2DX_i + 2 \sum_{1 \le i &lt; j \le n}k_ik_jCov(X_i,X_j)<br>$$</p>
-</li>
-<li><p>Cauchy-schwarz inequation:<br>$$<br>EX^2 \times EY^2 \ge (E[XY])^2<br>$$</p>
-</li>
-<li><p>最小二乘法拟合：对于随机变量$X,Y$，尝试用$y &#x3D; \hat{a}x + \hat{b}$拟合，那么最好的拟合直线中:<br>$$<br>\hat{a} &#x3D; \rho_{XY} \sqrt{\frac {DY}{DX} }, \hat{b} &#x3D; EY - \hat{a}EX<br>$$</p>
-</li>
-<li><p>若$(X,Y)$服从二维正态分布$N(\mu_1,\mu_2,{\sigma_1}^2,{\sigma_2}^2,\rho)$，那么$Cov(X,Y) &#x3D; \sigma_1\sigma_2\rho$</p>
-</li>
-<li><p>条件期望的概念：书p69开始，注意：$E(X|Y)$是一个关于$Y$的函数，也是一个随机变量，而$E(X|Y &#x3D; y)$是一个常数。全期望公式：<br>$$<br>E(X) &#x3D; E[E(X|Y)]<br>$$</p>
-</li>
-</ul>
-<h3 id="数理统计部分"><a href="#数理统计部分" class="headerlink" title="数理统计部分"></a>数理统计部分</h3><ul>
-<li><p><strong>样本方差</strong>的定义：设有$n$个样本$X_1,X_2,…,X_n$，则定义样本方差<br>$$<br>S^2 &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2<br>$$<br>其中：<br>$$<br>\bar{X} &#x3D; \frac 1n \sum_{i &#x3D; 1}^nX_i<br>$$</p>
-</li>
-<li><p>设$n$个样本都是独立同分布的，且每个样本作为随机变量均值为$\mu$,方差为$\sigma^2$，则：<br>$$<br>ES^2 &#x3D;E(\frac 1{n - 1} \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2) &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(E^2(X_i) - 2E(X_i\bar{X}) + E^2(\bar{x}))\ &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(\mu^2 + \sigma^2 + \mu^2 + \frac 1n \sigma^2 - 2E(X_i\bar{X}))\<br>\because E(X_i\bar{X}) &#x3D; \frac 1nE(\sum_{1 \le j\le n, j \neq i}X_iX_j) + \frac 1nE({X_i}^2) &#x3D; \frac 1n\sum_{1 \le j\le n, j \neq i}E(X_i)E(X_j) + \frac 1nE({X_i}^2)\ &#x3D; \mu^2 + \frac 1n \sigma^2\<br>\therefore ES^2 &#x3D; \frac 1{n - 1} \times n \times \frac{n - 1}n\sigma^2 &#x3D; \sigma^2<br>$$</p>
-</li>
-<li><p>设$\chi^2$ ~ $\chi^2(n)$，则当$n$足够大时，$\sqrt{2\chi^2}$近似服从正态分布$N(\sqrt{2n-1},1)$</p>
-</li>
-<li><p><strong>t分布</strong>：若$X$ ~ $N(0,1)$, $Y$ ~ $\chi^2(N)$，且$X$和$Y$相互独立，那么定义$T$ ~ $t(n) &#x3D; \frac{X}{\sqrt{Y&#x2F;n}}$为<strong>t分布</strong>.</p>
-<p>当$n \to +\infty$时，$t(n)$ 可近似为 $N(0,1)$ </p>
-</li>
-<li><p><strong>F分布：<strong>若$X$ ~ $\chi^2(n_1)$， $Y$ ~ $\chi^2(n_2)$，且$X$和$Y$相互独立，那么定义$F(n_1,n_2) &#x3D; \frac{X&#x2F;{n_1}}{Y&#x2F;_{n_2}}$为</strong>F分布</strong></p>
-<p>​        若$F$ ~ $F(n_1,n_2)$,则有$\frac 1F $ ~ $F(n_2,n_1)$。同时我们有：$F_{\alpha}(n_2,n_1) &#x3D; \frac 1{F_{1 - \alpha}(n_1,n_2)}$</p>
-</li>
-<li><p>假设$X_1,X_2,…,X_n$均服从$N(\mu,\sigma^2)$且相互独立，设$\bar{X} &#x3D; \frac 1n \sum_{i &#x3D; 1}^n {X_i}$，$S^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2$，那么：</p>
-<ul>
-<li>$ \frac 1{\sigma^2}\sum_{i &#x3D; 1}^n (X_i - \mu)^2$ ~ $\chi^2(n)$</li>
-<li>$\frac 1{\sigma^2}\sum_{i &#x3D; 1}^n (X_i - \bar{X})^2 $ ~ $\chi^2 (n - 1)$ 这条等价为$(n - 1)\frac {S^2}{\sigma^2}$ ~ $\chi^2(n - 1)$</li>
-<li>$\frac{\bar{X} - \mu} {\sigma}\sqrt{n}$ ~ $N(0,1)$；    </li>
-<li>$\frac{\bar{X} - \mu}{S}\sqrt{n}$ ~ $t(n - 1)$； （这里的S表示标准差，即$\sqrt{S^2}$，同时我们可以比较上下发现，当$n \to \infty$时，$t(n - 1) \to N(0,1)$）</li>
-</ul>
-</li>
-<li><p>p96 推论6.3 考前看一下，难记</p>
-</li>
-<li><p>在正态分布中，不相关和独立是等价的，这是一条很强的结论</p>
-</li>
-<li><p>正态分布随机抽样得到$X_1,X_2,…,X_n$。那么有$S^2$与$\overline{X}$独立，且有$\tilde{S}$与$\overline{X}$独立。</p>
-</li>
-</ul>
-<h3 id="参数估计部分"><a href="#参数估计部分" class="headerlink" title="参数估计部分"></a>参数估计部分</h3><p>$\hspace{1cm}$ 这部分主要用于处理已经知道一系列样本，要用这些样板来估计分布函数里面的一些参数的问题。</p>
-<ul>
-<li><p>矩估计：</p>
-<ul>
-<li><p>若只有一个参数要估计，那只需要用一阶矩来估计即可； 如果有n个参数要估计，那么用前n阶矩来估计</p>
-</li>
-<li><p>用第$k$阶矩来估计的方法：</p>
-<ul>
-<li>首先计算出总体的$k$阶原点矩，这等于$E(X^k)$，这应该是一个关于待估计参数的函数</li>
-<li>然后计算出样本的$k$阶原点矩，这等于$\frac 1n \sum_{i &#x3D; 1}^n {X_i}^k$  ，这算出来是一个确定的数</li>
-<li>令样本的$k$阶原点矩等于总体的$k$阶原点矩，得到一个方程用来解待估计的参数</li>
-</ul>
-</li>
-<li><p>更加一般化地说，就是我们可以用样本的$k$阶原点矩作为总体的$k$阶原点矩。例如，我们知道样本的$1$阶原点矩是$a$，样本的$2$阶原点矩是$b$，现在要求样本的标准差的矩估计。</p>
-<p>那么，我们就可以认为$EX &#x3D; a$, $EX^2 &#x3D; b$，于是$D &#x3D; EX^2 -(EX)^2 &#x3D; b - a^2$，所以我们就认为$\sqrt{b - a^2}$是样本的标准差的矩估计。</p>
-</li>
-<li><p>我们有如下记号约定：对于一个样本$(X_1,X_2,…,X_n)$，令 $\tilde{S}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2$</p>
-</li>
-<li><p>在矩估计法中，认为$DX &#x3D; \tilde{S}^2$</p>
-<p>证明如下：<br>$$<br>\tilde{S}^2 &#x3D;\frac 1n \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2 \ &#x3D;<br>\frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - \frac 2n \sum_{i &#x3D; 1}^n{X_i}\overline{X} + \overline{X}^2\ &#x3D;  \frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - 2\overline{X}^2 + \overline{X}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - \overline{X}^2\ &#x3D; EX^2 - (EX)^2 &#x3D; DX<br>$$</p>
-</li>
-</ul>
-</li>
-<li><p>最大似然估计</p>
-<p>即为要让参数取该估计值时，样本发生的概率最大</p>
-</li>
-<li><p>设$\hat{\theta} &#x3D; \hat{\theta}(X_1,X_2,…,X_n)$是参数$\theta$的估计量，若对于任意的$\theta \in \Theta$，都有：<br>$$<br>E(\hat{\theta}) &#x3D; \theta<br>$$<br>那么称$\hat{\theta}$是$\theta$的无偏估计。</p>
-<p>设总体方差$DX&#x3D;\sigma^2$存在，那么$S^2 &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2$是$\sigma^2$的无偏估计，而$\tilde{S}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n(X_i - \overline{X})^2$是$\sigma^2$的有偏估计。</p>
-</li>
-</ul>
-<h3 id="概率论好题整理"><a href="#概率论好题整理" class="headerlink" title="概率论好题整理"></a>概率论好题整理</h3><ol>
-<li><p>若$X,Y$独立，且$X$ ~ $P(\lambda_1)$,$Y$ ~ $P(\lambda_2)$。</p>
-<p>(1) 证明$X + Y$ ~ $P(\lambda_1 + \lambda_2)$; （2）求在已知$X + Y &#x3D; m$的条件下$X$的分布</p>
-</li>
-<li><p>已知随机变量$X$和$Y$相互独立，且都服从$N(0,1)$，求$E[max{X,Y}]$</p>
-</li>
-<li><p>已知$X$ ~ $N(\mu, \sigma ^2)$，求$DX$</p>
-<p>首先$EX &#x3D; \mu$, 然后：</p>
-</li>
-</ol>
-<p>$$<br>DX &#x3D; E((X - EX)^2) &#x3D; E((X - \mu)^2) &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma}e^{-\frac {(x - \mu)^2}{2\sigma ^2}}\times (x - \mu)^2 dx\ &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma} e^{\frac{-x^2}{2\sigma^2} }\times x^2 dx &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma} e^{-(\frac x{\sqrt 2 \sigma})^2} \times (\frac x{\sqrt 2 \sigma})^2d(\frac {x}{\sqrt 2 \sigma}) \times 2\sqrt 2 \sigma ^3\ &#x3D; \frac{2\sigma ^2}{\sqrt{\pi}} \int_{-\infty}^{+\infty} e^{-x^2} x^2dx<br>$$</p>
-<p>​		考察积分$\int_{-\infty}^{+\infty}e^{-x^2}x^2dx$：<br>$$<br>\int_{-\infty}^{+\infty} e^{-x^2}dx &#x3D; \left. xe^{-x^2}\right|<em>{-\infty}^{+\infty}  + 2\int</em>{-\infty}^{+\infty}e^{x^2}x^2 dx &#x3D; \sqrt{\pi}<br>$$<br>​		于是：<br>$$<br>\int_{-\infty}^{+\infty}e^{x^2}x^2 dx &#x3D;\frac {\sqrt \pi}2<br>$$<br>​		所以:<br>$$<br>DX &#x3D; \sigma^2<br>$$</p>
-<ol start="4">
-<li>已知$X$ ~ $N(0,\sigma^2)$, $Y$ ~ $N(0,\sigma ^2)$，求证：$X + Y$ ~ $N(0, 2\sigma^2)$， $X - Y$ ~ $N(0, 2\sigma^2)$。</li>
-</ol>
-<p>**超级强的一个结论：**若$X$ ~ $N(\mu_1,{\sigma_1}^2)$，$Y$ ~ $N(\mu_2,{\sigma_2}^2)$，则$X + Y$ ~ $N(\mu_1+\mu_2，{\sigma_1}^2+{\sigma_2}^2 )$，</p>
-<p>$X - Y$ ~ $N(\mu1 - \mu 2,{\sigma_1}^2+{\sigma_2}^2  )$</p>
-<ol start="5">
-<li><p>设随机变量$X$与$Y$相互独立，且都服从$N(0, \frac 12)$分布，求$E|X - Y|$以及$D|X-Y|$<br>$$<br>E|X-Y| &#x3D; \sqrt{\frac 2 \pi}\ \ \ \ \ \ \ D|X-Y| &#x3D; 1 - \frac 2 \pi<br>$$</p>
-</li>
-<li><p>设随机变量$x$具有概率密度：<br>$$<br>f(x) &#x3D; \begin{cases} \frac{x^m}{m!} e^{-x}\ \ \ \ \ \ \ \ x \ge 0\<br>0 \ \ \ \ \ \ \  \ \ \ \ \  \ else\end{cases}<br>$$<br>其中$m$为正整数。请证明：$P(0 \le X \le 2(m + 1)) \ge \frac m{m + 1}$</p>
-<blockquote>
-<p>hint: 实际上这个概率密度函数和欧拉给出的 x! 的连续函数的被积函数很像</p>
-</blockquote>
-</li>
-<li><p>设随机变量$X,Y$独立，且分别服从参数为$\lambda$和$\mu$的泊松分布，求$E(X|X + Y &#x3D; m)$</p>
-<blockquote>
-<p>$ans:\frac{m\lambda}{\lambda + \mu}$</p>
-</blockquote>
-</li>
-<li><p>假设随机变量$X_1$在$[0,1]$上有均匀分布,$X_i$在$[X_{i-1},X_{i-1}+1]$上有均匀分布，其中$i &#x3D; 2,3,…,n$，求$EX_n$</p>
-<p>解：首先$E(X_i|X_{i - 1}) &#x3D; X_{i - 1} + \frac 12$，根据全期望公式，有</p>
-<p>$$<br>E(X_i) &#x3D; E(E(X_i|X_{i - 1})) &#x3D; E(x_{i - 1} + \frac 12) &#x3D; EX_{i - 1} + \frac 12<br>$$<br>而$E_1 &#x3D; \frac 12$，所以$E_n &#x3D; \frac n2$</p>
-</li>
-<li><p>已知$X$ ~ $N(0,1)$，求$E(X^2),D(X^2)$<br>$$<br>E(X^2) &#x3D; E^2(X) + D(X) &#x3D; 1\<br>E(X^4) &#x3D; \int_{-\infty}^{+\infty}\frac 1{\sqrt{2\pi}}e^{-\frac{x^2}2}x^4dx\<br>while\ \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^4dx &#x3D; \frac 34 \sqrt{\pi}\ \ (This \ \ is \ \ similar \ \  to \ \ calculating \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^2 dx)\<br>\therefore E(X^4) &#x3D; 3\<br>\therefore D(X^2) &#x3D; E(X^4)-E^2(X^2) &#x3D; 3 - 1 &#x3D; 2<br>$$</p>
-</li>
-<li><p>设总体$B$ ~ $B(1,p)$,$p$为未知参数，$(X_1,X_2,X_3,…,X_n)$ 为来自总体$X$的样本，求$p$的极大似然估计</p>
-<p>第一种做法是$L(\theta) &#x3D; \prod(X_ip + (1-X_i)(1-p))$，这种后续取对然后求驻点是做不下去的</p>
-<p>需要写成$L(\theta) &#x3D; \prod(p^{X_i}(1 - p)^{1 - X_i})$，然后后续取对然后求驻点可以做</p>
-</li>
-<li><p>设总体$X$的密度函数为：<br>$$<br>f(x) &#x3D; \begin{cases}\frac 1 \theta e^{-\frac{x - \mu}\theta}\ \ \ \ x \ge \mu \ 0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x &lt; \mu  \ \end{cases}<br>$$<br>其中$\theta &gt; 0$， 求未知参数$\mu, \theta$的矩估计量</p>
-</li>
-</ol>
-<p> 注意到：$X - \mu$  ~ $E(\frac 1\theta)$，</p>
-<p>所以：$E(X - \mu)$ &#x3D; $\theta$, $D(X - \mu) &#x3D; \theta^2$，<br>所以：$EX &#x3D; \theta + \mu, DX &#x3D; \theta ^2$，<br>所以：$\overline{X} &#x3D; \theta + \mu, \tilde{S}^2 &#x3D; \theta^2$<br>所以：$\theta &#x3D; \tilde{S}, \mu &#x3D; \overline{X} - \tilde{S}$</p>
-<ol start="12">
-<li>若$X$与$Y$不相关，是否有$f(X)$与$g(Y)$不相关？</li>
-<li>若$X_1,X_2,…,X_n$独立同分布，是否有$\overline{X}$与$S^2$不相关？</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>欧拉函数&amp;线性筛</title>
-    <url>/2024/11/07/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0&amp;%E7%BA%BF%E6%80%A7%E7%AD%9B/</url>
-    <content><![CDATA[<h1 id="欧拉函数-线性筛"><a href="#欧拉函数-线性筛" class="headerlink" title="欧拉函数&amp;线性筛"></a>欧拉函数&amp;线性筛</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>$\varphi(n)$ 表示所有与$n$互质的正整数$i$的个数，其中$i &lt;&#x3D; n$.</p>
-<h2 id="2-欧拉定理"><a href="#2-欧拉定理" class="headerlink" title="2. 欧拉定理"></a>2. 欧拉定理</h2><p>欧拉定理是指对于任意互质的正整数$a$ 和 $n$，有:</p>
-<p>$$<br>a^{\varphi(n)} \equiv 1\pmod{n}<br>$$</p>
-<h2 id="3-证明"><a href="#3-证明" class="headerlink" title="3. 证明"></a>3. 证明</h2><p>记小于$n$且与$n$互质的正整数集合$R$为：</p>
-<p>$$<br>R &#x3D; { r_1,r_2,r_3,……,r_{\varphi(n)}}<br>$$</p>
-<p>再令集合S为：</p>
-<p>$$<br>S &#x3D; {a\times  r_1 % n,a \times   r_2 % n,……,a\times r_{\varphi(n)}%n}<br>$$</p>
-<p>现在我们先证明$S$中的元素两两互不相同。</p>
-<p>反证法：假设存在两个整数$i$ 和$j$（方便起见，令$i &lt; j$）使得$a \times r_i % n &#x3D; a \times r_j % n$,则：</p>
-<p>$$<br>a \times r_i \equiv a \times r_j \pmod{n}<br>$$</p>
-<p>又因为$a$与$n$互质，所以$r_i &#x3D; r_j$,而$i &lt; j$，即 $r_i \neq r_j$，矛盾，所以$S$中元素两两互不相同。</p>
-<p>又因为$a$ 与 $n$互质，$r_i$与 n互质，所以易得$a * r_i % n$与 $n$ 互质，即$S$中的元素都与 $n$ 互质。</p>
-<p>所以可以得到 $R &#x3D; S$.</p>
-<p>所以 ：</p>
-<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} &#x3D; \prod_{i &#x3D; 1}^{\varphi(n)}{a \times r_i%n}<br>$$</p>
-<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv \prod_{i &#x3D; 1}^{\varphi(n)}{r_i \times a} \pmod{n}<br>$$</p>
-<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv a^{\varphi(n)}  \times \prod_{i &#x3D; 1}^{\varphi(n)}{r_i}  \pmod{n}<br>$$</p>
-<p>又因为$\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} $ 与 n 互质，</p>
-<p>所以：<br>$$<br>a^{\varphi(n)} \equiv 1 \pmod{n}<br>$$</p>
-<h2 id="4-线性筛"><a href="#4-线性筛" class="headerlink" title="4.线性筛"></a>4.线性筛</h2><p>先上代码：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> prime[maxn],px,l,r,n;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) </span><br><span class="line">			prime[++px] = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; i * prime[j] &lt;= n; j++) &#123;</span><br><span class="line">			b[prime[j] * i] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>)</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=px; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,prime[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-
-
-<p>算法的正确性证明中，其实我们要证明的就是两点：</p>
-<ul>
-<li>每一个合数都会被筛掉。</li>
-<li>每一个合数只能被筛一遍（以保证时间复杂度$O(n)$)</li>
-</ul>
-<p>对于第一点，证明如下：</p>
-<p>设这个合数为$v$,则 $v &#x3D; p_1 p_2   …… p_k(p_i&lt;&#x3D;p_{i+1})$，$p$ 为 $v$的质因数。</p>
-<p>可以发现，当$i &#x3D; p_2 \cdot p_3 \cdot  …… \cdot p_k$,  $prime[j] &#x3D; p_1$时，$i$与所有小于$p_1$的质数互质，所以中途不会被break掉，所以此时$v$可以被筛掉。</p>
-<p>对于第二点，证明如下：</p>
-<p>在第一点中，我们是证明了v会在$i &#x3D; p_2 \times p_3 \times …… \times p_k$,  $prime[j] &#x3D; p_1$时被筛掉，那么现在就是要证明除了这种情况外，v不会被筛掉。</p>
-<p>设当$i &#x3D; p_1 \times p_2 \times … \times p_{m - 1} \times  p_{m + 1} \times … \times p_k$ $(p_i &lt;&#x3D; p_{i + 1})$ 时</p>
-<p>$prime[j] &#x3D; p_m(p_m \neq p_1)$时 v 被筛掉.</p>
-<p>可以发现 $p_1 | i$,所以当$prime[j] &#x3D; p_1$时就会被break掉，所以v不会在此时被筛掉。</p>
-<p>由此，我们可以证明，算法的正确性和时间复杂度的正确性。</p>
-<h2 id="5-求欧拉函数"><a href="#5-求欧拉函数" class="headerlink" title="5.求欧拉函数"></a>5.求欧拉函数</h2><p>首先，欧拉函数是一个积性函数。</p>
-<p>积性函数的定义是：函数$f(x)$,若满足$f(m \times n) &#x3D; f(m) \times f(n) (gcd(n,m) &#x3D; 1)$,那么$f(x)$就是一个积性函数。</p>
-<p>欧拉函数是一个积性函数。</p>
-<p>设$n &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} $,$p_i\in P$，则有： </p>
-<p>$$<br>\varphi(n) &#x3D; \varphi(p_1^{m_1}) \times \varphi(p_2^{m_2}) \times …… \times \varphi(p_k^{m_k})<br>$$</p>
-<p>对于$\varphi(p^k),p_i \in P$，易得$\varphi(p^k) &#x3D; p^k - p^{k - 1} &#x3D; p^k \times (1 - \frac{1}{p})$</p>
-<p>所以有：</p>
-<p>$$<br>\varphi(n) &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} \times (1 - \frac{1}{p_1}) \times (1 - \frac{1}{p_2}) \times …… \times (1 - \frac{1}{p_k})  \&#x3D; n \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k}))<br>$$</p>
-<p>特别的，当$n \in P$时，$\varphi(n) &#x3D; n - 1$.</p>
-<p>理解了上面这些，可以上代码了：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> n,phi[maxn],prime[maxn],px;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) &#123;</span><br><span class="line">			prime[++px] = i;</span><br><span class="line">			phi[i] = i - <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; prime[j] * i &lt;= n; j++) &#123;</span><br><span class="line">			b[i * prime[j]] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">				phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			phi[i * prime[j]] = phi[i] * phi[prime[j]];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,phi[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，这个代码是由线性筛变过来的。</p>
-<p>当$i \in P$时，毫无疑问$\varphi(i) &#x3D; i - 1$.</p>
-<p>当$i \notin P$时，分以下两种情况讨论：</p>
-<ul>
-<li>若$i % prime[j] \neq 0$，因为$prime[j] \in P$,所以$gcd(i,prime[j])) &#x3D; 1$。因此根据积性函数的定义，有：</li>
-</ul>
-<p>$$<br>\varphi(i \times prime[j]) &#x3D; \varphi(i) \times \varphi(prime[j])<br>$$</p>
-<ul>
-<li>若$i % prime[j] &#x3D; 0$，因为$prime[j] \in P$,所以$prime[j]$必定为 i 的一个质因数，所以$prime[j]$必定是$p_1,p_2,p_3,……,p_k$中的一个，因此得到：<br>  $$<br>  \varphi(i \times prime[j]) &#x3D; i \times prime[j] \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k})) &#x3D; \varphi(i) \times prime[j]<br>  $$</li>
-</ul>
-<p>最后和线性筛一样，可以证明欧拉函数求法时间复杂度也是线性的。</p>
-<p>特别的，$\varphi(1) &#x3D; 1$.</p>
-<h2 id="6-一些神奇定理"><a href="#6-一些神奇定理" class="headerlink" title="6.一些神奇定理"></a>6.一些神奇定理</h2><ul>
-<li><p>$\sum_{d|n}\varphi(d) &#x3D; n$</p>
-</li>
-<li><p>$\forall n &gt; 1,1-n$中与n互质的数的和为$n \times \varphi(n) &#x2F; 2$</p>
-</li>
-<li><p>$若gcd(a,n) &#x3D; 1$ $ \forall 正整数b$  $a^b \equiv a^{b \ mod \  \varphi(n)}(mod\  n)$</p>
-</li>
-<li><p>若$a$,$n$互质，则满足$a^x \equiv 1 (mod \ n)$的最小正整数$x_0$是$\varphi(n)$的约数。</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>臆想</title>
-    <url>/2023/07/11/%E8%87%86%E6%83%B3/</url>
-    <content><![CDATA[<h1 id="臆想"><a href="#臆想" class="headerlink" title="臆想"></a>臆想</h1><p>  很久很久以前，在某个地方，突然出现了一所监狱。</p>
-<p>  这所监狱很大，很大，很大，没有人知道它到底有多大。这所监狱很深，很深，很深，没有人知道它到底有多深。最奇怪的是，这所监狱是凭空产生的，没有人知道它到底是怎么来的。</p>
-<p>  又过了很久很久，一件更奇怪的事情开始发生了：每隔一段时间，就会有一批犯人被送进这所监狱。你若问他：”你原来来自哪里？你犯了什么罪？“，他只会回答：”我不知道。“</p>
-<p>  这所监狱里也有许多怪物，能随意地穿越墙壁，过道，房间，它们的日常娱乐即为折磨犯人。红色的怪物喜欢粗暴地折断犯人的躯干或四肢，蓝色的怪物喜欢掏出犯人的脏器，在上面动一点小手脚，然后再把它塞回去，让犯人慢慢死去。还有一种紫色的怪物，它最喜欢干的事情是将一些食物抛在犯人们之间，接着它就在旁边旁观犯人们为了争抢食物而相互厮杀。</p>
-<p>  这所监狱区别于其他监狱最大的特点在于它时刻允许犯人们越狱。在每个犯人的房间里面，都有一个传送门。只要几分钟时间，犯人就可以通过这道传送门越狱。面对监狱里那些恐怖怪物的折磨，一开始，绝大多数的犯人都选择了越狱，因此，在相当长的一段时间里，这所监狱里空无一人。</p>
-<p>  你也许会问我，这批越狱的犯人后来去了哪里？过得怎样？我只能回答你，我不知道，因为我从未穿越过传送门，也从来没有见到有犯人从传送门中回来。这个监狱里的犯人曾对监狱外的世界做过种种猜测，但没有人知道真相究竟是如何。</p>
-<p>  可是，有一天，一批特殊的犯人被送了进来。这批犯人和以前送来的犯人没有任何区别，除了一点：他们的身体构造出现了一些变化，使得他们在穿越传送门越狱的那几分钟里会莫名其妙地感受到巨大的痛苦。就是因为这个变化，这批犯人中的绝大多数都没有选择越狱。就这样，原本空无一物的监狱渐渐被这类犯人充满。</p>
-<p>  对于犯人们，时间艰涩地流过。他们无时无刻不在期待着穿过传送门，可是只有少数勇士做到了，大多数只能在黑暗中祈祷自己不是怪物的下一个目标。</p>
-<p>  由于这个特殊的机制，这个监狱已经存在了好久好久，而且也可以预见它还可以继续存在很久很久。但是，经过很久很久之后，监狱的墙会和门融合，壁会和杆融合，任何地方一切的一切会和任何地方的一切的一切融合，直到分不清彼此。据说，到那时候，上帝将会摧毁这座监狱，释放其中所有的犯人。<br>	<br>  期待这一天早日到来吧<br>	<br>  以上是一名犯人写下的一点文字。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -2103,6 +1810,401 @@
       </tags>
   </entry>
   <entry>
+    <title>欧拉函数&amp;线性筛</title>
+    <url>/2024/11/07/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0&amp;%E7%BA%BF%E6%80%A7%E7%AD%9B/</url>
+    <content><![CDATA[<h1 id="欧拉函数-线性筛"><a href="#欧拉函数-线性筛" class="headerlink" title="欧拉函数&amp;线性筛"></a>欧拉函数&amp;线性筛</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>$\varphi(n)$ 表示所有与$n$互质的正整数$i$的个数，其中$i &lt;&#x3D; n$.</p>
+<h2 id="2-欧拉定理"><a href="#2-欧拉定理" class="headerlink" title="2. 欧拉定理"></a>2. 欧拉定理</h2><p>欧拉定理是指对于任意互质的正整数$a$ 和 $n$，有:</p>
+<p>$$<br>a^{\varphi(n)} \equiv 1\pmod{n}<br>$$</p>
+<h2 id="3-证明"><a href="#3-证明" class="headerlink" title="3. 证明"></a>3. 证明</h2><p>记小于$n$且与$n$互质的正整数集合$R$为：</p>
+<p>$$<br>R &#x3D; { r_1,r_2,r_3,……,r_{\varphi(n)}}<br>$$</p>
+<p>再令集合S为：</p>
+<p>$$<br>S &#x3D; {a\times  r_1 % n,a \times   r_2 % n,……,a\times r_{\varphi(n)}%n}<br>$$</p>
+<p>现在我们先证明$S$中的元素两两互不相同。</p>
+<p>反证法：假设存在两个整数$i$ 和$j$（方便起见，令$i &lt; j$）使得$a \times r_i % n &#x3D; a \times r_j % n$,则：</p>
+<p>$$<br>a \times r_i \equiv a \times r_j \pmod{n}<br>$$</p>
+<p>又因为$a$与$n$互质，所以$r_i &#x3D; r_j$,而$i &lt; j$，即 $r_i \neq r_j$，矛盾，所以$S$中元素两两互不相同。</p>
+<p>又因为$a$ 与 $n$互质，$r_i$与 n互质，所以易得$a * r_i % n$与 $n$ 互质，即$S$中的元素都与 $n$ 互质。</p>
+<p>所以可以得到 $R &#x3D; S$.</p>
+<p>所以 ：</p>
+<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} &#x3D; \prod_{i &#x3D; 1}^{\varphi(n)}{a \times r_i%n}<br>$$</p>
+<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv \prod_{i &#x3D; 1}^{\varphi(n)}{r_i \times a} \pmod{n}<br>$$</p>
+<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv a^{\varphi(n)}  \times \prod_{i &#x3D; 1}^{\varphi(n)}{r_i}  \pmod{n}<br>$$</p>
+<p>又因为$\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} $ 与 n 互质，</p>
+<p>所以：<br>$$<br>a^{\varphi(n)} \equiv 1 \pmod{n}<br>$$</p>
+<h2 id="4-线性筛"><a href="#4-线性筛" class="headerlink" title="4.线性筛"></a>4.线性筛</h2><p>先上代码：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> prime[maxn],px,l,r,n;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) </span><br><span class="line">			prime[++px] = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; i * prime[j] &lt;= n; j++) &#123;</span><br><span class="line">			b[prime[j] * i] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>)</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=px; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,prime[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>算法的正确性证明中，其实我们要证明的就是两点：</p>
+<ul>
+<li>每一个合数都会被筛掉。</li>
+<li>每一个合数只能被筛一遍（以保证时间复杂度$O(n)$)</li>
+</ul>
+<p>对于第一点，证明如下：</p>
+<p>设这个合数为$v$,则 $v &#x3D; p_1 p_2   …… p_k(p_i&lt;&#x3D;p_{i+1})$，$p$ 为 $v$的质因数。</p>
+<p>可以发现，当$i &#x3D; p_2 \cdot p_3 \cdot  …… \cdot p_k$,  $prime[j] &#x3D; p_1$时，$i$与所有小于$p_1$的质数互质，所以中途不会被break掉，所以此时$v$可以被筛掉。</p>
+<p>对于第二点，证明如下：</p>
+<p>在第一点中，我们是证明了v会在$i &#x3D; p_2 \times p_3 \times …… \times p_k$,  $prime[j] &#x3D; p_1$时被筛掉，那么现在就是要证明除了这种情况外，v不会被筛掉。</p>
+<p>设当$i &#x3D; p_1 \times p_2 \times … \times p_{m - 1} \times  p_{m + 1} \times … \times p_k$ $(p_i &lt;&#x3D; p_{i + 1})$ 时</p>
+<p>$prime[j] &#x3D; p_m(p_m \neq p_1)$时 v 被筛掉.</p>
+<p>可以发现 $p_1 | i$,所以当$prime[j] &#x3D; p_1$时就会被break掉，所以v不会在此时被筛掉。</p>
+<p>由此，我们可以证明，算法的正确性和时间复杂度的正确性。</p>
+<h2 id="5-求欧拉函数"><a href="#5-求欧拉函数" class="headerlink" title="5.求欧拉函数"></a>5.求欧拉函数</h2><p>首先，欧拉函数是一个积性函数。</p>
+<p>积性函数的定义是：函数$f(x)$,若满足$f(m \times n) &#x3D; f(m) \times f(n) (gcd(n,m) &#x3D; 1)$,那么$f(x)$就是一个积性函数。</p>
+<p>欧拉函数是一个积性函数。</p>
+<p>设$n &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} $,$p_i\in P$，则有： </p>
+<p>$$<br>\varphi(n) &#x3D; \varphi(p_1^{m_1}) \times \varphi(p_2^{m_2}) \times …… \times \varphi(p_k^{m_k})<br>$$</p>
+<p>对于$\varphi(p^k),p_i \in P$，易得$\varphi(p^k) &#x3D; p^k - p^{k - 1} &#x3D; p^k \times (1 - \frac{1}{p})$</p>
+<p>所以有：</p>
+<p>$$<br>\varphi(n) &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} \times (1 - \frac{1}{p_1}) \times (1 - \frac{1}{p_2}) \times …… \times (1 - \frac{1}{p_k})  \&#x3D; n \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k}))<br>$$</p>
+<p>特别的，当$n \in P$时，$\varphi(n) &#x3D; n - 1$.</p>
+<p>理解了上面这些，可以上代码了：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> n,phi[maxn],prime[maxn],px;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) &#123;</span><br><span class="line">			prime[++px] = i;</span><br><span class="line">			phi[i] = i - <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; prime[j] * i &lt;= n; j++) &#123;</span><br><span class="line">			b[i * prime[j]] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">				phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			phi[i * prime[j]] = phi[i] * phi[prime[j]];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,phi[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，这个代码是由线性筛变过来的。</p>
+<p>当$i \in P$时，毫无疑问$\varphi(i) &#x3D; i - 1$.</p>
+<p>当$i \notin P$时，分以下两种情况讨论：</p>
+<ul>
+<li>若$i % prime[j] \neq 0$，因为$prime[j] \in P$,所以$gcd(i,prime[j])) &#x3D; 1$。因此根据积性函数的定义，有：</li>
+</ul>
+<p>$$<br>\varphi(i \times prime[j]) &#x3D; \varphi(i) \times \varphi(prime[j])<br>$$</p>
+<ul>
+<li>若$i % prime[j] &#x3D; 0$，因为$prime[j] \in P$,所以$prime[j]$必定为 i 的一个质因数，所以$prime[j]$必定是$p_1,p_2,p_3,……,p_k$中的一个，因此得到：<br>  $$<br>  \varphi(i \times prime[j]) &#x3D; i \times prime[j] \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k})) &#x3D; \varphi(i) \times prime[j]<br>  $$</li>
+</ul>
+<p>最后和线性筛一样，可以证明欧拉函数求法时间复杂度也是线性的。</p>
+<p>特别的，$\varphi(1) &#x3D; 1$.</p>
+<h2 id="6-一些神奇定理"><a href="#6-一些神奇定理" class="headerlink" title="6.一些神奇定理"></a>6.一些神奇定理</h2><ul>
+<li><p>$\sum_{d|n}\varphi(d) &#x3D; n$</p>
+</li>
+<li><p>$\forall n &gt; 1,1-n$中与n互质的数的和为$n \times \varphi(n) &#x2F; 2$</p>
+</li>
+<li><p>$若gcd(a,n) &#x3D; 1$ $ \forall 正整数b$  $a^b \equiv a^{b \ mod \  \varphi(n)}(mod\  n)$</p>
+</li>
+<li><p>若$a$,$n$互质，则满足$a^x \equiv 1 (mod \ n)$的最小正整数$x_0$是$\varphi(n)$的约数。</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率论</title>
+    <url>/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/</url>
+    <content><![CDATA[<h3 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h3><h4 id="1-泊松分布"><a href="#1-泊松分布" class="headerlink" title="1. 泊松分布"></a>1. 泊松分布</h4><p>$\hspace{1cm}$ 定义为$P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}$，$\lambda &gt; 0$，也可以记作$X$ ~ $P(\lambda)$</p>
+<p>$\hspace{1cm}$ 对于一个二项分布$B(n,p)$，如果$n$比较大，$np$适中（$n \ge 100， np \le 10$）那么可以把二项分布$B(n,p)$近似为$P(np)$</p>
+<h4 id="2-超几何分布"><a href="#2-超几何分布" class="headerlink" title="2. 超几何分布"></a>2. 超几何分布</h4><p>$\hspace{1cm}$ 定义为$H(N,M,n)$，表示从有限$N$个物品中（其中包含$M$个指定种类的物件）中抽出$n$个物件，成功抽出该指定种类的物件的次数（不放回）</p>
+<h4 id="3-均匀分布"><a href="#3-均匀分布" class="headerlink" title="3. 均匀分布"></a>3. 均匀分布</h4><p>$\hspace{1cm}$ 即在$[a,b]$范围内等概率分布的情况，记作$X$ ~ $U(a,b)$</p>
+<h4 id="4-指数分布"><a href="#4-指数分布" class="headerlink" title="4. 指数分布"></a>4. 指数分布</h4><p> $\hspace{1cm}$ 其概率密度函数为<br>$$<br>f(x) &#x3D; \begin{cases}\lambda e^{-\lambda x}\ \ \ \ x &gt; 0\ 0 \ \ \ \ \ \ \ \ \ \ \ \ x \le 0 \end{cases}<br>$$<br>$\hspace{1cm}$ 记作$X$ ~ $Exp(\lambda)$</p>
+<h4 id="5-几何分布"><a href="#5-几何分布" class="headerlink" title="5. 几何分布"></a>5. 几何分布</h4><p>$\hspace{1cm}$ 定义为$P(X &#x3D; k) &#x3D; (1 - p)^{k - 1} \times p$，也可记作$X$ ~ $G(p)$，表示第$k$次刚好第一次发生概率为$p$的事</p>
+<h4 id="6-正态分布"><a href="#6-正态分布" class="headerlink" title="6. 正态分布"></a>6. 正态分布</h4><p>$\hspace{1cm}$ 其密度函数记为<br>$$<br>\varphi(x) &#x3D; \frac 1{\sqrt{2\pi} \sigma}e^{-\frac{(x - \mu)^2}{2\sigma^2}}<br>$$<br>$\hspace{1cm}$ 记作$X$ ~ $N(\mu, \sigma^2)$</p>
+<p>$\hspace{1cm}$ 其分布函数记为$\Phi(x) &#x3D; \int_{-\infty}^x \phi(t) dt$</p>
+<p>$\hspace{1cm}$ 当$\mu &#x3D; 0, \sigma &#x3D; 1$时，认为是标准正态分布，其概率密度函数记为$\varphi_0(x)$，分布函数记为$\Phi_0(x)$</p>
+<p>$\hspace{1cm}$ 对于任何任意一个$\varphi(x)$，有$\varphi(x) &#x3D; \frac 1 \sigma \varphi_0(\frac {x - \mu}{\sigma})$，以及$\Phi(x) &#x3D; \Phi_0(\frac{x - \mu}{\sigma})$</p>
+<h3 id="多维随机变量相关"><a href="#多维随机变量相关" class="headerlink" title="多维随机变量相关"></a>多维随机变量相关</h3><h4 id="1-多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）"><a href="#1-多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）" class="headerlink" title="1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）"></a>1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</h4><p>$\hspace{1cm}$ 仿照单元模式，我们有如下定义：$F(x,y) &#x3D; P(X \le x, Y \le y)$ 为$(X,Y)$的联合分布函数</p>
+<p>$\hspace{1cm}$ 根据定义，容易证明</p>
+<p>$$<br>P(x_1 &lt; X \le x_2, y_1 &lt; Y \le y_2) &#x3D; F(x_2,y_2) - F(x_1,y_2) - F(x_2,y_1) + F(x_1,y_1)<br>$$</p>
+<p>$\hspace{1cm}$ 注意到$F(x,y)$有如下性质：</p>
+<p>$$<br>F(-\infty,y) &#x3D; F(x, -\infty) &#x3D; 0<br>$$</p>
+<p>$$<br>F(-\infty,-\infty) &#x3D; 0, F(+\infty,+\infty) &#x3D; 1<br>$$</p>
+<p>$\hspace{1cm}$ 定义边缘分布函数：称$F_X(x),F_Y(y)$分别为$(X,Y)$关于$X$和$Y$的边缘分布函数，其中$F_X(x) &#x3D; F(x,+\infty)$，$F_Y(y) &#x3D; F(y, +\infty)$。</p>
+<h4 id="2-多维随机变量的联合概率密度以及边缘概率密度（连续型）"><a href="#2-多维随机变量的联合概率密度以及边缘概率密度（连续型）" class="headerlink" title="2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）"></a>2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）</h4><p>$\hspace{1cm}$ 若存在二元函数$f(x,y)$使得$\int_{-\infty}^x \int_{-\infty}^y f(u,v)dudv &#x3D; F(x,y)$，则称$f(x,y)$为联合概率密度</p>
+<p>$\hspace{1cm}$ 定义边缘概率密度函数：称$f_X(x), f_Y(y)$分别为$(X,Y)$关于$X$和$Y$的边缘密度函数，其中$f_X(x) &#x3D; \int_{-\infty}^{+\infty}f(x,y)dy$, $f_Y(y) &#x3D; \int_{-\infty}^{+\infty}f(x,y)dx$</p>
+<p>​	</p>
+<h4 id="3-多维随机变量的联合分布列以及边缘分布列（离散型）"><a href="#3-多维随机变量的联合分布列以及边缘分布列（离散型）" class="headerlink" title="3. 多维随机变量的联合分布列以及边缘分布列（离散型）"></a>3. 多维随机变量的联合分布列以及边缘分布列（离散型）</h4><p>$\hspace{1cm}$ 若$(X,Y)$均是离散的，那么定义$p_{ij} &#x3D;P(X &#x3D; x_i, Y &#x3D; y_i)$为联合分布列</p>
+<p>$\hspace{1cm}$ 同时定义$p_{i·} &#x3D; \sum_j p_{ij}$为$(X,Y)$关于$X$的边缘分布列，$p_{·j} &#x3D;\sum <em>i p</em>{ij}$ 为$(X,Y)$关于$Y$的边缘分布列</p>
+<h4 id="4-多维变量的分布"><a href="#4-多维变量的分布" class="headerlink" title="4. 多维变量的分布"></a>4. 多维变量的分布</h4><p>$\hspace{1cm}$ 设$Z &#x3D; \frac XY$，且$f(x,y)$表示变量$X,Y$的联合概率密度函数，则有：<br>$$<br>f_Z(z) &#x3D; \int_{-\infty}^{+\infty} |y| f(yz,y)dy<br>$$</p>
+<h3 id="期望，方差，协方差"><a href="#期望，方差，协方差" class="headerlink" title="期望，方差，协方差"></a>期望，方差，协方差</h3><ul>
+<li><p>常见分布的期望和方差：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>E:期望</th>
+<th>D：方差</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$U(a,b)$</td>
+<td>$\frac {a + b}2$</td>
+<td>$\frac{(b - a)^2}{12}$</td>
+</tr>
+<tr>
+<td>$P(\lambda)$</td>
+<td>$\lambda$</td>
+<td>$\lambda$</td>
+</tr>
+<tr>
+<td>$E(\lambda)$</td>
+<td>$\frac 1\lambda$</td>
+<td>$\frac 1{\lambda^2}$</td>
+</tr>
+<tr>
+<td>$G(p)$</td>
+<td>$\frac 1p$</td>
+<td>$\frac q{p^2}$</td>
+</tr>
+<tr>
+<td>$N(\mu, \sigma^2)$</td>
+<td>$\mu$</td>
+<td>$\sigma^2$</td>
+</tr>
+<tr>
+<td>$B(n,p)$</td>
+<td>$np$</td>
+<td>$npq$</td>
+</tr>
+</tbody></table>
+<p>注：$E(\lambda)$为指数分布，$G(p)$为几何分布，$q &#x3D; 1 - p$</p>
+</li>
+<li><p>切比雪夫不等式： 对于一切分布$X$，有：<br>$$<br>P(|X - EX| &gt; \varepsilon) \le \frac {DX}{\varepsilon^2}<br>$$</p>
+</li>
+<li><p>注意：如果随机变量$X,Y$满足$E(XY) &#x3D; E(X)E(Y)$那么不能说明$X$和$Y$是独立的！</p>
+</li>
+<li><p>对于任意随机变量$X_1,X_2,…,X_n$以及任意常数$k_0,k_1,…,k_n$，我们有：<br>$$<br>D(k_0 + k_1X_1+ k_2X_2 + … + k_nX_n) &#x3D; \sum_{i &#x3D; 1}^n{k_i}^2DX_i + 2 \sum_{1 \le i &lt; j \le n}k_ik_jCov(X_i,X_j)<br>$$</p>
+</li>
+<li><p>Cauchy-schwarz inequation:<br>$$<br>EX^2 \times EY^2 \ge (E[XY])^2<br>$$</p>
+</li>
+<li><p>最小二乘法拟合：对于随机变量$X,Y$，尝试用$y &#x3D; \hat{a}x + \hat{b}$拟合，那么最好的拟合直线中:<br>$$<br>\hat{a} &#x3D; \rho_{XY} \sqrt{\frac {DY}{DX} }, \hat{b} &#x3D; EY - \hat{a}EX<br>$$</p>
+</li>
+<li><p>若$(X,Y)$服从二维正态分布$N(\mu_1,\mu_2,{\sigma_1}^2,{\sigma_2}^2,\rho)$，那么$Cov(X,Y) &#x3D; \sigma_1\sigma_2\rho$</p>
+</li>
+<li><p>条件期望的概念：书p69开始，注意：$E(X|Y)$是一个关于$Y$的函数，也是一个随机变量，而$E(X|Y &#x3D; y)$是一个常数。全期望公式：<br>$$<br>E(X) &#x3D; E[E(X|Y)]<br>$$</p>
+</li>
+</ul>
+<h3 id="数理统计部分"><a href="#数理统计部分" class="headerlink" title="数理统计部分"></a>数理统计部分</h3><ul>
+<li><p><strong>样本方差</strong>的定义：设有$n$个样本$X_1,X_2,…,X_n$，则定义样本方差<br>$$<br>S^2 &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2<br>$$<br>其中：<br>$$<br>\bar{X} &#x3D; \frac 1n \sum_{i &#x3D; 1}^nX_i<br>$$</p>
+</li>
+<li><p>设$n$个样本都是独立同分布的，且每个样本作为随机变量均值为$\mu$,方差为$\sigma^2$，则：<br>$$<br>ES^2 &#x3D;E(\frac 1{n - 1} \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2) &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(E^2(X_i) - 2E(X_i\bar{X}) + E^2(\bar{x}))\ &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(\mu^2 + \sigma^2 + \mu^2 + \frac 1n \sigma^2 - 2E(X_i\bar{X}))\<br>\because E(X_i\bar{X}) &#x3D; \frac 1nE(\sum_{1 \le j\le n, j \neq i}X_iX_j) + \frac 1nE({X_i}^2) &#x3D; \frac 1n\sum_{1 \le j\le n, j \neq i}E(X_i)E(X_j) + \frac 1nE({X_i}^2)\ &#x3D; \mu^2 + \frac 1n \sigma^2\<br>\therefore ES^2 &#x3D; \frac 1{n - 1} \times n \times \frac{n - 1}n\sigma^2 &#x3D; \sigma^2<br>$$</p>
+</li>
+<li><p>设$\chi^2$ ~ $\chi^2(n)$，则当$n$足够大时，$\sqrt{2\chi^2}$近似服从正态分布$N(\sqrt{2n-1},1)$</p>
+</li>
+<li><p><strong>t分布</strong>：若$X$ ~ $N(0,1)$, $Y$ ~ $\chi^2(N)$，且$X$和$Y$相互独立，那么定义$T$ ~ $t(n) &#x3D; \frac{X}{\sqrt{Y&#x2F;n}}$为<strong>t分布</strong>.</p>
+<p>当$n \to +\infty$时，$t(n)$ 可近似为 $N(0,1)$ </p>
+</li>
+<li><p><strong>F分布：<strong>若$X$ ~ $\chi^2(n_1)$， $Y$ ~ $\chi^2(n_2)$，且$X$和$Y$相互独立，那么定义$F(n_1,n_2) &#x3D; \frac{X&#x2F;{n_1}}{Y&#x2F;_{n_2}}$为</strong>F分布</strong></p>
+<p>​        若$F$ ~ $F(n_1,n_2)$,则有$\frac 1F $ ~ $F(n_2,n_1)$。同时我们有：$F_{\alpha}(n_2,n_1) &#x3D; \frac 1{F_{1 - \alpha}(n_1,n_2)}$</p>
+</li>
+<li><p>假设$X_1,X_2,…,X_n$均服从$N(\mu,\sigma^2)$且相互独立，设$\bar{X} &#x3D; \frac 1n \sum_{i &#x3D; 1}^n {X_i}$，$S^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2$，那么：</p>
+<ul>
+<li>$ \frac 1{\sigma^2}\sum_{i &#x3D; 1}^n (X_i - \mu)^2$ ~ $\chi^2(n)$</li>
+<li>$\frac 1{\sigma^2}\sum_{i &#x3D; 1}^n (X_i - \bar{X})^2 $ ~ $\chi^2 (n - 1)$ 这条等价为$(n - 1)\frac {S^2}{\sigma^2}$ ~ $\chi^2(n - 1)$</li>
+<li>$\frac{\bar{X} - \mu} {\sigma}\sqrt{n}$ ~ $N(0,1)$；    </li>
+<li>$\frac{\bar{X} - \mu}{S}\sqrt{n}$ ~ $t(n - 1)$； （这里的S表示标准差，即$\sqrt{S^2}$，同时我们可以比较上下发现，当$n \to \infty$时，$t(n - 1) \to N(0,1)$）</li>
+</ul>
+</li>
+<li><p>p96 推论6.3 考前看一下，难记</p>
+</li>
+<li><p>在正态分布中，不相关和独立是等价的，这是一条很强的结论</p>
+</li>
+<li><p>正态分布随机抽样得到$X_1,X_2,…,X_n$。那么有$S^2$与$\overline{X}$独立，且有$\tilde{S}$与$\overline{X}$独立。</p>
+</li>
+</ul>
+<h3 id="参数估计部分"><a href="#参数估计部分" class="headerlink" title="参数估计部分"></a>参数估计部分</h3><p>$\hspace{1cm}$ 这部分主要用于处理已经知道一系列样本，要用这些样板来估计分布函数里面的一些参数的问题。</p>
+<ul>
+<li><p>矩估计：</p>
+<ul>
+<li><p>若只有一个参数要估计，那只需要用一阶矩来估计即可； 如果有n个参数要估计，那么用前n阶矩来估计</p>
+</li>
+<li><p>用第$k$阶矩来估计的方法：</p>
+<ul>
+<li>首先计算出总体的$k$阶原点矩，这等于$E(X^k)$，这应该是一个关于待估计参数的函数</li>
+<li>然后计算出样本的$k$阶原点矩，这等于$\frac 1n \sum_{i &#x3D; 1}^n {X_i}^k$  ，这算出来是一个确定的数</li>
+<li>令样本的$k$阶原点矩等于总体的$k$阶原点矩，得到一个方程用来解待估计的参数</li>
+</ul>
+</li>
+<li><p>更加一般化地说，就是我们可以用样本的$k$阶原点矩作为总体的$k$阶原点矩。例如，我们知道样本的$1$阶原点矩是$a$，样本的$2$阶原点矩是$b$，现在要求样本的标准差的矩估计。</p>
+<p>那么，我们就可以认为$EX &#x3D; a$, $EX^2 &#x3D; b$，于是$D &#x3D; EX^2 -(EX)^2 &#x3D; b - a^2$，所以我们就认为$\sqrt{b - a^2}$是样本的标准差的矩估计。</p>
+</li>
+<li><p>我们有如下记号约定：对于一个样本$(X_1,X_2,…,X_n)$，令 $\tilde{S}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2$</p>
+</li>
+<li><p>在矩估计法中，认为$DX &#x3D; \tilde{S}^2$</p>
+<p>证明如下：<br>$$<br>\tilde{S}^2 &#x3D;\frac 1n \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2 \ &#x3D;<br>\frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - \frac 2n \sum_{i &#x3D; 1}^n{X_i}\overline{X} + \overline{X}^2\ &#x3D;  \frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - 2\overline{X}^2 + \overline{X}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - \overline{X}^2\ &#x3D; EX^2 - (EX)^2 &#x3D; DX<br>$$</p>
+</li>
+</ul>
+</li>
+<li><p>最大似然估计</p>
+<p>即为要让参数取该估计值时，样本发生的概率最大</p>
+</li>
+<li><p>设$\hat{\theta} &#x3D; \hat{\theta}(X_1,X_2,…,X_n)$是参数$\theta$的估计量，若对于任意的$\theta \in \Theta$，都有：<br>$$<br>E(\hat{\theta}) &#x3D; \theta<br>$$<br>那么称$\hat{\theta}$是$\theta$的无偏估计。</p>
+<p>设总体方差$DX&#x3D;\sigma^2$存在，那么$S^2 &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2$是$\sigma^2$的无偏估计，而$\tilde{S}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n(X_i - \overline{X})^2$是$\sigma^2$的有偏估计。</p>
+</li>
+</ul>
+<h3 id="概率论好题整理"><a href="#概率论好题整理" class="headerlink" title="概率论好题整理"></a>概率论好题整理</h3><ol>
+<li><p>若$X,Y$独立，且$X$ ~ $P(\lambda_1)$,$Y$ ~ $P(\lambda_2)$。</p>
+<p>(1) 证明$X + Y$ ~ $P(\lambda_1 + \lambda_2)$; （2）求在已知$X + Y &#x3D; m$的条件下$X$的分布</p>
+</li>
+<li><p>已知随机变量$X$和$Y$相互独立，且都服从$N(0,1)$，求$E[max{X,Y}]$</p>
+</li>
+<li><p>已知$X$ ~ $N(\mu, \sigma ^2)$，求$DX$</p>
+<p>首先$EX &#x3D; \mu$, 然后：</p>
+</li>
+</ol>
+<p>$$<br>DX &#x3D; E((X - EX)^2) &#x3D; E((X - \mu)^2) &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma}e^{-\frac {(x - \mu)^2}{2\sigma ^2}}\times (x - \mu)^2 dx\ &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma} e^{\frac{-x^2}{2\sigma^2} }\times x^2 dx &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma} e^{-(\frac x{\sqrt 2 \sigma})^2} \times (\frac x{\sqrt 2 \sigma})^2d(\frac {x}{\sqrt 2 \sigma}) \times 2\sqrt 2 \sigma ^3\ &#x3D; \frac{2\sigma ^2}{\sqrt{\pi}} \int_{-\infty}^{+\infty} e^{-x^2} x^2dx<br>$$</p>
+<p>​		考察积分$\int_{-\infty}^{+\infty}e^{-x^2}x^2dx$：<br>$$<br>\int_{-\infty}^{+\infty} e^{-x^2}dx &#x3D; \left. xe^{-x^2}\right|<em>{-\infty}^{+\infty}  + 2\int</em>{-\infty}^{+\infty}e^{x^2}x^2 dx &#x3D; \sqrt{\pi}<br>$$<br>​		于是：<br>$$<br>\int_{-\infty}^{+\infty}e^{x^2}x^2 dx &#x3D;\frac {\sqrt \pi}2<br>$$<br>​		所以:<br>$$<br>DX &#x3D; \sigma^2<br>$$</p>
+<ol start="4">
+<li>已知$X$ ~ $N(0,\sigma^2)$, $Y$ ~ $N(0,\sigma ^2)$，求证：$X + Y$ ~ $N(0, 2\sigma^2)$， $X - Y$ ~ $N(0, 2\sigma^2)$。</li>
+</ol>
+<p>**超级强的一个结论：**若$X$ ~ $N(\mu_1,{\sigma_1}^2)$，$Y$ ~ $N(\mu_2,{\sigma_2}^2)$，则$X + Y$ ~ $N(\mu_1+\mu_2，{\sigma_1}^2+{\sigma_2}^2 )$，</p>
+<p>$X - Y$ ~ $N(\mu1 - \mu 2,{\sigma_1}^2+{\sigma_2}^2  )$</p>
+<ol start="5">
+<li><p>设随机变量$X$与$Y$相互独立，且都服从$N(0, \frac 12)$分布，求$E|X - Y|$以及$D|X-Y|$<br>$$<br>E|X-Y| &#x3D; \sqrt{\frac 2 \pi}\ \ \ \ \ \ \ D|X-Y| &#x3D; 1 - \frac 2 \pi<br>$$</p>
+</li>
+<li><p>设随机变量$x$具有概率密度：<br>$$<br>f(x) &#x3D; \begin{cases} \frac{x^m}{m!} e^{-x}\ \ \ \ \ \ \ \ x \ge 0\<br>0 \ \ \ \ \ \ \  \ \ \ \ \  \ else\end{cases}<br>$$<br>其中$m$为正整数。请证明：$P(0 \le X \le 2(m + 1)) \ge \frac m{m + 1}$</p>
+<blockquote>
+<p>hint: 实际上这个概率密度函数和欧拉给出的 x! 的连续函数的被积函数很像</p>
+</blockquote>
+</li>
+<li><p>设随机变量$X,Y$独立，且分别服从参数为$\lambda$和$\mu$的泊松分布，求$E(X|X + Y &#x3D; m)$</p>
+<blockquote>
+<p>$ans:\frac{m\lambda}{\lambda + \mu}$</p>
+</blockquote>
+</li>
+<li><p>假设随机变量$X_1$在$[0,1]$上有均匀分布,$X_i$在$[X_{i-1},X_{i-1}+1]$上有均匀分布，其中$i &#x3D; 2,3,…,n$，求$EX_n$</p>
+<p>解：首先$E(X_i|X_{i - 1}) &#x3D; X_{i - 1} + \frac 12$，根据全期望公式，有</p>
+<p>$$<br>E(X_i) &#x3D; E(E(X_i|X_{i - 1})) &#x3D; E(x_{i - 1} + \frac 12) &#x3D; EX_{i - 1} + \frac 12<br>$$<br>而$E_1 &#x3D; \frac 12$，所以$E_n &#x3D; \frac n2$</p>
+</li>
+<li><p>已知$X$ ~ $N(0,1)$，求$E(X^2),D(X^2)$<br>$$<br>E(X^2) &#x3D; E^2(X) + D(X) &#x3D; 1\<br>E(X^4) &#x3D; \int_{-\infty}^{+\infty}\frac 1{\sqrt{2\pi}}e^{-\frac{x^2}2}x^4dx\<br>while\ \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^4dx &#x3D; \frac 34 \sqrt{\pi}\ \ (This \ \ is \ \ similar \ \  to \ \ calculating \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^2 dx)\<br>\therefore E(X^4) &#x3D; 3\<br>\therefore D(X^2) &#x3D; E(X^4)-E^2(X^2) &#x3D; 3 - 1 &#x3D; 2<br>$$</p>
+</li>
+<li><p>设总体$B$ ~ $B(1,p)$,$p$为未知参数，$(X_1,X_2,X_3,…,X_n)$ 为来自总体$X$的样本，求$p$的极大似然估计</p>
+<p>第一种做法是$L(\theta) &#x3D; \prod(X_ip + (1-X_i)(1-p))$，这种后续取对然后求驻点是做不下去的</p>
+<p>需要写成$L(\theta) &#x3D; \prod(p^{X_i}(1 - p)^{1 - X_i})$，然后后续取对然后求驻点可以做</p>
+</li>
+<li><p>设总体$X$的密度函数为：<br>$$<br>f(x) &#x3D; \begin{cases}\frac 1 \theta e^{-\frac{x - \mu}\theta}\ \ \ \ x \ge \mu \ 0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x &lt; \mu  \ \end{cases}<br>$$<br>其中$\theta &gt; 0$， 求未知参数$\mu, \theta$的矩估计量</p>
+</li>
+</ol>
+<p> 注意到：$X - \mu$  ~ $E(\frac 1\theta)$，</p>
+<p>所以：$E(X - \mu)$ &#x3D; $\theta$, $D(X - \mu) &#x3D; \theta^2$，<br>所以：$EX &#x3D; \theta + \mu, DX &#x3D; \theta ^2$，<br>所以：$\overline{X} &#x3D; \theta + \mu, \tilde{S}^2 &#x3D; \theta^2$<br>所以：$\theta &#x3D; \tilde{S}, \mu &#x3D; \overline{X} - \tilde{S}$</p>
+<ol start="12">
+<li>若$X$与$Y$不相关，是否有$f(X)$与$g(Y)$不相关？</li>
+<li>若$X_1,X_2,…,X_n$独立同分布，是否有$\overline{X}$与$S^2$不相关？</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>特征值的一些</title>
+    <url>/2026/04/24/%E7%89%B9%E5%BE%81%E5%80%BC%E7%9A%84%E4%B8%80%E4%BA%9B/</url>
+    <content><![CDATA[<h3 id="关于特征值的一些"><a href="#关于特征值的一些" class="headerlink" title="关于特征值的一些"></a>关于特征值的一些</h3><ul>
+<li>Notation<br>对于一个矩阵$A$，其第$i$列记作$A_{c(i)}$，第$i$行记作$A_{r(j)}$</li>
+</ul>
+<hr>
+<ul>
+<li><p>Theorem 1: 实对称矩阵的所有特征值都是实数。</p>
+<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \bold{0})<br>$$<br>目标要证明$\lambda \in \R$。</p>
+<p>对该式左右同时左乘$\alpha^H$：<br>$$<br>\alpha ^H A \alpha &#x3D; \lambda \alpha^H \alpha<br>$$</p>
+<p>由于$\alpha^H \alpha &gt; 0$</p>
+<p>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha}<br>$$</p>
+<p>接下来要证明$\alpha ^H A \alpha \in \R$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \R$，而$\alpha^H \alpha \in \R$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \R<br>$$</p>
+</li>
+</ul>
+<blockquote>
+<p>对于一般矩阵而言，$A^H &#x3D; A$无法推出$A$是实矩阵，但是上例中$\alpha ^H A \alpha$是一个1 * 1的矩阵（也就是一个数），所以才可以推出其是实数。</p>
+</blockquote>
+<blockquote>
+<p>另，Theorem 1还可以有更强的版本：所有满足$A^H &#x3D; A$的矩阵的所有特征值都为实数。</p>
+</blockquote>
+<hr>
+<ul>
+<li><p>Theorem 2: 对于任意一个矩阵的任意一个特征值，其几何重数小于等于代数重数。</p>
+<p>对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>设$v_1, v_2, … v_k$为$E$的一组基，则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组基。</p>
+<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
+<blockquote>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：<br>$$<br>\forall i \in [1,k]\ \ \  T_{j,i} &#x3D; \left{<br>\begin{array}{l}<br>1  \ \ \ \ \ j &#x3D; i\<br>0 \ \ \ \ \ j \neq i\<br>\end{array}<br>\right.<br>$$</p>
+</blockquote>
+</li>
+</ul>
+<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1}) &#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \<br>0 &amp; B	<br>\end{bmatrix} - xI)<br>$$</p>
+<p>$$<br>&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
+<p>​	因此，A的特征多项式中至少有$k$次$(\lambda_0 - x)$作为因子，所以$\lambda_0$的代数重数大于等于$k$。而其几何重数为$k$，所以我们几何重数小于等于代数重数。</p>
+<hr>
+<ul>
+<li>Theorem 3：对于实对称矩阵的任意一个特征值，其几何重数等于代数重数。</li>
+</ul>
+<p>​    对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>​    设$v_1, v_2, … v_k$为$E$ 的一组标准正交基（两两正交且模长为1），则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组标准正交基。设$F$为$\text{span}(v_{k + 1}, …, v_n)$，则$F &#x3D; E^\perp$。</p>
+<p>​    Lemma 3.1 $\forall x \in F, Ax \in F$。</p>
+<blockquote>
+<p>证明：只需证明$\forall i \in [1,k], v_i \perp (Ax)$即可。</p>
+<p>$$<br>x^T A^Tv_i &#x3D; x^TAv_i &#x3D; x^T (Av_i) &#x3D; \lambda_0 x^T v_i &#x3D; 0<br>$$</p>
+</blockquote>
+<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
+<blockquote>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
+<p>$PT$的后$n - k$列应该是$[Av_{k + 1}, Av_{k + 2}, … , Av_n]$，而因为$Av_{k + 1}, Av_{k + 2}, … , Av_n \in F$, 即$Av_{k + 1}, Av_{k + 2}, … , Av_n \in \text{span}(v_{k + 1}, …, v_n)$，所以这里的线性组合完全不需要$v_1,v_2,…,v_k$，所以矩阵的右上角为0。</p>
+</blockquote>
+<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \bold{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\bold0_{k\times 1}\<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\bold0\<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\bold0\<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\bold0\<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
+<p>​	但是我们又因为$w$的前$k$个分量都是0，所以$Pw$就是对$v_{k + 1}, … v_n$的线性组合。显然这个线性组合属于$F$，故$Pw \in F$。</p>
+<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \bold{0} \to w &#x3D; \bold{0}$，矛盾。</p>
+<hr>
+<ul>
+<li>Theorem 4：对于一个实对称矩阵，若其两个特征向量对应两个不同的特征值，那么这两个特征向量一定正交。</li>
+</ul>
+<p>​       设$A\alpha_1 &#x3D; \lambda_1 \alpha_1, A\alpha_2 &#x3D; \lambda_2 \alpha_2, \lambda_1  \neq \lambda_2$，则：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D; \lambda_1 \alpha_1^T\alpha_2<br>$$<br>​	而：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D;  \alpha_1^TA^T\alpha_2 &#x3D;  \alpha_1^TA\alpha_2 &#x3D;  \alpha_1^T(A\alpha_2) &#x3D; \lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	于是：<br>$$<br>\lambda_1 \alpha_1^T\alpha_2 &#x3D;\lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	而$\lambda_1 \neq \lambda_2$，故$\alpha_1^T\alpha_2 &#x3D; 0$。</p>
+<hr>
+<ul>
+<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\R^n$。</p>
+<p>首先，根据代数基本定理，这个实对称矩阵一定有$n$个特征根。</p>
+<p>其次根据Theorem 1，这n个特征根都是实数，所以这个矩阵的各特征根的代数重数相加等于$n$。</p>
+</li>
+</ul>
+<p>​	又因为实对称矩阵的代数重数等于几何重数 (Theorem 3)，所以代数重数为$k$的特征值对应的有$k$个线性无关的特征向量。</p>
+<p>​	又因为Theorem 4，所以实对称矩阵可以有$n$个彼此正交的特征向量，自然他们是线性无关的，故可以span。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>臆想</title>
+    <url>/2023/07/11/%E8%87%86%E6%83%B3/</url>
+    <content><![CDATA[<h1 id="臆想"><a href="#臆想" class="headerlink" title="臆想"></a>臆想</h1><p>  很久很久以前，在某个地方，突然出现了一所监狱。</p>
+<p>  这所监狱很大，很大，很大，没有人知道它到底有多大。这所监狱很深，很深，很深，没有人知道它到底有多深。最奇怪的是，这所监狱是凭空产生的，没有人知道它到底是怎么来的。</p>
+<p>  又过了很久很久，一件更奇怪的事情开始发生了：每隔一段时间，就会有一批犯人被送进这所监狱。你若问他：”你原来来自哪里？你犯了什么罪？“，他只会回答：”我不知道。“</p>
+<p>  这所监狱里也有许多怪物，能随意地穿越墙壁，过道，房间，它们的日常娱乐即为折磨犯人。红色的怪物喜欢粗暴地折断犯人的躯干或四肢，蓝色的怪物喜欢掏出犯人的脏器，在上面动一点小手脚，然后再把它塞回去，让犯人慢慢死去。还有一种紫色的怪物，它最喜欢干的事情是将一些食物抛在犯人们之间，接着它就在旁边旁观犯人们为了争抢食物而相互厮杀。</p>
+<p>  这所监狱区别于其他监狱最大的特点在于它时刻允许犯人们越狱。在每个犯人的房间里面，都有一个传送门。只要几分钟时间，犯人就可以通过这道传送门越狱。面对监狱里那些恐怖怪物的折磨，一开始，绝大多数的犯人都选择了越狱，因此，在相当长的一段时间里，这所监狱里空无一人。</p>
+<p>  你也许会问我，这批越狱的犯人后来去了哪里？过得怎样？我只能回答你，我不知道，因为我从未穿越过传送门，也从来没有见到有犯人从传送门中回来。这个监狱里的犯人曾对监狱外的世界做过种种猜测，但没有人知道真相究竟是如何。</p>
+<p>  可是，有一天，一批特殊的犯人被送了进来。这批犯人和以前送来的犯人没有任何区别，除了一点：他们的身体构造出现了一些变化，使得他们在穿越传送门越狱的那几分钟里会莫名其妙地感受到巨大的痛苦。就是因为这个变化，这批犯人中的绝大多数都没有选择越狱。就这样，原本空无一物的监狱渐渐被这类犯人充满。</p>
+<p>  对于犯人们，时间艰涩地流过。他们无时无刻不在期待着穿过传送门，可是只有少数勇士做到了，大多数只能在黑暗中祈祷自己不是怪物的下一个目标。</p>
+<p>  由于这个特殊的机制，这个监狱已经存在了好久好久，而且也可以预见它还可以继续存在很久很久。但是，经过很久很久之后，监狱的墙会和门融合，壁会和杆融合，任何地方一切的一切会和任何地方的一切的一切融合，直到分不清彼此。据说，到那时候，上帝将会摧毁这座监狱，释放其中所有的犯人。<br>	<br>  期待这一天早日到来吧<br>	<br>  以上是一名犯人写下的一点文字。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逆序对与交换</title>
+    <url>/2026/03/15/%E9%80%86%E5%BA%8F%E5%AF%B9%E4%B8%8E%E4%BA%A4%E6%8D%A2/</url>
+    <content><![CDATA[<h3 id="逆序对与交换"><a href="#逆序对与交换" class="headerlink" title="逆序对与交换"></a>逆序对与交换</h3><p>$\hspace{1cm}$一些非常基础的性质。约定一个排列是形如<code>1,3,2,4</code>这样的数列。</p>
+<ul>
+<li><p>对任意一个排列，交换其两个数的位置，对逆序对造成的变化量的值都是奇数。</p>
+<p>设两个要交换的数分别是 $\varphi$ 和 $\theta$，他们中间夹着$a_1, a_2, a_3, … ,a_n$，也就是形如：<br>$$<br>\varphi, a_1, a_2, a_3, .., a_n, \theta<br>$$<br>因为我们关心的是逆序对的变化量，所以和逆序对变化量有关的逆序对中至少有一方得是$\varphi$或$\theta$，且两方都在$\varphi, a_1, a_2, ..,a_n, \theta$这个序列内部。</p>
+<p>先考虑$\varphi &lt; \theta$的情况：</p>
+<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\varphi$，有$y$个数大于$\varphi$小于$\theta$，则有$n-x-y$个数大于$\theta$。</p>
+<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + n - x - y &#x3D; n - y$。</p>
+<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + n - x + 1 &#x3D; n + y + 1$</p>
+<p>因此变化量为$2y + 1$，为奇数。</p>
+<p>再考虑$\varphi &gt; \theta$的情况：</p>
+<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\theta$，有$y$个数大于$\theta$小于$\varphi$，则有$n-x-y$个数大于$\varphi$。</p>
+<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + y + n - x - y + 1 &#x3D; n + y+ 1$。</p>
+<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x+ n - x - y &#x3D; n - y$</p>
+<p>因此变化量为$-2y - 1$，为奇数。</p>
+</li>
+</ul>
+<p>​	</p>
+<ul>
+<li><p>如果只通过交换元素位置的方式，将一个排列变换为另外一个排列，那么需要交换的次数的奇偶性和两个排列的逆序对的差值的奇偶性相同。</p>
+<p>有上面那个定理之后，这个就非常明晰了。每次交换对逆序对造成的变化量的值都是奇数，因此每次交换都会改变逆序对数量的奇偶性。如果前后两个排列的逆序对的奇偶性相同，那么交换的次数必定是偶数次。反之，如果前后两个排列的逆序对的奇偶性不同，那么交换的次数必定是奇数次。</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>OI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>西点</title>
     <url>/2023/07/06/%E8%A5%BF%E7%82%B9/</url>
     <content><![CDATA[<h1 id="西点"><a href="#西点" class="headerlink" title="西点"></a>西点</h1><h2 id="1-卷"><a href="#1-卷" class="headerlink" title="1.卷"></a>1.卷</h2><h4 id="原料："><a href="#原料：" class="headerlink" title="原料："></a>原料：</h4><ul>
@@ -2138,36 +2240,6 @@
 ]]></content>
       <tags>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>逆序对与交换</title>
-    <url>/2026/03/15/%E9%80%86%E5%BA%8F%E5%AF%B9%E4%B8%8E%E4%BA%A4%E6%8D%A2/</url>
-    <content><![CDATA[<h3 id="逆序对与交换"><a href="#逆序对与交换" class="headerlink" title="逆序对与交换"></a>逆序对与交换</h3><p>$\hspace{1cm}$一些非常基础的性质。约定一个排列是形如<code>1,3,2,4</code>这样的数列。</p>
-<ul>
-<li><p>对任意一个排列，交换其两个数的位置，对逆序对造成的变化量的值都是奇数。</p>
-<p>设两个要交换的数分别是 $\varphi$ 和 $\theta$，他们中间夹着$a_1, a_2, a_3, … ,a_n$，也就是形如：<br>$$<br>\varphi, a_1, a_2, a_3, .., a_n, \theta<br>$$<br>因为我们关心的是逆序对的变化量，所以和逆序对变化量有关的逆序对中至少有一方得是$\varphi$或$\theta$，且两方都在$\varphi, a_1, a_2, ..,a_n, \theta$这个序列内部。</p>
-<p>先考虑$\varphi &lt; \theta$的情况：</p>
-<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\varphi$，有$y$个数大于$\varphi$小于$\theta$，则有$n-x-y$个数大于$\theta$。</p>
-<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + n - x - y &#x3D; n - y$。</p>
-<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + n - x + 1 &#x3D; n + y + 1$</p>
-<p>因此变化量为$2y + 1$，为奇数。</p>
-<p>再考虑$\varphi &gt; \theta$的情况：</p>
-<p>设$a_1, a_2, … ,a_n$中有$x$个数小于$\theta$，有$y$个数大于$\theta$小于$\varphi$，则有$n-x-y$个数大于$\varphi$。</p>
-<p>交换之前，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x + y + y + n - x - y + 1 &#x3D; n + y+ 1$。</p>
-<p>交换之后，和$\theta$、$\varphi$两者中至少一方有关的逆序对个数为$x+ n - x - y &#x3D; n - y$</p>
-<p>因此变化量为$-2y - 1$，为奇数。</p>
-</li>
-</ul>
-<p>​	</p>
-<ul>
-<li><p>如果只通过交换元素位置的方式，将一个排列变换为另外一个排列，那么需要交换的次数的奇偶性和两个排列的逆序对的差值的奇偶性相同。</p>
-<p>有上面那个定理之后，这个就非常明晰了。每次交换对逆序对造成的变化量的值都是奇数，因此每次交换都会改变逆序对数量的奇偶性。如果前后两个排列的逆序对的奇偶性相同，那么交换的次数必定是偶数次。反之，如果前后两个排列的逆序对的奇偶性不同，那么交换的次数必定是奇数次。</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>OI</tag>
       </tags>
   </entry>
   <entry>

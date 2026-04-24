@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,6 +170,82 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="plafle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | plafle's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/" class="post-title-link" itemprop="url">一个不等式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-07T00:00:00+08:00">2023-07-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-15 23:59:34" itemprop="dateModified" datetime="2023-11-15T23:59:34+08:00">2023-11-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1305,83 +1381,6 @@
 <p>  我们可以发现$floyd$算法的外循环$k$枚举到$a_k$时，$a_v,a_w$之间的最短路径即为所求。</p>
 <p>  综上，时间复杂度$O(n^3)$.</p>
 <h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://plafle.github.io/2023/06/18/OI%E9%A2%98%E5%8D%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="plafle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="plafle's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | plafle's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/06/18/OI%E9%A2%98%E5%8D%95/" class="post-title-link" itemprop="url">OI题单</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-06-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-18T00:00:00+08:00">2023-06-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-15 23:54:44" itemprop="dateModified" datetime="2023-11-15T23:54:44+08:00">2023-11-15</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>p6186</p>
-<p>p6185</p>
-
       
     </div>
 

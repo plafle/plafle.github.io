@@ -1,63 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Three Formulae</title>
-    <url>/2024/06/09/3formulae/</url>
-    <content><![CDATA[<p>$$<br>\int\sqrt{a^2 - x^2}dx &#x3D; \frac x2\sqrt{a^2 - x^2} + \frac {a^2}2\arcsin(\frac xa) + C<br>$$<br>$$<br>\int \frac 1{\sqrt{x^2 \pm a^2}}dx &#x3D; \ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$<br>$$<br>\int \sqrt{x^2 \pm a^2}dx &#x3D; \frac x2 \sqrt{x^2 \pm a^2} \pm\frac {a^2}2\ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Acwing299题解</title>
-    <url>/2023/06/15/ACwing299%E9%A2%98%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="Acwing-299-裁剪序列（也许它能帮到你）"><a href="#Acwing-299-裁剪序列（也许它能帮到你）" class="headerlink" title="Acwing 299 裁剪序列（也许它能帮到你）"></a>Acwing 299 裁剪序列（也许它能帮到你）</h1><h3 id="1-题意："><a href="#1-题意：" class="headerlink" title="1.题意："></a>1.题意：</h3><p>  给定一个长度为 $N$ $(N \le 1e5)$的序列 $A$ ，要求把该序列分成若干段，在满足“每段中所有数的和”不超过M的前提下，让“每段中所有数的最大值”之和最小。</p>
-<p>  试计算这个最小值。</p>
-<h3 id="2-分析"><a href="#2-分析" class="headerlink" title="2.分析"></a>2.分析</h3><p>  朴素DP：</p>
-<ul>
-<li><p>状态：设$f[i]$ 表示将前 $i$ 个数分为若干段，每段和不超过 $m$ 时，最大值之和的最小值。 </p>
-</li>
-<li><p>转移方程：<br>  $$<br>  f[i] &#x3D; min(f[j] + max(a[j + 1],a[j + 2],……a[i])) \ \ \ \ (\sum_{k &#x3D; j + 1}^na_k \le m)<br>  $$<br>  其中的区间最大值和区间和分别可以用ST表和前缀和完成。</p>
-<p>  复杂度$O(n^2)$.</p>
-<p>接下来来考虑优化。</p>
-</li>
-</ul>
-<blockquote>
-<p>若$j$可能作为$f[i]$的唯一最优决策，那么$j$必须满足下面两个条件<strong>之一</strong>：</p>
-<ul>
-<li>$a[j]$是$a[j],a[j + 1],……,a[i]$中的最大值</li>
-<li>$\sum_{k &#x3D; j}^i a_k &gt; m$</li>
-</ul>
-</blockquote>
-<p>证明：</p>
-<p>若$j$对上述两个条件都不满足，那么对于决策$j - 1$：</p>
-<p>因为$\sum_{k &#x3D; j}^i a_k \le m$，所以决策$j - 1$是合法的。</p>
-<p>同时因为$a[j]$不是$a[j],a[j + 1],……,a[i]$中的最大值，所以</p>
-<p>$$<br>\max(a[j + 1],a[j + 2],……a[i]) &#x3D; \max(a[j],a[j + 1],a[j + 2],……a[i])<br>$$</p>
-<p>又因为$f[i]$单调不减，所以：<br>$$<br>f[j - 1] + max(a[j],a[j + 1],a[j + 2],……a[i])\le f[j] + max(a[j + 1],a[j + 2],……a[i])<br>$$<br> 即决策$j - 1$比决策$j$更优或相等，所以决策$j$不会是唯一的最优决策。</p>
-<p>对于考虑满足第二个条件的决策，我们可以预处理出$c[i]$，表示满足$\sum_{k &#x3D; j}^ia_k \le m$的最小的$j$。然后对于$f[i]$，执行<code>f[i] = min(f[i],f[c[i] - 1]+max(a[c[i]],a[c[i] + 1],a[c[i] + 2],……,a[i]))</code></p>
-<p>​	</p>
-<p>对于考虑满足第一个条件的决策，我们可以考虑用单调队列来优化DP。</p>
-<p>循环变量$i$，循环开始先从队头剔除不合法的决策（即状态转移中的条件）</p>
-<p>然后将$i$入队，同时维护单调队列元素$x$的$a[x]$单调不增，保证单调队列中的决策都是可能的最优决策。</p>
-<p>但是这样我们还是需要循环整个单调队列枚举所有决策。</p>
-<p>接下来我们来集中解决这个问题。</p>
-<p>我们先建立一个used数组。</p>
-<p>我们再建立一个小根堆，其中的元素为(id,x)，按x作为比较的依据。表示对于决策$id$，x表示$f[id] + max(a[id + 1],a[id + 2],……a[id])$。</p>
-<p>每次向单调队列中插入一个新决策$j$时，同时也向堆中插入这个决策$(j,f[j] + max(a[j + 1],a[j + 2],……,a[i]))$。当从单调队列中删除一个决策$j$时，令$used[j] &#x3D; 1$。以后从堆顶取数时，需要判断$used[top().id]$是否为1，若是1，需要将其弹出，重新取堆顶。</p>
-<p>我们能这样做的一个原因在于一旦决策$j$被丢弃，以后该决策就不可能再次出现在单调队列中了。</p>
-<p>现在我们还需要一个问题要解决：当$i$变成$i + 1$时，有可能<br>$$<br>\max(a[j + 1],a[j + 2],……,a[i]) \neq \max(a[j + 1],a[j + 2],……,a[i],a[i + 1])<br>$$<br>即对于每个$i$，我们都需要将堆中的元素重新更新一遍。</p>
-<p>为了方便起见，我们称呼$max(a[j + 1],a[j + 2],……,a[i])$为决策$j$对于$i$的**“决策 值**，简写为$p(j,i)$。</p>
-<p>我们观察一下何时$p(j,i) \neq p(j,i + 1)$.发现：将$i$入队后，在单调队列${q_1,q_2,……,q_s,i}$中，因为$a[q_1] \ge a[q_2] \ge …… a[i]$，所以对于决策$q_1,q_2,……,q_{s - 1}$，$p(q_1,i) &#x3D; p(q_1,i + 1)$,$p(q_2,i) &#x3D; p(q_2,i + 1)$,……,$p(q_{s - 1},i) &#x3D; p(q_{s - 1},i + 1)$,只有$p(q_s,i)$可能不等于$p(q_s,i + 1)$.</p>
-<p>所以$i$入队后，我们再将决策$(id &#x3D; q_s,x &#x3D; f[q_s]$ + $ max(a[q_s + 1],a[q_s + 2] ，……，a[i]))$重新入队，作为修正。可以发现，$max(a[q_s + 1],a[q_s + 2] ，…，a[i]) &#x3D; a[i]$。</p>
-<p>但是，决策$q_s$在堆里面原来的错误的值并没有被修改。为了解决这个问题，我们可以给堆的结构体中加一个变量$y$表示当前决策目前的”决策值”。取出堆顶的时候，如果发现堆顶决策的”决策值“不等于堆顶决策对于$i$应有的决策值时，就将该决策视为无效，重新取堆顶。</p>
-<h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span> </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e5</span> + <span class="number">5</span>,inf = <span class="number">1e15</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">	<span class="type">int</span> id,x,y;</span><br><span class="line">	<span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt; (node a,node b) &#123;</span><br><span class="line">		<span class="keyword">return</span> a.x + a.y &gt; b.x + b.y;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> q[maxn &lt;&lt; <span class="number">3</span>],t,w;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[maxn],n,m,sum[maxn],lg[maxn],st[maxn][<span class="number">30</span>],c[maxn];</span><br><span class="line"><span class="type">int</span> f[maxn]; <span class="comment">//f[i] 表示将前 i 个数分为若干段，每段和不超过 m 时，最大值之和的最小值。 </span></span><br><span class="line"><span class="type">bool</span> used[maxn];</span><br><span class="line"></span><br><span class="line">priority_queue&lt;node&gt; h;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> len = lg[r - l + <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">max</span>(st[l][len],st[r - (<span class="number">1</span> &lt;&lt; len) + <span class="number">1</span>][len]); 	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;a[i]);</span><br><span class="line">		<span class="keyword">if</span> (a[i] &gt; m) &#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">		&#125;</span><br><span class="line">		sum[i] = sum[i - <span class="number">1</span>] + a[i];</span><br><span class="line">		st[i][<span class="number">0</span>] = a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	lg[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		lg[i] = lg[i &gt;&gt; <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=lg[n]; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=(n - (<span class="number">1</span> &lt;&lt; i) + <span class="number">1</span>); j++)</span><br><span class="line">			st[j][i] = <span class="built_in">max</span>(st[j][i - <span class="number">1</span>],st[j + (<span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>))][i - <span class="number">1</span>]);</span><br><span class="line">			</span><br><span class="line">	c[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=c[i - <span class="number">1</span>]; j&lt;=n; j++)</span><br><span class="line">			<span class="keyword">if</span> (sum[i] - sum[j - <span class="number">1</span>] &lt;= m) &#123;</span><br><span class="line">				c[i] = j;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// c[i] 表示 a[j] + a[j] + ……+ a[i] &lt;= m的最小的j。</span></span><br><span class="line">	<span class="comment">// f[i] 表示将前 i 个数分为若干段，每段和不超过 m 时，最大值之和的最小值。 </span></span><br><span class="line">	t = <span class="number">1</span>,w = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		f[i] = inf;</span><br><span class="line">		f[i] = <span class="built_in">min</span>(f[i],f[c[i] - <span class="number">1</span>] + <span class="built_in">query</span>(c[i],i)); <span class="comment">//考虑条件2</span></span><br><span class="line">		<span class="keyword">while</span> (t &lt;= w &amp;&amp; sum[i] - sum[q[t]] &gt; m) &#123;</span><br><span class="line">			used[q[t]] = <span class="number">1</span>;</span><br><span class="line">			t++;</span><br><span class="line">		&#125; <span class="comment">//从队头弹出非法决策</span></span><br><span class="line">			</span><br><span class="line">		<span class="keyword">while</span> (t &lt;= w &amp;&amp; a[q[w]] &lt; a[i]) &#123;</span><br><span class="line">			used[q[w]] = <span class="number">1</span>;</span><br><span class="line">			w--;</span><br><span class="line">		&#125; <span class="comment">//从队尾弹出不必要决策</span></span><br><span class="line">		q[++w] = i;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (t &lt; w) </span><br><span class="line">			h.<span class="built_in">push</span>((node)&#123;q[w - <span class="number">1</span>],f[q[w - <span class="number">1</span>]],a[i]&#125;); <span class="comment">//修正“决策值”</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">while</span> (!h.<span class="built_in">empty</span>() &amp;&amp; (used[h.<span class="built_in">top</span>().id] || h.<span class="built_in">top</span>().y &lt; <span class="built_in">query</span>(h.<span class="built_in">top</span>().id + <span class="number">1</span>,i)))</span><br><span class="line">			h.<span class="built_in">pop</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (!h.<span class="built_in">empty</span>())</span><br><span class="line">			f[i] = <span class="built_in">min</span>(f[i],h.<span class="built_in">top</span>().x + h.<span class="built_in">top</span>().y); </span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,f[n]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>OI题目训练</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2023.8.23</title>
     <url>/2023/08/23/2023.8.23/</url>
     <content><![CDATA[<p>$\hspace{1cm}$设想在一条道路上随机选择一个位置，然后降落到这个位置。</p>
@@ -131,47 +74,148 @@
       </tags>
   </entry>
   <entry>
-    <title>C语言指针相关</title>
-    <url>/2023/10/16/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88&amp;%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<p>1.<code>char *s[]</code>   若执行<code>s++</code>，则：</p>
-<p>2.<code>char **s </code>     若执行<code>s++</code>，则：向后一个指针的大小（一般为4个字节）</p>
-<p>3.<code>char (*s)[]</code> 则s是指向一行的指针，若执行<code>s++</code>，则s会指向下一行</p>
-<p>4.<code>int **a</code> 		若执行<code>a++</code>，则：向后一个指针的大小（一般为4个字节）</p>
-<p>5.<code>int *a[]</code> 	 若执行<code>a++</code>，则：</p>
-<p>6.<code>int (*a)[]</code>    则a是指向一行的指针，若执行<code>a++</code>，则a会指向下一行</p>
+    <title>Three Formulae</title>
+    <url>/2024/06/09/3formulae/</url>
+    <content><![CDATA[<p>$$<br>\int\sqrt{a^2 - x^2}dx &#x3D; \frac x2\sqrt{a^2 - x^2} + \frac {a^2}2\arcsin(\frac xa) + C<br>$$<br>$$<br>\int \frac 1{\sqrt{x^2 \pm a^2}}dx &#x3D; \ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$<br>$$<br>\int \sqrt{x^2 \pm a^2}dx &#x3D; \frac x2 \sqrt{x^2 \pm a^2} \pm\frac {a^2}2\ln|x + \sqrt{x^2 \pm a^2}| + C<br>$$</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSAPP-lecture-6</title>
+    <url>/2024/08/02/CSAPP%20lecture%206/</url>
+    <content><![CDATA[<h3 id="CSAPP-lecture-6"><a href="#CSAPP-lecture-6" class="headerlink" title="CSAPP lecture 6"></a>CSAPP lecture 6</h3><h4 id="1-Condition-code"><a href="#1-Condition-code" class="headerlink" title="1. Condition code"></a>1. Condition code</h4><ul>
+<li><p>Four condition codes:</p>
 <ul>
-<li>1和2如果写在函数的形参里面，那么是等价的。</li>
-<li>4和5如果写在函数的形参里面，那么是等价的。</li>
-<li>如果1不是写成函数的形参，那么s就是一个常量，不能更改。</li>
-<li>如果2不是写成函数的形参，那么s就是一个变量，可以更改。</li>
-<li>3和6都是指向一行的指针</li>
+<li>CF: Carry Flag.  Will be 1 if there is a carry out of the most significant bit. Used to detect the overflow of the unsigned number</li>
+<li>ZF: Zero Flag. Will be 1 if the most recent operation yield 0.</li>
+<li>SF: Sign Flag. Will be 1 if the most recent operation yield a value with the sign bit being 1.</li>
+<li>OF: Overflow Flag. Will be 1 if the most recent operation caused an overflow (for two’s complement), either positive overflow or negative overflow.</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = b;</span><br><span class="line"><span class="comment">//不能这样写，因为b是指向行的指针</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>The leaq operation would not alter any of the condition code. All other arithmetic operation would make these condition code to change.</p>
+</blockquote>
+</li>
+<li><p>For the logical operation (such as <code>xor</code> <code>or</code> <code>add</code>), they will leave the CF and OF to be 0.</p>
+</li>
+<li><p>For the shift operation, the CF will be set to the last digit shifted out, and the OF will be set to 0.</p>
+</li>
+<li><p>For the <code>inc</code> and <code>dec</code> operation, they will set the OF and ZF, but they will leave the CF unchanged.</p>
+</li>
+<li><p>There are two instruction classes which can only alter the condition codes without changing the other value.</p>
+</li>
+</ul>
+<p>​	</p>
+<p>​	We can check the sign of a value or whether this value is 0 by <code>test %rax %rax</code>. (Suppose this value is stored in register <code>%rax</code>)</p>
+<h3 id="2-Access-the-condition-code"><a href="#2-Access-the-condition-code" class="headerlink" title="2. Access the condition code"></a>2. Access the condition code</h3><ul>
+<li>Access the condition code: Rather than directly access the condition code, we prefer to access the condition code indirectly, using the following 3 methods:<ul>
+<li>We can set a single byte to 0 or 1, depending on some combination of the condition codes.</li>
+<li>We can conditionally jump to some part of the program</li>
+<li>We can conditionally transfer data.</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-1-How-to-set-a-single-byte-according-to-the-condition-code"><a href="#2-1-How-to-set-a-single-byte-according-to-the-condition-code" class="headerlink" title="2.1 How to set a single byte according to the condition code"></a>2.1 How to set a single byte according to the condition code</h5><p>​	These <code>set</code> class of instruction have a single operand <code>D</code> indicating the destination. The destination have to be a register or a memory location. If it is a register, then it would set the least significant byte of the register to 1 (usually this register have to be  <code>%al</code> kind rather than <code>%rax</code> kind.) </p>
+<p>​	an example:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">comp:</span><br><span class="line">	cmpq	%rsi %rdi</span><br><span class="line">	setl	%al</span><br><span class="line">	movzbq	%al %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = &amp;b[<span class="number">0</span>];</span><br><span class="line"><span class="comment">//b[0]是常量，一般取不了</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-2-Conditionally-jump-to-some-part-of-the-program"><a href="#2-2-Conditionally-jump-to-some-part-of-the-program" class="headerlink" title="2.2 (Conditionally) jump to some part of the program"></a>2.2 (Conditionally) jump to some part of the program</h5><p><strong>Unconditionally jump:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	movq $0, %rax</span><br><span class="line">	jmp .L1</span><br><span class="line">	movq (%rax), %rdx</span><br><span class="line">.L1:</span><br><span class="line">	popq %rdx</span><br></pre></td></tr></table></figure>
+
+<p>The <code>jmp</code> instruction would jump to <code>.L1</code> label</p>
+<p><code>jmp</code> is the unconditional jump operation. It can jump directly or indirectly. When it is directly, it’s something like <code>jmp .L1</code>. When it is indirectly, it is something like <code>jmp *%rax</code> or <code>jmp *(%rax)</code>, where the label is stored in the register <code>%rax</code> or the memory location <code>(%rax)</code></p>
+<p><strong>Conditional jump:</strong></p>
+<h5 id="2-3-Jump-instruction-encodings"><a href="#2-3-Jump-instruction-encodings" class="headerlink" title="2.3 Jump instruction encodings"></a>2.3 Jump instruction encodings</h5><p>​	In assembly code, to specify where we want to jump to we can simply write something like <code>.L1</code> happily.        In the disassembled machinery code <em><strong>(the assemble code translated from the machinery code)</strong></em>, the <code>jump</code> operation would written in the form like <code>jmp 0x1137</code>. There will be an address operand like <code>0x1137</code> to specify which operation will the program jump to. In this case, the jump operation would jump to <code>0x1137</code> and do the operation in <code>0x1137</code></p>
+<p>​	But in machinery code, how to specify where we want to jump to? There are two ways to do this, first is so called <code>PC relatives</code>.  That is saying, they encode the target address as the difference between the target address and the address of the instruction immediately following the jump instruction. </p>
+<blockquote>
+<p>The difference between a and b is a - b</p>
+</blockquote>
+<p>​	The reason why we try to use this kind of notation is that the jump target would remain unchanged when the whole program is shifted to another address.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eb 03 # In this case, 0x03 is the encoded jump target. 0x03 has to be 							added by the address of the next instruction to get the 								target address. </span><br><span class="line"># &quot;eb 03&quot; is a machine code in binary. &quot;eb&quot; specifies the type of the operation and &quot;03&quot; specifies the encoded jump target</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Note: this <code>0x03</code> is a two’s complement number, so for example, if now it is <code>0xFF</code>, then it is actually -1, and the actual jump target would be the address of the next instruction minus 1.</p>
+</blockquote>
+<p><em><strong>Question</strong></em></p>
+<p>​	Sometimes we would see operation <code>jmp .L1</code> and sometimes we would see operation <code>jmp 0x1137</code>. Which one (probably both) is the assembly code? What’s difference between these two command?</p>
+<h5 id="2-4-Conditional-Move"><a href="#2-4-Conditional-Move" class="headerlink" title="2.4 Conditional Move"></a>2.4 Conditional Move</h5><p>​	Apart from the <code>jump</code> operation, we have an operation called conditional move.</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">comp</span><span class="params">(<span class="type">long</span> x,<span class="type">long</span> y)</span> &#123;</span><br><span class="line">    <span class="type">long</span> res;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; y)</span><br><span class="line">        res = y - x; <span class="keyword">else</span></span><br><span class="line">        res = x - y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For example, this C code might be translated into the following assembly code:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">absdiff:</span><br><span class="line">	movq 	%rsi, %rax</span><br><span class="line">	subq	%rdi, %rax</span><br><span class="line">	movq	%rdi, %rdx</span><br><span class="line">	subq	%rsi, %rdx</span><br><span class="line">	cmpq	%rsi, %rdi</span><br><span class="line">	cmovge	%rdx, %rax	#If the last comparison said &quot;%rdi &gt;= %rsi&quot;, then this move will 						  conditional move will apply. Otherwise nothing will happen.</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
 
 
 
-<p><strong>一般来说，二级指针是和指针数组相关联的</strong>，<code>int (*a)[]</code>  这种是和二维数组相关联的。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *s[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">char</span> **s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	s[<span class="number">0</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">	s[<span class="number">1</span>] = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	s[<span class="number">2</span>] = <span class="string">&quot;ABC&quot;</span>;</span><br><span class="line">	<span class="built_in">work</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em><strong>Question</strong></em></p>
+<p>​	Why will the conditional move operation reduce the penalty for misprediction? It also need to decide whether to do the move instruction, and the misprediction should affect the following pipeline as well.</p>
+<p><strong>The class of conditional move:</strong></p>
+<p>​	Some property for the conditional move:</p>
+<ul>
+<li>The destination must be register</li>
+<li>The data type can be 2,4,8 bytes long, but can’t be 1 byte long</li>
+<li>The instruction don’t need a suffix to specify the data type. The processor could infer the operand length from the name of the destination register.</li>
+</ul>
+<blockquote>
+<p>The condition move may not be valid if one expression is invalid.</p>
+<p>for example</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> *p;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">123</span><br><span class="line">abc</span><br><span class="line">ABC</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>观察这段程序，问题出在哪里？</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>问题：没有声明所指向的一行有多少个元素，改为：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[<span class="number">3</span>])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>即可。</p>
-<hr>
-<p>如果声明了<code>int *a = malloc(size);</code>，那么之后可以用<code>a[i]</code>表示<code>*(a + i)</code></p>
+<p>You can not calculate <code>*p</code> beforehand as <code>p</code> may be a null pointer, making the dereferencing invalid.</p>
+</blockquote>
 ]]></content>
       <tags>
         <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Acwing299题解</title>
+    <url>/2023/06/15/ACwing299%E9%A2%98%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="Acwing-299-裁剪序列（也许它能帮到你）"><a href="#Acwing-299-裁剪序列（也许它能帮到你）" class="headerlink" title="Acwing 299 裁剪序列（也许它能帮到你）"></a>Acwing 299 裁剪序列（也许它能帮到你）</h1><h3 id="1-题意："><a href="#1-题意：" class="headerlink" title="1.题意："></a>1.题意：</h3><p>  给定一个长度为 $N$ $(N \le 1e5)$的序列 $A$ ，要求把该序列分成若干段，在满足“每段中所有数的和”不超过M的前提下，让“每段中所有数的最大值”之和最小。</p>
+<p>  试计算这个最小值。</p>
+<h3 id="2-分析"><a href="#2-分析" class="headerlink" title="2.分析"></a>2.分析</h3><p>  朴素DP：</p>
+<ul>
+<li><p>状态：设$f[i]$ 表示将前 $i$ 个数分为若干段，每段和不超过 $m$ 时，最大值之和的最小值。 </p>
+</li>
+<li><p>转移方程：<br>  $$<br>  f[i] &#x3D; min(f[j] + max(a[j + 1],a[j + 2],……a[i])) \ \ \ \ (\sum_{k &#x3D; j + 1}^na_k \le m)<br>  $$<br>  其中的区间最大值和区间和分别可以用ST表和前缀和完成。</p>
+<p>  复杂度$O(n^2)$.</p>
+<p>接下来来考虑优化。</p>
+</li>
+</ul>
+<blockquote>
+<p>若$j$可能作为$f[i]$的唯一最优决策，那么$j$必须满足下面两个条件<strong>之一</strong>：</p>
+<ul>
+<li>$a[j]$是$a[j],a[j + 1],……,a[i]$中的最大值</li>
+<li>$\sum_{k &#x3D; j}^i a_k &gt; m$</li>
+</ul>
+</blockquote>
+<p>证明：</p>
+<p>若$j$对上述两个条件都不满足，那么对于决策$j - 1$：</p>
+<p>因为$\sum_{k &#x3D; j}^i a_k \le m$，所以决策$j - 1$是合法的。</p>
+<p>同时因为$a[j]$不是$a[j],a[j + 1],……,a[i]$中的最大值，所以</p>
+<p>$$<br>\max(a[j + 1],a[j + 2],……a[i]) &#x3D; \max(a[j],a[j + 1],a[j + 2],……a[i])<br>$$</p>
+<p>又因为$f[i]$单调不减，所以：<br>$$<br>f[j - 1] + max(a[j],a[j + 1],a[j + 2],……a[i])\le f[j] + max(a[j + 1],a[j + 2],……a[i])<br>$$<br> 即决策$j - 1$比决策$j$更优或相等，所以决策$j$不会是唯一的最优决策。</p>
+<p>对于考虑满足第二个条件的决策，我们可以预处理出$c[i]$，表示满足$\sum_{k &#x3D; j}^ia_k \le m$的最小的$j$。然后对于$f[i]$，执行<code>f[i] = min(f[i],f[c[i] - 1]+max(a[c[i]],a[c[i] + 1],a[c[i] + 2],……,a[i]))</code></p>
+<p>​	</p>
+<p>对于考虑满足第一个条件的决策，我们可以考虑用单调队列来优化DP。</p>
+<p>循环变量$i$，循环开始先从队头剔除不合法的决策（即状态转移中的条件）</p>
+<p>然后将$i$入队，同时维护单调队列元素$x$的$a[x]$单调不增，保证单调队列中的决策都是可能的最优决策。</p>
+<p>但是这样我们还是需要循环整个单调队列枚举所有决策。</p>
+<p>接下来我们来集中解决这个问题。</p>
+<p>我们先建立一个used数组。</p>
+<p>我们再建立一个小根堆，其中的元素为(id,x)，按x作为比较的依据。表示对于决策$id$，x表示$f[id] + max(a[id + 1],a[id + 2],……a[id])$。</p>
+<p>每次向单调队列中插入一个新决策$j$时，同时也向堆中插入这个决策$(j,f[j] + max(a[j + 1],a[j + 2],……,a[i]))$。当从单调队列中删除一个决策$j$时，令$used[j] &#x3D; 1$。以后从堆顶取数时，需要判断$used[top().id]$是否为1，若是1，需要将其弹出，重新取堆顶。</p>
+<p>我们能这样做的一个原因在于一旦决策$j$被丢弃，以后该决策就不可能再次出现在单调队列中了。</p>
+<p>现在我们还需要一个问题要解决：当$i$变成$i + 1$时，有可能<br>$$<br>\max(a[j + 1],a[j + 2],……,a[i]) \neq \max(a[j + 1],a[j + 2],……,a[i],a[i + 1])<br>$$<br>即对于每个$i$，我们都需要将堆中的元素重新更新一遍。</p>
+<p>为了方便起见，我们称呼$max(a[j + 1],a[j + 2],……,a[i])$为决策$j$对于$i$的**“决策 值**，简写为$p(j,i)$。</p>
+<p>我们观察一下何时$p(j,i) \neq p(j,i + 1)$.发现：将$i$入队后，在单调队列${q_1,q_2,……,q_s,i}$中，因为$a[q_1] \ge a[q_2] \ge …… a[i]$，所以对于决策$q_1,q_2,……,q_{s - 1}$，$p(q_1,i) &#x3D; p(q_1,i + 1)$,$p(q_2,i) &#x3D; p(q_2,i + 1)$,……,$p(q_{s - 1},i) &#x3D; p(q_{s - 1},i + 1)$,只有$p(q_s,i)$可能不等于$p(q_s,i + 1)$.</p>
+<p>所以$i$入队后，我们再将决策$(id &#x3D; q_s,x &#x3D; f[q_s]$ + $ max(a[q_s + 1],a[q_s + 2] ，……，a[i]))$重新入队，作为修正。可以发现，$max(a[q_s + 1],a[q_s + 2] ，…，a[i]) &#x3D; a[i]$。</p>
+<p>但是，决策$q_s$在堆里面原来的错误的值并没有被修改。为了解决这个问题，我们可以给堆的结构体中加一个变量$y$表示当前决策目前的”决策值”。取出堆顶的时候，如果发现堆顶决策的”决策值“不等于堆顶决策对于$i$应有的决策值时，就将该决策视为无效，重新取堆顶。</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span> </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e5</span> + <span class="number">5</span>,inf = <span class="number">1e15</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">	<span class="type">int</span> id,x,y;</span><br><span class="line">	<span class="keyword">friend</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt; (node a,node b) &#123;</span><br><span class="line">		<span class="keyword">return</span> a.x + a.y &gt; b.x + b.y;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> q[maxn &lt;&lt; <span class="number">3</span>],t,w;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[maxn],n,m,sum[maxn],lg[maxn],st[maxn][<span class="number">30</span>],c[maxn];</span><br><span class="line"><span class="type">int</span> f[maxn]; <span class="comment">//f[i] 表示将前 i 个数分为若干段，每段和不超过 m 时，最大值之和的最小值。 </span></span><br><span class="line"><span class="type">bool</span> used[maxn];</span><br><span class="line"></span><br><span class="line">priority_queue&lt;node&gt; h;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> len = lg[r - l + <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">max</span>(st[l][len],st[r - (<span class="number">1</span> &lt;&lt; len) + <span class="number">1</span>][len]); 	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;a[i]);</span><br><span class="line">		<span class="keyword">if</span> (a[i] &gt; m) &#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">		&#125;</span><br><span class="line">		sum[i] = sum[i - <span class="number">1</span>] + a[i];</span><br><span class="line">		st[i][<span class="number">0</span>] = a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	lg[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		lg[i] = lg[i &gt;&gt; <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=lg[n]; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=(n - (<span class="number">1</span> &lt;&lt; i) + <span class="number">1</span>); j++)</span><br><span class="line">			st[j][i] = <span class="built_in">max</span>(st[j][i - <span class="number">1</span>],st[j + (<span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>))][i - <span class="number">1</span>]);</span><br><span class="line">			</span><br><span class="line">	c[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=c[i - <span class="number">1</span>]; j&lt;=n; j++)</span><br><span class="line">			<span class="keyword">if</span> (sum[i] - sum[j - <span class="number">1</span>] &lt;= m) &#123;</span><br><span class="line">				c[i] = j;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// c[i] 表示 a[j] + a[j] + ……+ a[i] &lt;= m的最小的j。</span></span><br><span class="line">	<span class="comment">// f[i] 表示将前 i 个数分为若干段，每段和不超过 m 时，最大值之和的最小值。 </span></span><br><span class="line">	t = <span class="number">1</span>,w = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		f[i] = inf;</span><br><span class="line">		f[i] = <span class="built_in">min</span>(f[i],f[c[i] - <span class="number">1</span>] + <span class="built_in">query</span>(c[i],i)); <span class="comment">//考虑条件2</span></span><br><span class="line">		<span class="keyword">while</span> (t &lt;= w &amp;&amp; sum[i] - sum[q[t]] &gt; m) &#123;</span><br><span class="line">			used[q[t]] = <span class="number">1</span>;</span><br><span class="line">			t++;</span><br><span class="line">		&#125; <span class="comment">//从队头弹出非法决策</span></span><br><span class="line">			</span><br><span class="line">		<span class="keyword">while</span> (t &lt;= w &amp;&amp; a[q[w]] &lt; a[i]) &#123;</span><br><span class="line">			used[q[w]] = <span class="number">1</span>;</span><br><span class="line">			w--;</span><br><span class="line">		&#125; <span class="comment">//从队尾弹出不必要决策</span></span><br><span class="line">		q[++w] = i;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (t &lt; w) </span><br><span class="line">			h.<span class="built_in">push</span>((node)&#123;q[w - <span class="number">1</span>],f[q[w - <span class="number">1</span>]],a[i]&#125;); <span class="comment">//修正“决策值”</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">while</span> (!h.<span class="built_in">empty</span>() &amp;&amp; (used[h.<span class="built_in">top</span>().id] || h.<span class="built_in">top</span>().y &lt; <span class="built_in">query</span>(h.<span class="built_in">top</span>().id + <span class="number">1</span>,i)))</span><br><span class="line">			h.<span class="built_in">pop</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (!h.<span class="built_in">empty</span>())</span><br><span class="line">			f[i] = <span class="built_in">min</span>(f[i],h.<span class="built_in">top</span>().x + h.<span class="built_in">top</span>().y); </span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,f[n]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>OI题目训练</tag>
       </tags>
   </entry>
   <entry>
@@ -621,104 +665,6 @@
       </tags>
   </entry>
   <entry>
-    <title>OI题单</title>
-    <url>/2023/06/18/OI%E9%A2%98%E5%8D%95/</url>
-    <content><![CDATA[<p>p6186</p>
-<p>p6185</p>
-]]></content>
-      <tags>
-        <tag>OI题目训练</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSAPP-lecture-6</title>
-    <url>/2024/08/02/CSAPP%20lecture%206/</url>
-    <content><![CDATA[<h3 id="CSAPP-lecture-6"><a href="#CSAPP-lecture-6" class="headerlink" title="CSAPP lecture 6"></a>CSAPP lecture 6</h3><h4 id="1-Condition-code"><a href="#1-Condition-code" class="headerlink" title="1. Condition code"></a>1. Condition code</h4><ul>
-<li><p>Four condition codes:</p>
-<ul>
-<li>CF: Carry Flag.  Will be 1 if there is a carry out of the most significant bit. Used to detect the overflow of the unsigned number</li>
-<li>ZF: Zero Flag. Will be 1 if the most recent operation yield 0.</li>
-<li>SF: Sign Flag. Will be 1 if the most recent operation yield a value with the sign bit being 1.</li>
-<li>OF: Overflow Flag. Will be 1 if the most recent operation caused an overflow (for two’s complement), either positive overflow or negative overflow.</li>
-</ul>
-<blockquote>
-<p>The leaq operation would not alter any of the condition code. All other arithmetic operation would make these condition code to change.</p>
-</blockquote>
-</li>
-<li><p>For the logical operation (such as <code>xor</code> <code>or</code> <code>add</code>), they will leave the CF and OF to be 0.</p>
-</li>
-<li><p>For the shift operation, the CF will be set to the last digit shifted out, and the OF will be set to 0.</p>
-</li>
-<li><p>For the <code>inc</code> and <code>dec</code> operation, they will set the OF and ZF, but they will leave the CF unchanged.</p>
-</li>
-<li><p>There are two instruction classes which can only alter the condition codes without changing the other value.</p>
-</li>
-</ul>
-<p>​	</p>
-<p>​	We can check the sign of a value or whether this value is 0 by <code>test %rax %rax</code>. (Suppose this value is stored in register <code>%rax</code>)</p>
-<h3 id="2-Access-the-condition-code"><a href="#2-Access-the-condition-code" class="headerlink" title="2. Access the condition code"></a>2. Access the condition code</h3><ul>
-<li>Access the condition code: Rather than directly access the condition code, we prefer to access the condition code indirectly, using the following 3 methods:<ul>
-<li>We can set a single byte to 0 or 1, depending on some combination of the condition codes.</li>
-<li>We can conditionally jump to some part of the program</li>
-<li>We can conditionally transfer data.</li>
-</ul>
-</li>
-</ul>
-<h5 id="2-1-How-to-set-a-single-byte-according-to-the-condition-code"><a href="#2-1-How-to-set-a-single-byte-according-to-the-condition-code" class="headerlink" title="2.1 How to set a single byte according to the condition code"></a>2.1 How to set a single byte according to the condition code</h5><p>​	These <code>set</code> class of instruction have a single operand <code>D</code> indicating the destination. The destination have to be a register or a memory location. If it is a register, then it would set the least significant byte of the register to 1 (usually this register have to be  <code>%al</code> kind rather than <code>%rax</code> kind.) </p>
-<p>​	an example:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">comp:</span><br><span class="line">	cmpq	%rsi %rdi</span><br><span class="line">	setl	%al</span><br><span class="line">	movzbq	%al %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="2-2-Conditionally-jump-to-some-part-of-the-program"><a href="#2-2-Conditionally-jump-to-some-part-of-the-program" class="headerlink" title="2.2 (Conditionally) jump to some part of the program"></a>2.2 (Conditionally) jump to some part of the program</h5><p><strong>Unconditionally jump:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	movq $0, %rax</span><br><span class="line">	jmp .L1</span><br><span class="line">	movq (%rax), %rdx</span><br><span class="line">.L1:</span><br><span class="line">	popq %rdx</span><br></pre></td></tr></table></figure>
-
-<p>The <code>jmp</code> instruction would jump to <code>.L1</code> label</p>
-<p><code>jmp</code> is the unconditional jump operation. It can jump directly or indirectly. When it is directly, it’s something like <code>jmp .L1</code>. When it is indirectly, it is something like <code>jmp *%rax</code> or <code>jmp *(%rax)</code>, where the label is stored in the register <code>%rax</code> or the memory location <code>(%rax)</code></p>
-<p><strong>Conditional jump:</strong></p>
-<h5 id="2-3-Jump-instruction-encodings"><a href="#2-3-Jump-instruction-encodings" class="headerlink" title="2.3 Jump instruction encodings"></a>2.3 Jump instruction encodings</h5><p>​	In assembly code, to specify where we want to jump to we can simply write something like <code>.L1</code> happily.        In the disassembled machinery code <em><strong>(the assemble code translated from the machinery code)</strong></em>, the <code>jump</code> operation would written in the form like <code>jmp 0x1137</code>. There will be an address operand like <code>0x1137</code> to specify which operation will the program jump to. In this case, the jump operation would jump to <code>0x1137</code> and do the operation in <code>0x1137</code></p>
-<p>​	But in machinery code, how to specify where we want to jump to? There are two ways to do this, first is so called <code>PC relatives</code>.  That is saying, they encode the target address as the difference between the target address and the address of the instruction immediately following the jump instruction. </p>
-<blockquote>
-<p>The difference between a and b is a - b</p>
-</blockquote>
-<p>​	The reason why we try to use this kind of notation is that the jump target would remain unchanged when the whole program is shifted to another address.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eb 03 # In this case, 0x03 is the encoded jump target. 0x03 has to be 							added by the address of the next instruction to get the 								target address. </span><br><span class="line"># &quot;eb 03&quot; is a machine code in binary. &quot;eb&quot; specifies the type of the operation and &quot;03&quot; specifies the encoded jump target</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Note: this <code>0x03</code> is a two’s complement number, so for example, if now it is <code>0xFF</code>, then it is actually -1, and the actual jump target would be the address of the next instruction minus 1.</p>
-</blockquote>
-<p><em><strong>Question</strong></em></p>
-<p>​	Sometimes we would see operation <code>jmp .L1</code> and sometimes we would see operation <code>jmp 0x1137</code>. Which one (probably both) is the assembly code? What’s difference between these two command?</p>
-<h5 id="2-4-Conditional-Move"><a href="#2-4-Conditional-Move" class="headerlink" title="2.4 Conditional Move"></a>2.4 Conditional Move</h5><p>​	Apart from the <code>jump</code> operation, we have an operation called conditional move.</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">comp</span><span class="params">(<span class="type">long</span> x,<span class="type">long</span> y)</span> &#123;</span><br><span class="line">    <span class="type">long</span> res;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; y)</span><br><span class="line">        res = y - x; <span class="keyword">else</span></span><br><span class="line">        res = x - y;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>For example, this C code might be translated into the following assembly code:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">absdiff:</span><br><span class="line">	movq 	%rsi, %rax</span><br><span class="line">	subq	%rdi, %rax</span><br><span class="line">	movq	%rdi, %rdx</span><br><span class="line">	subq	%rsi, %rdx</span><br><span class="line">	cmpq	%rsi, %rdi</span><br><span class="line">	cmovge	%rdx, %rax	#If the last comparison said &quot;%rdi &gt;= %rsi&quot;, then this move will 						  conditional move will apply. Otherwise nothing will happen.</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
-
-
-
-<p><em><strong>Question</strong></em></p>
-<p>​	Why will the conditional move operation reduce the penalty for misprediction? It also need to decide whether to do the move instruction, and the misprediction should affect the following pipeline as well.</p>
-<p><strong>The class of conditional move:</strong></p>
-<p>​	Some property for the conditional move:</p>
-<ul>
-<li>The destination must be register</li>
-<li>The data type can be 2,4,8 bytes long, but can’t be 1 byte long</li>
-<li>The instruction don’t need a suffix to specify the data type. The processor could infer the operand length from the name of the destination register.</li>
-</ul>
-<blockquote>
-<p>The condition move may not be valid if one expression is invalid.</p>
-<p>for example</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="keyword">if</span> (!p)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> *p;</span><br></pre></td></tr></table></figure>
-
-<p>You can not calculate <code>*p</code> beforehand as <code>p</code> may be a null pointer, making the dereferencing invalid.</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git学习笔记</title>
     <url>/2023/10/20/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="1-Git本地基本操作"><a href="#1-Git本地基本操作" class="headerlink" title="1. Git本地基本操作"></a>1. Git本地基本操作</h3><h5 id="0-一些英语翻译"><a href="#0-一些英语翻译" class="headerlink" title="0. 一些英语翻译"></a>0. 一些英语翻译</h5><ul>
@@ -876,6 +822,50 @@
       </tags>
   </entry>
   <entry>
+    <title>C语言指针相关</title>
+    <url>/2023/10/16/C%E8%AF%AD%E8%A8%80%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88&amp;%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<p>1.<code>char *s[]</code>   若执行<code>s++</code>，则：</p>
+<p>2.<code>char **s </code>     若执行<code>s++</code>，则：向后一个指针的大小（一般为4个字节）</p>
+<p>3.<code>char (*s)[]</code> 则s是指向一行的指针，若执行<code>s++</code>，则s会指向下一行</p>
+<p>4.<code>int **a</code> 		若执行<code>a++</code>，则：向后一个指针的大小（一般为4个字节）</p>
+<p>5.<code>int *a[]</code> 	 若执行<code>a++</code>，则：</p>
+<p>6.<code>int (*a)[]</code>    则a是指向一行的指针，若执行<code>a++</code>，则a会指向下一行</p>
+<ul>
+<li>1和2如果写在函数的形参里面，那么是等价的。</li>
+<li>4和5如果写在函数的形参里面，那么是等价的。</li>
+<li>如果1不是写成函数的形参，那么s就是一个常量，不能更改。</li>
+<li>如果2不是写成函数的形参，那么s就是一个变量，可以更改。</li>
+<li>3和6都是指向一行的指针</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = b;</span><br><span class="line"><span class="comment">//不能这样写，因为b是指向行的指针</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="type">int</span> **a = &amp;b[<span class="number">0</span>];</span><br><span class="line"><span class="comment">//b[0]是常量，一般取不了</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>一般来说，二级指针是和指针数组相关联的</strong>，<code>int (*a)[]</code>  这种是和二维数组相关联的。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *s[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">char</span> **s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="built_in">puts</span>(*s);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	s[<span class="number">0</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">	s[<span class="number">1</span>] = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	s[<span class="number">2</span>] = <span class="string">&quot;ABC&quot;</span>;</span><br><span class="line">	<span class="built_in">work</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">123</span><br><span class="line">abc</span><br><span class="line">ABC</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>观察这段程序，问题出在哪里？</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题：没有声明所指向的一行有多少个元素，改为：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fun</span><span class="params">(<span class="type">int</span> (*p)[<span class="number">3</span>])</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);</span><br><span class="line">	p+=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,**p);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">fun</span>(a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
+<hr>
+<p>如果声明了<code>int *a = malloc(size);</code>，那么之后可以用<code>a[i]</code>表示<code>*(a + i)</code></p>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ICS Notes</title>
     <url>/2024/11/25/ICS_Notes/</url>
     <content><![CDATA[<h3 id="ICS-Notes"><a href="#ICS-Notes" class="headerlink" title="ICS Notes"></a>ICS Notes</h3><ul>
@@ -1011,20 +1001,13 @@
       </tags>
   </entry>
   <entry>
-    <title>exgcd&amp;二元一次丢番图方程</title>
-    <url>/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/</url>
-    <content><![CDATA[<h1 id="exgcd-二元一次丢番图方程"><a href="#exgcd-二元一次丢番图方程" class="headerlink" title="exgcd,二元一次丢番图方程"></a>exgcd,二元一次丢番图方程</h1><h3 id="1-定理"><a href="#1-定理" class="headerlink" title="1.定理"></a>1.定理</h3><p>对于任意<strong>整数</strong>$a,b$，存在一对<strong>整数</strong>$x,y$,满足$ax + by &#x3D; gcd(a,b)$.</p>
-<h3 id="2-证明"><a href="#2-证明" class="headerlink" title="2.证明"></a>2.证明</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">   	<span class="keyword">return</span> <span class="built_in">gcd</span>(b,a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是辗转相除法求gcd的代码。<br>	<br>我们可以发现当$b &#x3D; 0$时，有一组$x &#x3D; 1,y &#x3D; 0$，使得$ax + by &#x3D; a \times 1 + b \times 0 &#x3D; gcd(a,b) &#x3D; a$。<br>	<br>对于任意一组$a,b$，假设存在一对整数$x,y$使得$bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)$，对它变形：<br>$$<br>bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)\bx + (a  - b \times \lfloor a &#x2F; b \rfloor)y &#x3D; gcd(a,b)\ya + (x - y \times \lfloor a &#x2F; b \rfloor)b &#x3D; gcd(a,b)<br>$$<br>所以我们有了一对$x’ &#x3D; y,y’ &#x3D; x - y * \lfloor a &#x2F; b \rfloor$使得$ax’ + by’ &#x3D; gcd(a,b)$。</p>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,x,y,gcd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>,y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);	</span><br><span class="line">	gcd = <span class="built_in">exgcd</span>(a,b,x,y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,x,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-求通解"><a href="#4-求通解" class="headerlink" title="4.求通解"></a>4.求通解</h3><p>上文中我们求出了一对$x_0,y_0$满足$ax_0 + by_0 &#x3D; gcd(a,b)$,现在来求通解。</p>
-<p>取一组解$(x_1,y_1)$，再任取一组解$(x_2,y_2)$，有：<br>$$<br>ax_1 + by_1 &#x3D; ax_2 + by_2 &#x3D; gcd(a,b)\a(x_1 - x_2) &#x3D; b(y_2 - y_1)\两边同时除以gcd(a,b),设a &#x2F; gcd(a,b) &#x3D; a’,b &#x2F; gcd (a,b) &#x3D; b’\a’(x_1 - x_2) &#x3D; b’(y_2 - y_1)\此时gcd(a’,b’) &#x3D; 1\所以x_1 - x_2 &#x3D; kb’,y_2 - y_1 &#x3D; ka’<br>$$</p>
-<h3 id="5-另外一个定理"><a href="#5-另外一个定理" class="headerlink" title="5.另外一个定理"></a>5.另外一个定理</h3><p>关于<strong>整数</strong>$x,y$的方程$ax + by &#x3D; c$有解的充要条件是$gcd(a,b)|c$。</p>
+    <title>OI题单</title>
+    <url>/2023/06/18/OI%E9%A2%98%E5%8D%95/</url>
+    <content><![CDATA[<p>p6186</p>
+<p>p6185</p>
 ]]></content>
       <tags>
-        <tag>数学</tag>
+        <tag>OI题目训练</tag>
       </tags>
   </entry>
   <entry>
@@ -1042,6 +1025,23 @@
 <h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">105</span>,maxm = <span class="number">1e4</span> + <span class="number">5</span>,inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,vi,vj,vk,minn;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn],v[maxn][maxn],a[maxn][maxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; path;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (v[x][y] == <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> tmp = v[x][y];</span><br><span class="line">	<span class="built_in">work</span>(x,tmp);</span><br><span class="line">	path.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">	<span class="built_in">work</span>(tmp,y);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(a,<span class="number">0x3f</span>,<span class="built_in">sizeof</span>(a));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		f[i][i] = a[i][i] = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x,y,z;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="keyword">if</span> (x &gt; n || y &gt; n)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		a[x][y] = <span class="built_in">min</span>(a[x][y],z);</span><br><span class="line">		a[y][x] = <span class="built_in">min</span>(a[y][x],z);</span><br><span class="line">		f[x][y] = <span class="built_in">min</span>(f[x][y],z);</span><br><span class="line">		f[y][x] = <span class="built_in">min</span>(f[y][x],z);</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	minn = inf;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;k; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=i + <span class="number">1</span>; j&lt;k; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> ((<span class="type">long</span> <span class="type">long</span>)a[i][k] + a[k][j] + f[i][j] &lt; (<span class="type">long</span> <span class="type">long</span>)minn) &#123;</span><br><span class="line">					minn = a[i][k] + a[k][j] + f[i][j];</span><br><span class="line">					path.<span class="built_in">clear</span>();</span><br><span class="line">					path.<span class="built_in">push_back</span>(i);</span><br><span class="line">					path.<span class="built_in">push_back</span>(k);</span><br><span class="line">					path.<span class="built_in">push_back</span>(j);</span><br><span class="line">					<span class="built_in">work</span>(j,i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (i == j || j == k || i == k)</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">					</span><br><span class="line">				<span class="keyword">if</span> (f[i][j] &gt; f[i][k] + f[k][j]) &#123;</span><br><span class="line">					f[i][j] = f[i][k] + f[k][j];</span><br><span class="line">					v[i][j] = k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">			</span><br><span class="line">	<span class="keyword">if</span> (minn == inf) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;No solution.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;path.<span class="built_in">size</span>(); i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,path[i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>OI题目训练</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>exgcd&amp;二元一次丢番图方程</title>
+    <url>/2023/06/16/exgcd%E4%B8%8E%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E4%B8%A2%E7%95%AA%E5%9B%BE%E6%96%B9%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="exgcd-二元一次丢番图方程"><a href="#exgcd-二元一次丢番图方程" class="headerlink" title="exgcd,二元一次丢番图方程"></a>exgcd,二元一次丢番图方程</h1><h3 id="1-定理"><a href="#1-定理" class="headerlink" title="1.定理"></a>1.定理</h3><p>对于任意<strong>整数</strong>$a,b$，存在一对<strong>整数</strong>$x,y$,满足$ax + by &#x3D; gcd(a,b)$.</p>
+<h3 id="2-证明"><a href="#2-证明" class="headerlink" title="2.证明"></a>2.证明</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">   	<span class="keyword">return</span> <span class="built_in">gcd</span>(b,a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是辗转相除法求gcd的代码。<br>	<br>我们可以发现当$b &#x3D; 0$时，有一组$x &#x3D; 1,y &#x3D; 0$，使得$ax + by &#x3D; a \times 1 + b \times 0 &#x3D; gcd(a,b) &#x3D; a$。<br>	<br>对于任意一组$a,b$，假设存在一对整数$x,y$使得$bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)$，对它变形：<br>$$<br>bx + (a % b)y &#x3D; gcd(b,a % b) &#x3D; gcd(a,b)\bx + (a  - b \times \lfloor a &#x2F; b \rfloor)y &#x3D; gcd(a,b)\ya + (x - y \times \lfloor a &#x2F; b \rfloor)b &#x3D; gcd(a,b)<br>$$<br>所以我们有了一对$x’ &#x3D; y,y’ &#x3D; x - y * \lfloor a &#x2F; b \rfloor$使得$ax’ + by’ &#x3D; gcd(a,b)$。</p>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a,b,x,y,gcd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>,y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;a,&amp;b);	</span><br><span class="line">	gcd = <span class="built_in">exgcd</span>(a,b,x,y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,x,y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-求通解"><a href="#4-求通解" class="headerlink" title="4.求通解"></a>4.求通解</h3><p>上文中我们求出了一对$x_0,y_0$满足$ax_0 + by_0 &#x3D; gcd(a,b)$,现在来求通解。</p>
+<p>取一组解$(x_1,y_1)$，再任取一组解$(x_2,y_2)$，有：<br>$$<br>ax_1 + by_1 &#x3D; ax_2 + by_2 &#x3D; gcd(a,b)\a(x_1 - x_2) &#x3D; b(y_2 - y_1)\两边同时除以gcd(a,b),设a &#x2F; gcd(a,b) &#x3D; a’,b &#x2F; gcd (a,b) &#x3D; b’\a’(x_1 - x_2) &#x3D; b’(y_2 - y_1)\此时gcd(a’,b’) &#x3D; 1\所以x_1 - x_2 &#x3D; kb’,y_2 - y_1 &#x3D; ka’<br>$$</p>
+<h3 id="5-另外一个定理"><a href="#5-另外一个定理" class="headerlink" title="5.另外一个定理"></a>5.另外一个定理</h3><p>关于<strong>整数</strong>$x,y$的方程$ax + by &#x3D; c$有解的充要条件是$gcd(a,b)|c$。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1071,15 +1071,6 @@
       </tags>
   </entry>
   <entry>
-    <title>一个不等式</title>
-    <url>/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/</url>
-    <content><![CDATA[<p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2025/01/27/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -1096,6 +1087,25 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>一个不等式</title>
+    <url>/2023/07/07/%E4%B8%80%E4%B8%AA%E4%B8%8D%E7%AD%89%E5%BC%8F/</url>
+    <content><![CDATA[<p>对于任意正整数$m,n$，有：<br>$$<br>\sum_{i&#x3D;1}^n\frac{ {a_i}^{m+1} }{ {b_i}^m}\ge\frac{(\sum_{i&#x3D;1}^na_i)^{m + 1} }{(\sum_{i &#x3D; 1}^n {b_i})^m}<br>$$</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2023.6.20</title>
+    <url>/2023/07/10/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
+    <content><![CDATA[<p>想法来自一个同学的说说，稍微做了一点改动：</p>
+<p>我们总是觉得年纪越大时间过得越快，其实不然。童年时觉得时间过得很慢，是因为我们在彼时将精力全部投入在观察现实世界中。而随着年龄的增长，我们会把越来越多的时间用来回忆过去和遥想未来。关照现在的时间变少了，就会感到时间变得飞快，仿佛俯仰之间白驹已过隙。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
   </entry>
   <entry>
     <title>关于$x^y$和$y^x$的大小判断问题的一点思考</title>
@@ -1122,31 +1132,6 @@
 ]]></content>
       <tags>
         <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2023.6.20</title>
-    <url>/2023/07/10/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
-    <content><![CDATA[<p>想法来自一个同学的说说，稍微做了一点改动：</p>
-<p>我们总是觉得年纪越大时间过得越快，其实不然。童年时觉得时间过得很慢，是因为我们在彼时将精力全部投入在观察现实世界中。而随着年龄的增长，我们会把越来越多的时间用来回忆过去和遥想未来。关照现在的时间变少了，就会感到时间变得飞快，仿佛俯仰之间白驹已过隙。</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一些文字</title>
-    <url>/2023/07/09/%E4%B8%80%E4%BA%9B%E6%96%87%E5%AD%97/</url>
-    <content><![CDATA[<p>1938年11月，一间禅房中，两人以跪姿相对而坐。右首脊背笔挺，手摇折扇的是本因坊世家第二十一代”不败名人“，本因坊秀哉九段。虽仍为一头黑发，却早已年过花甲。秀哉自知年岁已大，且疾病缠身，大约大限之期不远矣，遂有意下一盘隐退棋。这盘棋的对手是从数百名职业棋手中脱颖而出青年棋手，木谷实七段。比赛于6月24日开始，木谷实执黑，秀哉执白。<br>	<br>2小时前，秀哉从容落下白96手，蛤基石与榧木棋盘间发出碰撞声。接下来2小时，两人好似入定，禅院中空气似乎也已凝固。这样的状态已持续4个月，并且还会再延续2个月。6个月的时间中，禅院外是隆隆的火炮爆裂声，而禅院的灯光下，只有清脆的落子声，其余便是时间积淀成的寂静。</p>
-<p><img src="https://s1.ax1x.com/2020/08/16/dEWVG4.png"></p>
-<p>1992年，大洋彼岸的英国牛津，37岁的数学教授Andrew Wiles正坐在自己的阁楼中。5年前，随着一系列的学术进展，已经尘封358年的费马大定理似乎有了研究的方向。Wiles 在那时感觉到证明费马大定理的时间已经来到，遂推掉了其他所有学术研讨会，钻进自己的阁楼中，对大定理发起冲击。5年来，他每天只做一件事：证明费马大定理。除了睡觉和吃饭，他将自己所有的时间都埋入阁楼里的草稿纸中。</p>
-<p>1995年，Andrew Wiles终于成功证明了费马大定理，8年阁楼中的研究岁月换来的是一份写满138页A4纸的证明。2005年，Wiles来到北大交流时，北大数学系院长张继平感慨到：”如今还有多少人能静下心来，花8年时间认认真真只做一件事情呢？“</p>
-<p>的确，现在这样的人已经很鲜见了。一盘围棋赛的时间从半年变为区区5小时，一项研究的平均时间也从8年变为如今的一个月甚至更少。随着社会的发展，我们要做的事情越来越多，而做每件事情的时间却越来越少，对应的，生活也变得越来越琐碎。时代的快车拽着我们一路飞奔，时间被划分成越来越小的片段。</p>
-<p>或许，我们真的应该慢下来，用一生时间做一件事情，这样的生活或许难以实现，但真的很浪漫。</p>
-<p>​	</p>
-]]></content>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -1177,79 +1162,18 @@
       </tags>
   </entry>
   <entry>
-    <title>初心</title>
-    <url>/2023/06/12/%E5%88%9D%E5%BF%83/</url>
-    <content><![CDATA[<p>​	希望能够幸福地做人，合理地度日，内心安定平和，即使身处逆境也始终保持追求。同时也希望能够通过文字与各位交流这方面的经验，于苦难中彼此慰藉。</p>
+    <title>一些文字</title>
+    <url>/2023/07/09/%E4%B8%80%E4%BA%9B%E6%96%87%E5%AD%97/</url>
+    <content><![CDATA[<p>1938年11月，一间禅房中，两人以跪姿相对而坐。右首脊背笔挺，手摇折扇的是本因坊世家第二十一代”不败名人“，本因坊秀哉九段。虽仍为一头黑发，却早已年过花甲。秀哉自知年岁已大，且疾病缠身，大约大限之期不远矣，遂有意下一盘隐退棋。这盘棋的对手是从数百名职业棋手中脱颖而出青年棋手，木谷实七段。比赛于6月24日开始，木谷实执黑，秀哉执白。<br>	<br>2小时前，秀哉从容落下白96手，蛤基石与榧木棋盘间发出碰撞声。接下来2小时，两人好似入定，禅院中空气似乎也已凝固。这样的状态已持续4个月，并且还会再延续2个月。6个月的时间中，禅院外是隆隆的火炮爆裂声，而禅院的灯光下，只有清脆的落子声，其余便是时间积淀成的寂静。</p>
+<p><img src="https://s1.ax1x.com/2020/08/16/dEWVG4.png"></p>
+<p>1992年，大洋彼岸的英国牛津，37岁的数学教授Andrew Wiles正坐在自己的阁楼中。5年前，随着一系列的学术进展，已经尘封358年的费马大定理似乎有了研究的方向。Wiles 在那时感觉到证明费马大定理的时间已经来到，遂推掉了其他所有学术研讨会，钻进自己的阁楼中，对大定理发起冲击。5年来，他每天只做一件事：证明费马大定理。除了睡觉和吃饭，他将自己所有的时间都埋入阁楼里的草稿纸中。</p>
+<p>1995年，Andrew Wiles终于成功证明了费马大定理，8年阁楼中的研究岁月换来的是一份写满138页A4纸的证明。2005年，Wiles来到北大交流时，北大数学系院长张继平感慨到：”如今还有多少人能静下心来，花8年时间认认真真只做一件事情呢？“</p>
+<p>的确，现在这样的人已经很鲜见了。一盘围棋赛的时间从半年变为区区5小时，一项研究的平均时间也从8年变为如今的一个月甚至更少。随着社会的发展，我们要做的事情越来越多，而做每件事情的时间却越来越少，对应的，生活也变得越来越琐碎。时代的快车拽着我们一路飞奔，时间被划分成越来越小的片段。</p>
+<p>或许，我们真的应该慢下来，用一生时间做一件事情，这样的生活或许难以实现，但真的很浪漫。</p>
+<p>​	</p>
 ]]></content>
       <tags>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>卡塔兰猜想的一个特殊情况的证明</title>
-    <url>/2023/06/25/%E5%8D%A1%E5%A1%94%E5%85%B0%E7%8C%9C%E6%83%B3%E7%9A%84%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E7%9A%84%E8%AF%81%E6%98%8E/</url>
-    <content><![CDATA[<h1 id="卡塔兰猜想的一个特殊情况的证明"><a href="#卡塔兰猜想的一个特殊情况的证明" class="headerlink" title="卡塔兰猜想的一个特殊情况的证明"></a>卡塔兰猜想的一个特殊情况的证明</h1><p> 命题：$x,y$都是正整数，求证不存在$x&gt;2,y&gt;3$使得$3^x-2^y&#x3D;\pm 1$</p>
-<p> 证：1° $3^x-2^y &#x3D; 1$</p>
-<p>$$ 3^x - 2^y &#x3D; 1$$</p>
-<p>$$\because x &gt; 2,y &gt; 3\$$</p>
-<p>$$\therefore 设s &#x3D; x - 2,t &#x3D; y - 3(s \ge 1,t \ge 1)$$</p>
-<p>$$ 则3^2 \times 3^s - 2^3 \times 2^t &#x3D; 1\$$</p>
-<p>$$ 9 \times 3^s-8 \times 2^t &#x3D; 1$$</p>
-<p>$$ \therefore 3^s &#x3D; 1 + 8k,2^t &#x3D; 1 + 9k (k \in Z)$$</p>
-<p>$$ \because s \ge 1,t \ge 1$$</p>
-<p>$$ \therefore k \ge 1$$</p>
-<p>$$ \because 3^s &#x3D; 1 + 8k （1）$$</p>
-<p>$$ \therefore 3^s \equiv 1 \pmod 8$$</p>
-<p>$$ 而当s &#x3D; 2l(l \in Z)时，3^s \equiv 1 \pmod 8$$</p>
-<p> $$\therefore 9^l &#x3D; 8k + 1$$</p>
-<p>$$ 又\because 2^t &#x3D; 1 + 9k (2)$$</p>
-<p>$$ 且当t &#x3D; 6c (c \in Z)时，2^t \equiv 1 \pmod 9$$</p>
-<p>$$ \therefore 64^c &#x3D; 1 + 9k (3)$$</p>
-<p>$$ 由(2),(3),有：\ \begin{cases} k \equiv 1 \pmod 9 \ k \equiv 7 \pmod {64}\ \end{cases}\ $$</p>
-<p>$$所以k \equiv 199 \pmod{576}$$</p>
-<p>$$ \therefore 9k + 1 \equiv 76 \pmod {576}$$</p>
-<p>$$ 由(3) \ 则64^c &#x3D; 576r + 76(r \in Z)$$</p>
-<p>$$ \because 64 | 576,64 \nmid 76$$</p>
-<p>$$ \therefore 无解。 $$</p>
-<hr>
-<p> 2° $3^x - 2^y &#x3D; -1$</p>
-<p>$$ 3^x - 2^y &#x3D; -1$$</p>
-<p>$$ 2^y - 3^x &#x3D; 1$$</p>
-<p>$$ 令s &#x3D; y - 3,t &#x3D; x - 2 $$</p>
-<p>$$ 8 \times 2^s - 9 \times 3^t &#x3D; 1$$</p>
-<p>$$ 2^s &#x3D; 8 + 9k,3^t &#x3D; 7 + 8k (k\in Z)$$</p>
-<p>$$ \because 3^t &#x3D; 7 + 8k$$</p>
-<p>$$ \therefore 3^t \equiv 7 \pmod 8$$</p>
-<p>$$ 而3^t除8的余数集合为{1,3}$$</p>
-<p>$$ \therefore 无解。$$ </p>
-<p> Q.E.D.</p>
-<p> —–2020.1.18 20:50</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>同余&amp;中国剩余定理&amp;中国剩余定理の扩展</title>
-    <url>/2023/07/05/%E5%90%8C%E4%BD%99%E5%92%8C%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/</url>
-    <content><![CDATA[<h2 id="同余"><a href="#同余" class="headerlink" title="同余"></a>同余</h2><h3 id="1-线性同余方程"><a href="#1-线性同余方程" class="headerlink" title="1.线性同余方程"></a>1.线性同余方程</h3><p>给定整数$a,b,m$求一个整数$x$满足$ax \equiv b \pmod m$，或给出无解。</p>
-<p>设$a \times x  &#x3D; b + my$，则$ax + my &#x3D; b$，有解的充要条件是$gcd(a,m)|b$.</p>
-<p>接下来只要用exgcd求出一个解，然后就可以求通解了。</p>
-<h3 id="2-中国剩余定理"><a href="#2-中国剩余定理" class="headerlink" title="2.中国剩余定理"></a>2.中国剩余定理</h3><p>设$m_1,m_2,m_3,……,m_n$是两两互质的整数，对于任意的$n$个整数$a_1,a_2,……,a_n$，关于$x$的方程组<br>$$<br>\begin{cases} x \equiv  a_1 \pmod {m_1}\x \equiv a_2 \pmod {m_2}\……\x \equiv a_n \pmod{m_n}\end{cases}<br>$$<br>有整数解。</p>
-<p>证明：</p>
-<p>设$m &#x3D;  \prod_{i &#x3D; 1}^nm_i,M_i &#x3D; m &#x2F; m_i$，$t_i$是线性同余方程$M_it_i \equiv 1 \pmod{m_i}$的一个解。</p>
-<p>则$x_0 &#x3D; \sum_{i &#x3D; 1}^n a_iM_it_i$是一个解</p>
-<p>因为$M_i$是除了$m_i$以外所有数的倍数，所以$\forall k \neq i,a_iM_it_i \equiv 0 \pmod{m_k}$。而因为$M_it_i \equiv  1 \pmod {m_i}$，所以 $a_iM_it_i \equiv a_i \pmod {a_i} $。<br>	<br>这是一个特解。通解为$x &#x3D; x_0 + km(k \in Z)$。</p>
-<ul>
-<li><p>代码</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m[<span class="number">30</span>],a[<span class="number">30</span>],M = <span class="number">1</span>,v[<span class="number">30</span>],t[<span class="number">30</span>],V1,V2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>;</span><br><span class="line">		y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">	<span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;m[i],&amp;a[i]);</span><br><span class="line">		M = M * m[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		v[i] = M / m[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x0,y0;</span><br><span class="line">		<span class="type">int</span> gcd = <span class="built_in">exgcd</span>(v[i],m[i],x0,y0);</span><br><span class="line">		x0 %= m[i];</span><br><span class="line">		<span class="keyword">if</span> (x0 &lt;= <span class="number">0</span>)</span><br><span class="line">			x0 += m[i];</span><br><span class="line">		t[i] = x0; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		sum += a[i] * v[i] * t[i];</span><br><span class="line">	sum %= M;</span><br><span class="line">	<span class="keyword">if</span> (sum &lt; <span class="number">0</span>)</span><br><span class="line">		sum += M;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="3-中国剩余定理的扩展版本"><a href="#3-中国剩余定理的扩展版本" class="headerlink" title="3.中国剩余定理的扩展版本"></a>3.中国剩余定理的扩展版本</h3><p>上面的方法要求$m_1,m_2,……,m_n$两两互质。现在给出一种对$m_i$没有要求的算法。</p>
-<p>数学归纳法：假设前$k - 1$个方程已经求出了一个解$x$。记$m &#x3D; lcm(m_1,m_2,……,m_{k - 1})$，则$x + i \times m (i \in Z)$是前$k - 1$个方程的通解。</p>
-<p>考虑第$k$个方程，求一个$t$，使得$x + t \times m \equiv a_k \pmod {m_k}$。将这个方程变换一下，得到$m \times t \equiv a_{k} - x \pmod {m_k}$,求$t$.<br>$$<br>m \times t + m_{k} \times p &#x3D; a_{k} - x<br>$$</p>
-]]></content>
-      <tags>
-        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1416,13 +1340,93 @@
       </tags>
   </entry>
   <entry>
-    <title>拉格朗日乘数法复习</title>
-    <url>/2025/05/04/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95/</url>
-    <content><![CDATA[<h3 id="拉格朗日乘数法复习"><a href="#拉格朗日乘数法复习" class="headerlink" title="拉格朗日乘数法复习"></a>拉格朗日乘数法复习</h3><p>$\hspace{1cm}$ 给定一个多元函数$f(\mathbf{x})$, 和若干个限制：$g_1(\mathbf{x}) &#x3D; g_2(\mathbf{x}) &#x3D; … &#x3D; g_m(\mathbf{x}) &#x3D; 0$, 求$f(\mathbf{x})$的最小值。这里的$\mathbf{x}$是一个向量。$\mathbf{x} &#x3D; {x_1,x_2,…x_n}$ </p>
-<p>$\hspace{1cm}$ 设$L(\mathbf{x}, \lambda_1, \lambda_2, …, \lambda_m) &#x3D; f(\mathbf{x}) - \lambda_1g_1(\mathbf{x}) - … - \lambda_mg_m(\mathbf{x})$,若$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$，$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$, 则此时的$\mathbf{x}$是一个候选的极小值点（极小值点必定在这样的一个$\mathbf{x}$中）</p>
+    <title>初心</title>
+    <url>/2023/06/12/%E5%88%9D%E5%BF%83/</url>
+    <content><![CDATA[<p>​	希望能够幸福地做人，合理地度日，内心安定平和，即使身处逆境也始终保持追求。同时也希望能够通过文字与各位交流这方面的经验，于苦难中彼此慰藉。</p>
+]]></content>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>卡塔兰猜想的一个特殊情况的证明</title>
+    <url>/2023/06/25/%E5%8D%A1%E5%A1%94%E5%85%B0%E7%8C%9C%E6%83%B3%E7%9A%84%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E7%9A%84%E8%AF%81%E6%98%8E/</url>
+    <content><![CDATA[<h1 id="卡塔兰猜想的一个特殊情况的证明"><a href="#卡塔兰猜想的一个特殊情况的证明" class="headerlink" title="卡塔兰猜想的一个特殊情况的证明"></a>卡塔兰猜想的一个特殊情况的证明</h1><p> 命题：$x,y$都是正整数，求证不存在$x&gt;2,y&gt;3$使得$3^x-2^y&#x3D;\pm 1$</p>
+<p> 证：1° $3^x-2^y &#x3D; 1$</p>
+<p>$$ 3^x - 2^y &#x3D; 1$$</p>
+<p>$$\because x &gt; 2,y &gt; 3\$$</p>
+<p>$$\therefore 设s &#x3D; x - 2,t &#x3D; y - 3(s \ge 1,t \ge 1)$$</p>
+<p>$$ 则3^2 \times 3^s - 2^3 \times 2^t &#x3D; 1\$$</p>
+<p>$$ 9 \times 3^s-8 \times 2^t &#x3D; 1$$</p>
+<p>$$ \therefore 3^s &#x3D; 1 + 8k,2^t &#x3D; 1 + 9k (k \in Z)$$</p>
+<p>$$ \because s \ge 1,t \ge 1$$</p>
+<p>$$ \therefore k \ge 1$$</p>
+<p>$$ \because 3^s &#x3D; 1 + 8k （1）$$</p>
+<p>$$ \therefore 3^s \equiv 1 \pmod 8$$</p>
+<p>$$ 而当s &#x3D; 2l(l \in Z)时，3^s \equiv 1 \pmod 8$$</p>
+<p> $$\therefore 9^l &#x3D; 8k + 1$$</p>
+<p>$$ 又\because 2^t &#x3D; 1 + 9k (2)$$</p>
+<p>$$ 且当t &#x3D; 6c (c \in Z)时，2^t \equiv 1 \pmod 9$$</p>
+<p>$$ \therefore 64^c &#x3D; 1 + 9k (3)$$</p>
+<p>$$ 由(2),(3),有：\ \begin{cases} k \equiv 1 \pmod 9 \ k \equiv 7 \pmod {64}\ \end{cases}\ $$</p>
+<p>$$所以k \equiv 199 \pmod{576}$$</p>
+<p>$$ \therefore 9k + 1 \equiv 76 \pmod {576}$$</p>
+<p>$$ 由(3) \ 则64^c &#x3D; 576r + 76(r \in Z)$$</p>
+<p>$$ \because 64 | 576,64 \nmid 76$$</p>
+<p>$$ \therefore 无解。 $$</p>
+<hr>
+<p> 2° $3^x - 2^y &#x3D; -1$</p>
+<p>$$ 3^x - 2^y &#x3D; -1$$</p>
+<p>$$ 2^y - 3^x &#x3D; 1$$</p>
+<p>$$ 令s &#x3D; y - 3,t &#x3D; x - 2 $$</p>
+<p>$$ 8 \times 2^s - 9 \times 3^t &#x3D; 1$$</p>
+<p>$$ 2^s &#x3D; 8 + 9k,3^t &#x3D; 7 + 8k (k\in Z)$$</p>
+<p>$$ \because 3^t &#x3D; 7 + 8k$$</p>
+<p>$$ \therefore 3^t \equiv 7 \pmod 8$$</p>
+<p>$$ 而3^t除8的余数集合为{1,3}$$</p>
+<p>$$ \therefore 无解。$$ </p>
+<p> Q.E.D.</p>
+<p> —–2020.1.18 20:50</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>同余&amp;中国剩余定理&amp;中国剩余定理の扩展</title>
+    <url>/2023/07/05/%E5%90%8C%E4%BD%99%E5%92%8C%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/</url>
+    <content><![CDATA[<h2 id="同余"><a href="#同余" class="headerlink" title="同余"></a>同余</h2><h3 id="1-线性同余方程"><a href="#1-线性同余方程" class="headerlink" title="1.线性同余方程"></a>1.线性同余方程</h3><p>给定整数$a,b,m$求一个整数$x$满足$ax \equiv b \pmod m$，或给出无解。</p>
+<p>设$a \times x  &#x3D; b + my$，则$ax + my &#x3D; b$，有解的充要条件是$gcd(a,m)|b$.</p>
+<p>接下来只要用exgcd求出一个解，然后就可以求通解了。</p>
+<h3 id="2-中国剩余定理"><a href="#2-中国剩余定理" class="headerlink" title="2.中国剩余定理"></a>2.中国剩余定理</h3><p>设$m_1,m_2,m_3,……,m_n$是两两互质的整数，对于任意的$n$个整数$a_1,a_2,……,a_n$，关于$x$的方程组<br>$$<br>\begin{cases} x \equiv  a_1 \pmod {m_1}\x \equiv a_2 \pmod {m_2}\……\x \equiv a_n \pmod{m_n}\end{cases}<br>$$<br>有整数解。</p>
 <p>证明：</p>
-<p>$\hspace{1cm}$ 考虑$\mathbf{x} &#x3D; \mathbf{x_0}$时，此时$\mathbf{x}$想要有任何的微小位移$\Delta \mathbf{x}$,都必须满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla g_i(\mathbf{x_0}) &#x3D; 0 \ \ \ \forall i \in[1,m]<br>$$<br>$\hspace{1cm}$ 我们称任意一个满足上式的微小位移$\Delta \mathbf{x}$为合法微小位移。</p>
-<p>$\hspace{1cm}$ 若$\mathbf{x_0}$还是一个最小值点，那么对于<strong>任意</strong>一个合法微小位移，它肯定需要满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla f(\mathbf{x_0}) &#x3D; 0<br>$$<br>$\hspace{1cm}$ 因为对于<strong>任意</strong>一个合法微小位移都需要满足，所以显然$\nabla f(\mathbf{x_0})$必定在$\nabla g_i(\mathbf{x_0})$张成的线性空间里。这就对应：$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$的这个条件。至于$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$，这是为了满足约束条件而显然必须的条件。</p>
+<p>设$m &#x3D;  \prod_{i &#x3D; 1}^nm_i,M_i &#x3D; m &#x2F; m_i$，$t_i$是线性同余方程$M_it_i \equiv 1 \pmod{m_i}$的一个解。</p>
+<p>则$x_0 &#x3D; \sum_{i &#x3D; 1}^n a_iM_it_i$是一个解</p>
+<p>因为$M_i$是除了$m_i$以外所有数的倍数，所以$\forall k \neq i,a_iM_it_i \equiv 0 \pmod{m_k}$。而因为$M_it_i \equiv  1 \pmod {m_i}$，所以 $a_iM_it_i \equiv a_i \pmod {a_i} $。<br>	<br>这是一个特解。通解为$x &#x3D; x_0 + km(k \in Z)$。</p>
+<ul>
+<li><p>代码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m[<span class="number">30</span>],a[<span class="number">30</span>],M = <span class="number">1</span>,v[<span class="number">30</span>],t[<span class="number">30</span>],V1,V2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> &amp;x,<span class="type">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">		x = <span class="number">1</span>;</span><br><span class="line">		y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> a;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="type">int</span> d = <span class="built_in">exgcd</span>(b,a % b,x,y);</span><br><span class="line">	<span class="type">int</span> z = x;</span><br><span class="line">	x = y,y = z - (a / b) * y;</span><br><span class="line">	<span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;m[i],&amp;a[i]);</span><br><span class="line">		M = M * m[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		v[i] = M / m[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="type">int</span> x0,y0;</span><br><span class="line">		<span class="type">int</span> gcd = <span class="built_in">exgcd</span>(v[i],m[i],x0,y0);</span><br><span class="line">		x0 %= m[i];</span><br><span class="line">		<span class="keyword">if</span> (x0 &lt;= <span class="number">0</span>)</span><br><span class="line">			x0 += m[i];</span><br><span class="line">		t[i] = x0; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		sum += a[i] * v[i] * t[i];</span><br><span class="line">	sum %= M;</span><br><span class="line">	<span class="keyword">if</span> (sum &lt; <span class="number">0</span>)</span><br><span class="line">		sum += M;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-中国剩余定理的扩展版本"><a href="#3-中国剩余定理的扩展版本" class="headerlink" title="3.中国剩余定理的扩展版本"></a>3.中国剩余定理的扩展版本</h3><p>上面的方法要求$m_1,m_2,……,m_n$两两互质。现在给出一种对$m_i$没有要求的算法。</p>
+<p>数学归纳法：假设前$k - 1$个方程已经求出了一个解$x$。记$m &#x3D; lcm(m_1,m_2,……,m_{k - 1})$，则$x + i \times m (i \in Z)$是前$k - 1$个方程的通解。</p>
+<p>考虑第$k$个方程，求一个$t$，使得$x + t \times m \equiv a_k \pmod {m_k}$。将这个方程变换一下，得到$m \times t \equiv a_{k} - x \pmod {m_k}$,求$t$.<br>$$<br>m \times t + m_{k} \times p &#x3D; a_{k} - x<br>$$</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>扩展欧拉定理</title>
+    <url>/2023/07/01/%E6%89%A9%E5%B1%95%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86/</url>
+    <content><![CDATA[<h1 id="扩展欧拉定理"><a href="#扩展欧拉定理" class="headerlink" title="扩展欧拉定理"></a>扩展欧拉定理</h1><p>扩展欧拉定理无需 <em>a</em>,<em>m</em> 互质。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>$$<br>b\ge\varphi(m)\text{时},a^b\equiv a^{\left(b\mod\varphi(m)\right)+\varphi(m)}\pmod m<br>$$</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>先取$m$的一个质因数 $p$，令$m&#x3D;p^r\times s$, $gcd(p,s)&#x3D;1$</p>
+<p>由欧拉定理得 $p^{\varphi(s)}\equiv1\pmod s$由欧拉函数的性质得 $\varphi(m)&#x3D;\varphi(s)\times\varphi(p^r)$，所以 $p^{\varphi(m)}\equiv1\pmod s$ 。</p>
+<p>设 $p^{\varphi(m)}&#x3D;ks+1$，那么 $p^{\varphi(m)+r}&#x3D;km+p^r$，所以 $p^{\varphi(m)+r}\equiv p^r\pmod m$ 。</p>
+<p>当 $b\ge r$ 时，$p^b\equiv p^{b-r}\times p^r\equiv p^{b-r}\times p^{\varphi(m)+r}$ $\equiv p^{b+\varphi(m)}\pmod m$。</p>
+<p>因为 $r\le\varphi(p^r)\le\varphi(m)$，所以当 $b\ge 2\varphi(m)$ 时 $b-\varphi(m)\ge r$，所以 $p^b\equiv p^{b-\varphi(m)}\pmod m$，即 $p^b\equiv p^{(b\mod\varphi(m))+\phi(m)}\pmod m$。</p>
+<p>将 $a$ 质因数分解后乘起来，就可以得到 $a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$.</p>
+<p><strong>需要注意的是，$b&lt;\varphi(m)$ 时，$a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$不一定正确。</strong></p>
 ]]></content>
       <tags>
         <tag>数学</tag>
@@ -1566,17 +1570,121 @@
       </tags>
   </entry>
   <entry>
-    <title>扩展欧拉定理</title>
-    <url>/2023/07/01/%E6%89%A9%E5%B1%95%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86/</url>
-    <content><![CDATA[<h1 id="扩展欧拉定理"><a href="#扩展欧拉定理" class="headerlink" title="扩展欧拉定理"></a>扩展欧拉定理</h1><p>扩展欧拉定理无需 <em>a</em>,<em>m</em> 互质。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>$$<br>b\ge\varphi(m)\text{时},a^b\equiv a^{\left(b\mod\varphi(m)\right)+\varphi(m)}\pmod m<br>$$</p>
-<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>先取$m$的一个质因数 $p$，令$m&#x3D;p^r\times s$, $gcd(p,s)&#x3D;1$</p>
-<p>由欧拉定理得 $p^{\varphi(s)}\equiv1\pmod s$由欧拉函数的性质得 $\varphi(m)&#x3D;\varphi(s)\times\varphi(p^r)$，所以 $p^{\varphi(m)}\equiv1\pmod s$ 。</p>
-<p>设 $p^{\varphi(m)}&#x3D;ks+1$，那么 $p^{\varphi(m)+r}&#x3D;km+p^r$，所以 $p^{\varphi(m)+r}\equiv p^r\pmod m$ 。</p>
-<p>当 $b\ge r$ 时，$p^b\equiv p^{b-r}\times p^r\equiv p^{b-r}\times p^{\varphi(m)+r}$ $\equiv p^{b+\varphi(m)}\pmod m$。</p>
-<p>因为 $r\le\varphi(p^r)\le\varphi(m)$，所以当 $b\ge 2\varphi(m)$ 时 $b-\varphi(m)\ge r$，所以 $p^b\equiv p^{b-\varphi(m)}\pmod m$，即 $p^b\equiv p^{(b\mod\varphi(m))+\phi(m)}\pmod m$。</p>
-<p>将 $a$ 质因数分解后乘起来，就可以得到 $a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$.</p>
-<p><strong>需要注意的是，$b&lt;\varphi(m)$ 时，$a^b\equiv a^{(b\mod\varphi(m))+\varphi(m)}\pmod m$不一定正确。</strong></p>
+    <title>拉格朗日乘数法复习</title>
+    <url>/2025/05/04/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="拉格朗日乘数法复习"><a href="#拉格朗日乘数法复习" class="headerlink" title="拉格朗日乘数法复习"></a>拉格朗日乘数法复习</h3><p>$\hspace{1cm}$ 给定一个多元函数$f(\mathbf{x})$, 和若干个限制：$g_1(\mathbf{x}) &#x3D; g_2(\mathbf{x}) &#x3D; … &#x3D; g_m(\mathbf{x}) &#x3D; 0$, 求$f(\mathbf{x})$的最小值。这里的$\mathbf{x}$是一个向量。$\mathbf{x} &#x3D; {x_1,x_2,…x_n}$ </p>
+<p>$\hspace{1cm}$ 设$L(\mathbf{x}, \lambda_1, \lambda_2, …, \lambda_m) &#x3D; f(\mathbf{x}) - \lambda_1g_1(\mathbf{x}) - … - \lambda_mg_m(\mathbf{x})$,若$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$，$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$, 则此时的$\mathbf{x}$是一个候选的极小值点（极小值点必定在这样的一个$\mathbf{x}$中）</p>
+<p>证明：</p>
+<p>$\hspace{1cm}$ 考虑$\mathbf{x} &#x3D; \mathbf{x_0}$时，此时$\mathbf{x}$想要有任何的微小位移$\Delta \mathbf{x}$,都必须满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla g_i(\mathbf{x_0}) &#x3D; 0 \ \ \ \forall i \in[1,m]<br>$$<br>$\hspace{1cm}$ 我们称任意一个满足上式的微小位移$\Delta \mathbf{x}$为合法微小位移。</p>
+<p>$\hspace{1cm}$ 若$\mathbf{x_0}$还是一个最小值点，那么对于<strong>任意</strong>一个合法微小位移，它肯定需要满足：<br>$$<br>\Delta \mathbf{x} \cdot \nabla f(\mathbf{x_0}) &#x3D; 0<br>$$<br>$\hspace{1cm}$ 因为对于<strong>任意</strong>一个合法微小位移都需要满足，所以显然$\nabla f(\mathbf{x_0})$必定在$\nabla g_i(\mathbf{x_0})$张成的线性空间里。这就对应：$\frac{\partial L}{\partial \mathbf{x}} &#x3D; \mathbf{0}$的这个条件。至于$\forall i \in [1,m],\frac{\partial L}{\partial \lambda_i} &#x3D; 0$，这是为了满足约束条件而显然必须的条件。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>机器学习笔记</title>
+    <url>/2023/03/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h3 id="机器学习笔记"><a href="#机器学习笔记" class="headerlink" title="机器学习笔记"></a>机器学习笔记</h3><h4 id="1-安装Pytorch"><a href="#1-安装Pytorch" class="headerlink" title="1. 安装Pytorch"></a>1. 安装Pytorch</h4><p>​	在<a href="https://pytorch.org/get-started/locally/">这里</a>选择你的选项，然后在命令行中打<code>pytorch</code>官网提供的命令，打完之后如果遇到了错误，那么考虑是不是你的<code>python</code>版本过高。访问<a href="https://pytorch.org/get-started/locally/#windows-python">Start Locally | PyTorch</a>这里来确认<code>pytorch</code>是否支持你的<code>python</code>版本。</p>
+<p>​	</p>
+<h4 id="2-《动手学深度学习》笔记"><a href="#2-《动手学深度学习》笔记" class="headerlink" title="2. 《动手学深度学习》笔记"></a>2. 《动手学深度学习》笔记</h4><h5 id="2-1-数据操作"><a href="#2-1-数据操作" class="headerlink" title="2.1 数据操作"></a>2.1 数据操作</h5><ul>
+<li><p>注意：两个张量如果可以广播，那么：</p>
+<ul>
+<li>每个张量至少有一个维度。</li>
+<li>迭代维度尺寸时，从<strong>尾部</strong>的维度开始，维度尺寸<br>​ 或者<strong>相等</strong>，<br>​ 或者<strong>其中一个张量的维度尺寸为 1</strong> ，<br>​ 或者<strong>其中一个张量不存在这个维度</strong></li>
+</ul>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例1：相同形状的张量总是可广播的，因为总能满足以上规则。</span></span><br><span class="line">x = torch.empty(<span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>)</span><br><span class="line">y = torch.empty(<span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例2：不可广播（ a 不满足第一条规则）。</span></span><br><span class="line">a = torch.empty((<span class="number">0</span>,))</span><br><span class="line">b = torch.empty(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例3：m 和 n 可广播：</span></span><br><span class="line">m = torch.empty(<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>)</span><br><span class="line">n = torch.empty(   <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># 倒数第一个维度：两者的尺寸均为1</span></span><br><span class="line"><span class="comment"># 倒数第二个维度：n尺寸为1</span></span><br><span class="line"><span class="comment"># 倒数第三个维度：两者尺寸相同</span></span><br><span class="line"><span class="comment"># 倒数第四个维度：n该维度不存在</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例4：不可广播，因为倒数第三个维度：2 != 3</span></span><br><span class="line">p = torch.empty(<span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>)</span><br><span class="line">q = torch.empty(   <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例5：a 和 b 可广播：</span></span><br><span class="line">m = torch.arange(<span class="number">12</span>).reshape(<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">n = torch.tensor(<span class="number">1</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="2-4-微积分"><a href="#2-4-微积分" class="headerlink" title="2.4 微积分"></a>2.4 微积分</h5><ul>
+<li>2.4.3的梯度没有懂，尤其是涉及矩阵的部分</li>
+</ul>
+<h5 id="2-5-自动微分"><a href="#2-5-自动微分" class="headerlink" title="2.5 自动微分"></a>2.5 自动微分</h5><ul>
+<li><p>2.5.1 一个标量函数如何对一个向量求导？</p>
+<p><strong>标量</strong> y 对 n 维<strong>列</strong>向量 $x &#x3D; (x_1,x_2,…,x_n)^T$求导，其结果还是一个n维列向量，结果是$(\frac {\partial y} {\partial x_1}, \frac {\partial y} {\partial x_2} … \frac {\partial y} {\partial x_n})^T$</p>
+<p><strong>标量</strong> y 对 n 维<strong>行</strong>向量 $x &#x3D; (x_1,x_2,…,x_n)$求导，其结果还是一个n维行向量，结果是$(\frac {\partial y} {\partial x_1}, \frac {\partial y} {\partial x_2} … \frac {\partial y} {\partial x_n})$</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>欧拉函数&amp;线性筛</title>
+    <url>/2024/11/07/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0&amp;%E7%BA%BF%E6%80%A7%E7%AD%9B/</url>
+    <content><![CDATA[<h1 id="欧拉函数-线性筛"><a href="#欧拉函数-线性筛" class="headerlink" title="欧拉函数&amp;线性筛"></a>欧拉函数&amp;线性筛</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>$\varphi(n)$ 表示所有与$n$互质的正整数$i$的个数，其中$i &lt;&#x3D; n$.</p>
+<h2 id="2-欧拉定理"><a href="#2-欧拉定理" class="headerlink" title="2. 欧拉定理"></a>2. 欧拉定理</h2><p>欧拉定理是指对于任意互质的正整数$a$ 和 $n$，有:</p>
+<p>$$<br>a^{\varphi(n)} \equiv 1\pmod{n}<br>$$</p>
+<h2 id="3-证明"><a href="#3-证明" class="headerlink" title="3. 证明"></a>3. 证明</h2><p>记小于$n$且与$n$互质的正整数集合$R$为：</p>
+<p>$$<br>R &#x3D; { r_1,r_2,r_3,……,r_{\varphi(n)}}<br>$$</p>
+<p>再令集合S为：</p>
+<p>$$<br>S &#x3D; {a\times  r_1 % n,a \times   r_2 % n,……,a\times r_{\varphi(n)}%n}<br>$$</p>
+<p>现在我们先证明$S$中的元素两两互不相同。</p>
+<p>反证法：假设存在两个整数$i$ 和$j$（方便起见，令$i &lt; j$）使得$a \times r_i % n &#x3D; a \times r_j % n$,则：</p>
+<p>$$<br>a \times r_i \equiv a \times r_j \pmod{n}<br>$$</p>
+<p>又因为$a$与$n$互质，所以$r_i &#x3D; r_j$,而$i &lt; j$，即 $r_i \neq r_j$，矛盾，所以$S$中元素两两互不相同。</p>
+<p>又因为$a$ 与 $n$互质，$r_i$与 n互质，所以易得$a * r_i % n$与 $n$ 互质，即$S$中的元素都与 $n$ 互质。</p>
+<p>所以可以得到 $R &#x3D; S$.</p>
+<p>所以 ：</p>
+<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} &#x3D; \prod_{i &#x3D; 1}^{\varphi(n)}{a \times r_i%n}<br>$$</p>
+<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv \prod_{i &#x3D; 1}^{\varphi(n)}{r_i \times a} \pmod{n}<br>$$</p>
+<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv a^{\varphi(n)}  \times \prod_{i &#x3D; 1}^{\varphi(n)}{r_i}  \pmod{n}<br>$$</p>
+<p>又因为$\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} $ 与 n 互质，</p>
+<p>所以：<br>$$<br>a^{\varphi(n)} \equiv 1 \pmod{n}<br>$$</p>
+<h2 id="4-线性筛"><a href="#4-线性筛" class="headerlink" title="4.线性筛"></a>4.线性筛</h2><p>先上代码：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> prime[maxn],px,l,r,n;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) </span><br><span class="line">			prime[++px] = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; i * prime[j] &lt;= n; j++) &#123;</span><br><span class="line">			b[prime[j] * i] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>)</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=px; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,prime[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>算法的正确性证明中，其实我们要证明的就是两点：</p>
+<ul>
+<li>每一个合数都会被筛掉。</li>
+<li>每一个合数只能被筛一遍（以保证时间复杂度$O(n)$)</li>
+</ul>
+<p>对于第一点，证明如下：</p>
+<p>设这个合数为$v$,则 $v &#x3D; p_1 p_2   …… p_k(p_i&lt;&#x3D;p_{i+1})$，$p$ 为 $v$的质因数。</p>
+<p>可以发现，当$i &#x3D; p_2 \cdot p_3 \cdot  …… \cdot p_k$,  $prime[j] &#x3D; p_1$时，$i$与所有小于$p_1$的质数互质，所以中途不会被break掉，所以此时$v$可以被筛掉。</p>
+<p>对于第二点，证明如下：</p>
+<p>在第一点中，我们是证明了v会在$i &#x3D; p_2 \times p_3 \times …… \times p_k$,  $prime[j] &#x3D; p_1$时被筛掉，那么现在就是要证明除了这种情况外，v不会被筛掉。</p>
+<p>设当$i &#x3D; p_1 \times p_2 \times … \times p_{m - 1} \times  p_{m + 1} \times … \times p_k$ $(p_i &lt;&#x3D; p_{i + 1})$ 时</p>
+<p>$prime[j] &#x3D; p_m(p_m \neq p_1)$时 v 被筛掉.</p>
+<p>可以发现 $p_1 | i$,所以当$prime[j] &#x3D; p_1$时就会被break掉，所以v不会在此时被筛掉。</p>
+<p>由此，我们可以证明，算法的正确性和时间复杂度的正确性。</p>
+<h2 id="5-求欧拉函数"><a href="#5-求欧拉函数" class="headerlink" title="5.求欧拉函数"></a>5.求欧拉函数</h2><p>首先，欧拉函数是一个积性函数。</p>
+<p>积性函数的定义是：函数$f(x)$,若满足$f(m \times n) &#x3D; f(m) \times f(n) (gcd(n,m) &#x3D; 1)$,那么$f(x)$就是一个积性函数。</p>
+<p>欧拉函数是一个积性函数。</p>
+<p>设$n &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} $,$p_i\in P$，则有： </p>
+<p>$$<br>\varphi(n) &#x3D; \varphi(p_1^{m_1}) \times \varphi(p_2^{m_2}) \times …… \times \varphi(p_k^{m_k})<br>$$</p>
+<p>对于$\varphi(p^k),p_i \in P$，易得$\varphi(p^k) &#x3D; p^k - p^{k - 1} &#x3D; p^k \times (1 - \frac{1}{p})$</p>
+<p>所以有：</p>
+<p>$$<br>\varphi(n) &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} \times (1 - \frac{1}{p_1}) \times (1 - \frac{1}{p_2}) \times …… \times (1 - \frac{1}{p_k})  \&#x3D; n \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k}))<br>$$</p>
+<p>特别的，当$n \in P$时，$\varphi(n) &#x3D; n - 1$.</p>
+<p>理解了上面这些，可以上代码了：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> n,phi[maxn],prime[maxn],px;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) &#123;</span><br><span class="line">			prime[++px] = i;</span><br><span class="line">			phi[i] = i - <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; prime[j] * i &lt;= n; j++) &#123;</span><br><span class="line">			b[i * prime[j]] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">				phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			phi[i * prime[j]] = phi[i] * phi[prime[j]];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,phi[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，这个代码是由线性筛变过来的。</p>
+<p>当$i \in P$时，毫无疑问$\varphi(i) &#x3D; i - 1$.</p>
+<p>当$i \notin P$时，分以下两种情况讨论：</p>
+<ul>
+<li>若$i % prime[j] \neq 0$，因为$prime[j] \in P$,所以$gcd(i,prime[j])) &#x3D; 1$。因此根据积性函数的定义，有：</li>
+</ul>
+<p>$$<br>\varphi(i \times prime[j]) &#x3D; \varphi(i) \times \varphi(prime[j])<br>$$</p>
+<ul>
+<li>若$i % prime[j] &#x3D; 0$，因为$prime[j] \in P$,所以$prime[j]$必定为 i 的一个质因数，所以$prime[j]$必定是$p_1,p_2,p_3,……,p_k$中的一个，因此得到：<br>  $$<br>  \varphi(i \times prime[j]) &#x3D; i \times prime[j] \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k})) &#x3D; \varphi(i) \times prime[j]<br>  $$</li>
+</ul>
+<p>最后和线性筛一样，可以证明欧拉函数求法时间复杂度也是线性的。</p>
+<p>特别的，$\varphi(1) &#x3D; 1$.</p>
+<h2 id="6-一些神奇定理"><a href="#6-一些神奇定理" class="headerlink" title="6.一些神奇定理"></a>6.一些神奇定理</h2><ul>
+<li><p>$\sum_{d|n}\varphi(d) &#x3D; n$</p>
+</li>
+<li><p>$\forall n &gt; 1,1-n$中与n互质的数的和为$n \times \varphi(n) &#x2F; 2$</p>
+</li>
+<li><p>$若gcd(a,n) &#x3D; 1$ $ \forall 正整数b$  $a^b \equiv a^{b \ mod \  \varphi(n)}(mod\  n)$</p>
+</li>
+<li><p>若$a$,$n$互质，则满足$a^x \equiv 1 (mod \ n)$的最小正整数$x_0$是$\varphi(n)$的约数。</p>
+</li>
+</ul>
 ]]></content>
       <tags>
         <tag>数学</tag>
@@ -1773,158 +1881,6 @@
 <li>若$X$与$Y$不相关，是否有$f(X)$与$g(Y)$不相关？</li>
 <li>若$X_1,X_2,…,X_n$独立同分布，是否有$\overline{X}$与$S^2$不相关？</li>
 </ol>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>欧拉函数&amp;线性筛</title>
-    <url>/2024/11/07/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0&amp;%E7%BA%BF%E6%80%A7%E7%AD%9B/</url>
-    <content><![CDATA[<h1 id="欧拉函数-线性筛"><a href="#欧拉函数-线性筛" class="headerlink" title="欧拉函数&amp;线性筛"></a>欧拉函数&amp;线性筛</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>$\varphi(n)$ 表示所有与$n$互质的正整数$i$的个数，其中$i &lt;&#x3D; n$.</p>
-<h2 id="2-欧拉定理"><a href="#2-欧拉定理" class="headerlink" title="2. 欧拉定理"></a>2. 欧拉定理</h2><p>欧拉定理是指对于任意互质的正整数$a$ 和 $n$，有:</p>
-<p>$$<br>a^{\varphi(n)} \equiv 1\pmod{n}<br>$$</p>
-<h2 id="3-证明"><a href="#3-证明" class="headerlink" title="3. 证明"></a>3. 证明</h2><p>记小于$n$且与$n$互质的正整数集合$R$为：</p>
-<p>$$<br>R &#x3D; { r_1,r_2,r_3,……,r_{\varphi(n)}}<br>$$</p>
-<p>再令集合S为：</p>
-<p>$$<br>S &#x3D; {a\times  r_1 % n,a \times   r_2 % n,……,a\times r_{\varphi(n)}%n}<br>$$</p>
-<p>现在我们先证明$S$中的元素两两互不相同。</p>
-<p>反证法：假设存在两个整数$i$ 和$j$（方便起见，令$i &lt; j$）使得$a \times r_i % n &#x3D; a \times r_j % n$,则：</p>
-<p>$$<br>a \times r_i \equiv a \times r_j \pmod{n}<br>$$</p>
-<p>又因为$a$与$n$互质，所以$r_i &#x3D; r_j$,而$i &lt; j$，即 $r_i \neq r_j$，矛盾，所以$S$中元素两两互不相同。</p>
-<p>又因为$a$ 与 $n$互质，$r_i$与 n互质，所以易得$a * r_i % n$与 $n$ 互质，即$S$中的元素都与 $n$ 互质。</p>
-<p>所以可以得到 $R &#x3D; S$.</p>
-<p>所以 ：</p>
-<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} &#x3D; \prod_{i &#x3D; 1}^{\varphi(n)}{a \times r_i%n}<br>$$</p>
-<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv \prod_{i &#x3D; 1}^{\varphi(n)}{r_i \times a} \pmod{n}<br>$$</p>
-<p>$$<br>\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} \equiv a^{\varphi(n)}  \times \prod_{i &#x3D; 1}^{\varphi(n)}{r_i}  \pmod{n}<br>$$</p>
-<p>又因为$\prod_{i &#x3D; 1}^{\varphi(n)}{r_i} $ 与 n 互质，</p>
-<p>所以：<br>$$<br>a^{\varphi(n)} \equiv 1 \pmod{n}<br>$$</p>
-<h2 id="4-线性筛"><a href="#4-线性筛" class="headerlink" title="4.线性筛"></a>4.线性筛</h2><p>先上代码：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> prime[maxn],px,l,r,n;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) </span><br><span class="line">			prime[++px] = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; i * prime[j] &lt;= n; j++) &#123;</span><br><span class="line">			b[prime[j] * i] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>)</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=px; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,prime[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-
-
-<p>算法的正确性证明中，其实我们要证明的就是两点：</p>
-<ul>
-<li>每一个合数都会被筛掉。</li>
-<li>每一个合数只能被筛一遍（以保证时间复杂度$O(n)$)</li>
-</ul>
-<p>对于第一点，证明如下：</p>
-<p>设这个合数为$v$,则 $v &#x3D; p_1 p_2   …… p_k(p_i&lt;&#x3D;p_{i+1})$，$p$ 为 $v$的质因数。</p>
-<p>可以发现，当$i &#x3D; p_2 \cdot p_3 \cdot  …… \cdot p_k$,  $prime[j] &#x3D; p_1$时，$i$与所有小于$p_1$的质数互质，所以中途不会被break掉，所以此时$v$可以被筛掉。</p>
-<p>对于第二点，证明如下：</p>
-<p>在第一点中，我们是证明了v会在$i &#x3D; p_2 \times p_3 \times …… \times p_k$,  $prime[j] &#x3D; p_1$时被筛掉，那么现在就是要证明除了这种情况外，v不会被筛掉。</p>
-<p>设当$i &#x3D; p_1 \times p_2 \times … \times p_{m - 1} \times  p_{m + 1} \times … \times p_k$ $(p_i &lt;&#x3D; p_{i + 1})$ 时</p>
-<p>$prime[j] &#x3D; p_m(p_m \neq p_1)$时 v 被筛掉.</p>
-<p>可以发现 $p_1 | i$,所以当$prime[j] &#x3D; p_1$时就会被break掉，所以v不会在此时被筛掉。</p>
-<p>由此，我们可以证明，算法的正确性和时间复杂度的正确性。</p>
-<h2 id="5-求欧拉函数"><a href="#5-求欧拉函数" class="headerlink" title="5.求欧拉函数"></a>5.求欧拉函数</h2><p>首先，欧拉函数是一个积性函数。</p>
-<p>积性函数的定义是：函数$f(x)$,若满足$f(m \times n) &#x3D; f(m) \times f(n) (gcd(n,m) &#x3D; 1)$,那么$f(x)$就是一个积性函数。</p>
-<p>欧拉函数是一个积性函数。</p>
-<p>设$n &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} $,$p_i\in P$，则有： </p>
-<p>$$<br>\varphi(n) &#x3D; \varphi(p_1^{m_1}) \times \varphi(p_2^{m_2}) \times …… \times \varphi(p_k^{m_k})<br>$$</p>
-<p>对于$\varphi(p^k),p_i \in P$，易得$\varphi(p^k) &#x3D; p^k - p^{k - 1} &#x3D; p^k \times (1 - \frac{1}{p})$</p>
-<p>所以有：</p>
-<p>$$<br>\varphi(n) &#x3D; p_1^{m_1} \times p_2^{m_2} \times p_3^{m_3} \times …… \times p_k^{m_k} \times (1 - \frac{1}{p_1}) \times (1 - \frac{1}{p_2}) \times …… \times (1 - \frac{1}{p_k})  \&#x3D; n \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k}))<br>$$</p>
-<p>特别的，当$n \in P$时，$\varphi(n) &#x3D; n - 1$.</p>
-<p>理解了上面这些，可以上代码了：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> n,phi[maxn],prime[maxn],px;</span><br><span class="line"><span class="type">bool</span> b[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!b[i]) &#123;</span><br><span class="line">			prime[++px] = i;</span><br><span class="line">			phi[i] = i - <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=px &amp;&amp; prime[j] * i &lt;= n; j++) &#123;</span><br><span class="line">			b[i * prime[j]] = <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">				phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			phi[i * prime[j]] = phi[i] * phi[prime[j]];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,phi[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，这个代码是由线性筛变过来的。</p>
-<p>当$i \in P$时，毫无疑问$\varphi(i) &#x3D; i - 1$.</p>
-<p>当$i \notin P$时，分以下两种情况讨论：</p>
-<ul>
-<li>若$i % prime[j] \neq 0$，因为$prime[j] \in P$,所以$gcd(i,prime[j])) &#x3D; 1$。因此根据积性函数的定义，有：</li>
-</ul>
-<p>$$<br>\varphi(i \times prime[j]) &#x3D; \varphi(i) \times \varphi(prime[j])<br>$$</p>
-<ul>
-<li>若$i % prime[j] &#x3D; 0$，因为$prime[j] \in P$,所以$prime[j]$必定为 i 的一个质因数，所以$prime[j]$必定是$p_1,p_2,p_3,……,p_k$中的一个，因此得到：<br>  $$<br>  \varphi(i \times prime[j]) &#x3D; i \times prime[j] \times (1 - \frac{1}{p1}) \times (1 - \frac{1}{p2}) \times …… \times (1 - \frac{1}{p_k})) &#x3D; \varphi(i) \times prime[j]<br>  $$</li>
-</ul>
-<p>最后和线性筛一样，可以证明欧拉函数求法时间复杂度也是线性的。</p>
-<p>特别的，$\varphi(1) &#x3D; 1$.</p>
-<h2 id="6-一些神奇定理"><a href="#6-一些神奇定理" class="headerlink" title="6.一些神奇定理"></a>6.一些神奇定理</h2><ul>
-<li><p>$\sum_{d|n}\varphi(d) &#x3D; n$</p>
-</li>
-<li><p>$\forall n &gt; 1,1-n$中与n互质的数的和为$n \times \varphi(n) &#x2F; 2$</p>
-</li>
-<li><p>$若gcd(a,n) &#x3D; 1$ $ \forall 正整数b$  $a^b \equiv a^{b \ mod \  \varphi(n)}(mod\  n)$</p>
-</li>
-<li><p>若$a$,$n$互质，则满足$a^x \equiv 1 (mod \ n)$的最小正整数$x_0$是$\varphi(n)$的约数。</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>特征值的一些</title>
-    <url>/2026/04/24/%E7%89%B9%E5%BE%81%E5%80%BC%E7%9A%84%E4%B8%80%E4%BA%9B/</url>
-    <content><![CDATA[<h3 id="关于特征值的一些"><a href="#关于特征值的一些" class="headerlink" title="关于特征值的一些"></a>关于特征值的一些</h3><ul>
-<li>Notation<br>对于一个矩阵$A$，其第$i$列记作$A_{c(i)}$，第$i$行记作$A_{r(j)}$</li>
-</ul>
-<hr>
-<ul>
-<li><p>Theorem 1: 实对称矩阵的所有特征值都是实数。</p>
-<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \mathbf{0})<br>$$<br>目标要证明$\lambda \in \mathbb{R}$。</p>
-<p>对该式左右同时左乘$\alpha^H$：<br>$$<br>\alpha ^H A \alpha &#x3D; \lambda \alpha^H \alpha<br>$$</p>
-<p>由于$\alpha^H \alpha &gt; 0$</p>
-<p>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha}<br>$$</p>
-<p>接下来要证明$\alpha ^H A \alpha \in \mathbb{R}$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \mathbb{R}$，而$\alpha^H \alpha \in \mathbb{R}$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \mathbb{R}<br>$$</p>
-</li>
-</ul>
-<blockquote>
-<p>对于一般矩阵而言，$A^H &#x3D; A$无法推出$A$是实矩阵，但是上例中$\alpha ^H A \alpha$是一个1 * 1的矩阵（也就是一个数），所以才可以推出其是实数。</p>
-</blockquote>
-<blockquote>
-<p>另，Theorem 1还可以有更强的版本：所有满足$A^H &#x3D; A$的矩阵的所有特征值都为实数。</p>
-</blockquote>
-<hr>
-<ul>
-<li><p>Theorem 2: 对于任意一个矩阵的任意一个特征值，其几何重数小于等于代数重数。</p>
-<p>对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>设$v_1, v_2, … v_k$为$E$的一组基，则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组基。</p>
-<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
-<blockquote>
-<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：<br>$$<br>\forall i \in [1,k] \ \ \  T_{j,i} &#x3D; \left{<br>\begin{array}{l}<br>1  \ \ \ \ \ j &#x3D; i\cr<br>0 \ \ \ \ \ j \neq i\cr<br>\end{array}<br>\right.<br>$$</p>
-</blockquote>
-</li>
-</ul>
-<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1})<br>$$</p>
-<p>$$<br>&#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix} - xI)&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \cr<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
-<p>​	因此，A的特征多项式中至少有$k$次$(\lambda_0 - x)$作为因子，所以$\lambda_0$的代数重数大于等于$k$。而其几何重数为$k$，所以我们几何重数小于等于代数重数。</p>
-<hr>
-<ul>
-<li>Theorem 3：对于实对称矩阵的任意一个特征值，其几何重数等于代数重数。</li>
-</ul>
-<p>​    对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>​    设$v_1, v_2, … v_k$为$E$ 的一组标准正交基（两两正交且模长为1），则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组标准正交基。设$F$为$\text{span}(v_{k + 1}, …, v_n)$，则$F &#x3D; E^\perp$。</p>
-<p>​    Lemma 3.1 $\forall x \in F, Ax \in F$。</p>
-<blockquote>
-<p>证明：只需证明$\forall i \in [1,k], v_i \perp (Ax)$即可。</p>
-<p>$$<br>x^T A^Tv_i &#x3D; x^TAv_i &#x3D; x^T (Av_i) &#x3D; \lambda_0 x^T v_i &#x3D; 0<br>$$</p>
-</blockquote>
-<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
-<blockquote>
-<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
-<p>$PT$的后$n - k$列应该是$[Av_{k + 1}, Av_{k + 2}, … , Av_n]$，而因为$Av_{k + 1}, Av_{k + 2}, … , Av_n \in F$, 即$Av_{k + 1}, Av_{k + 2}, … , Av_n \in \text{span}(v_{k + 1}, …, v_n)$，所以这里的线性组合完全不需要$v_1,v_2,…,v_k$，所以矩阵的右上角为0。</p>
-</blockquote>
-<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \mathbf{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\mathbf{0}_{k\times 1}\cr<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\mathbf{0}\cr<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\mathbf{0}\cr<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\mathbf{0}\cr<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
-<p>​	但是我们又因为$w$的前$k$个分量都是0，所以$Pw$就是对$v_{k + 1}, … v_n$的线性组合。显然这个线性组合属于$F$，故$Pw \in F$。</p>
-<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \mathbf{0} \to w &#x3D; \mathbf{0}$，矛盾。</p>
-<hr>
-<ul>
-<li>Theorem 4：对于一个实对称矩阵，若其两个特征向量对应两个不同的特征值，那么这两个特征向量一定正交。</li>
-</ul>
-<p>​       设$A\alpha_1 &#x3D; \lambda_1 \alpha_1, A\alpha_2 &#x3D; \lambda_2 \alpha_2, \lambda_1  \neq \lambda_2$，则：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D; \lambda_1 \alpha_1^T\alpha_2<br>$$<br>​	而：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D;  \alpha_1^TA^T\alpha_2 &#x3D;  \alpha_1^TA\alpha_2 &#x3D;  \alpha_1^T(A\alpha_2) &#x3D; \lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	于是：<br>$$<br>\lambda_1 \alpha_1^T\alpha_2 &#x3D;\lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	而$\lambda_1 \neq \lambda_2$，故$\alpha_1^T\alpha_2 &#x3D; 0$。</p>
-<hr>
-<ul>
-<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\mathbb{R}^n$。</p>
-<p>首先，根据代数基本定理，这个实对称矩阵一定有$n$个特征根。</p>
-<p>其次根据Theorem 1，这n个特征根都是实数，所以这个矩阵的各特征根的代数重数相加等于$n$。</p>
-</li>
-</ul>
-<p>​	又因为实对称矩阵的代数重数等于几何重数 (Theorem 3)，所以代数重数为$k$的特征值对应的有$k$个线性无关的特征向量。</p>
-<p>​	又因为Theorem 4，所以实对称矩阵可以有$n$个彼此正交的特征向量，自然他们是线性无关的，故可以span。</p>
 ]]></content>
       <tags>
         <tag>数学</tag>
@@ -2147,54 +2103,6 @@
       </tags>
   </entry>
   <entry>
-    <title>机器学习笔记</title>
-    <url>/2023/03/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h3 id="机器学习笔记"><a href="#机器学习笔记" class="headerlink" title="机器学习笔记"></a>机器学习笔记</h3><h4 id="1-安装Pytorch"><a href="#1-安装Pytorch" class="headerlink" title="1. 安装Pytorch"></a>1. 安装Pytorch</h4><p>​	在<a href="https://pytorch.org/get-started/locally/">这里</a>选择你的选项，然后在命令行中打<code>pytorch</code>官网提供的命令，打完之后如果遇到了错误，那么考虑是不是你的<code>python</code>版本过高。访问<a href="https://pytorch.org/get-started/locally/#windows-python">Start Locally | PyTorch</a>这里来确认<code>pytorch</code>是否支持你的<code>python</code>版本。</p>
-<p>​	</p>
-<h4 id="2-《动手学深度学习》笔记"><a href="#2-《动手学深度学习》笔记" class="headerlink" title="2. 《动手学深度学习》笔记"></a>2. 《动手学深度学习》笔记</h4><h5 id="2-1-数据操作"><a href="#2-1-数据操作" class="headerlink" title="2.1 数据操作"></a>2.1 数据操作</h5><ul>
-<li><p>注意：两个张量如果可以广播，那么：</p>
-<ul>
-<li>每个张量至少有一个维度。</li>
-<li>迭代维度尺寸时，从<strong>尾部</strong>的维度开始，维度尺寸<br>​ 或者<strong>相等</strong>，<br>​ 或者<strong>其中一个张量的维度尺寸为 1</strong> ，<br>​ 或者<strong>其中一个张量不存在这个维度</strong></li>
-</ul>
-<p>例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例1：相同形状的张量总是可广播的，因为总能满足以上规则。</span></span><br><span class="line">x = torch.empty(<span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>)</span><br><span class="line">y = torch.empty(<span class="number">5</span>, <span class="number">7</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例2：不可广播（ a 不满足第一条规则）。</span></span><br><span class="line">a = torch.empty((<span class="number">0</span>,))</span><br><span class="line">b = torch.empty(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例3：m 和 n 可广播：</span></span><br><span class="line">m = torch.empty(<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>)</span><br><span class="line">n = torch.empty(   <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment"># 倒数第一个维度：两者的尺寸均为1</span></span><br><span class="line"><span class="comment"># 倒数第二个维度：n尺寸为1</span></span><br><span class="line"><span class="comment"># 倒数第三个维度：两者尺寸相同</span></span><br><span class="line"><span class="comment"># 倒数第四个维度：n该维度不存在</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例4：不可广播，因为倒数第三个维度：2 != 3</span></span><br><span class="line">p = torch.empty(<span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>)</span><br><span class="line">q = torch.empty(   <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例5：a 和 b 可广播：</span></span><br><span class="line">m = torch.arange(<span class="number">12</span>).reshape(<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">n = torch.tensor(<span class="number">1</span>)</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="2-4-微积分"><a href="#2-4-微积分" class="headerlink" title="2.4 微积分"></a>2.4 微积分</h5><ul>
-<li>2.4.3的梯度没有懂，尤其是涉及矩阵的部分</li>
-</ul>
-<h5 id="2-5-自动微分"><a href="#2-5-自动微分" class="headerlink" title="2.5 自动微分"></a>2.5 自动微分</h5><ul>
-<li><p>2.5.1 一个标量函数如何对一个向量求导？</p>
-<p><strong>标量</strong> y 对 n 维<strong>列</strong>向量 $x &#x3D; (x_1,x_2,…,x_n)^T$求导，其结果还是一个n维列向量，结果是$(\frac {\partial y} {\partial x_1}, \frac {\partial y} {\partial x_2} … \frac {\partial y} {\partial x_n})^T$</p>
-<p><strong>标量</strong> y 对 n 维<strong>行</strong>向量 $x &#x3D; (x_1,x_2,…,x_n)$求导，其结果还是一个n维行向量，结果是$(\frac {\partial y} {\partial x_1}, \frac {\partial y} {\partial x_2} … \frac {\partial y} {\partial x_n})$</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>高斯消元</title>
-    <url>/2023/06/27/%E9%AB%98%E6%96%AF%E6%B6%88%E5%85%83/</url>
-    <content><![CDATA[<h1 id="高斯消元"><a href="#高斯消元" class="headerlink" title="高斯消元"></a>高斯消元</h1><p>高斯消元适用于求解线性方程组。<br>	<br>一般的，对于线性方程组：<br>$$<br>a_{1,1}x_1 + a_{1,2}x_2 + a_{1,3}x_3 + ……a_{1,n}x_n &#x3D; b_1<br>$$<br>$$<br>a_{2,1}x_1 + a_{2,2}x_2 + a_{2,3}x_3 + ……a_{2,n}x_n &#x3D; b_2<br>$$</p>
-<p>$$<br>……<br>$$</p>
-<p>$$<br>a_{n,1}x_1 + a_{n,2}x_2 + a_{n,3}x_3 + ……a_{n,n}x_n &#x3D; b_n<br>$$</p>
-<p>我们用下面这个矩阵来表示这个线性方程组：<br>$$<br>\left {<br>\begin{array}{ccccc|c}<br>a_{1,1} &amp; a_{1,2} &amp; a_{1,3} &amp; \cdots &amp; a_{1,n} &amp; b_1 \<br>a_{2,1} &amp; a_{2,2} &amp; a_{2,3} &amp; \cdots &amp; a_{2,n} &amp; b_2 \<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \<br>a_{n,1} &amp; a_{n,2} &amp; a_{n,3} &amp; \cdots &amp; a_{n,n} &amp; b_n \<br>\end{array}<br>\right }<br>$$</p>
-<p>我们循环一个变量$i$（从$1$到$n$）</p>
-<p>先在矩阵中找到一行（设这行是第$x$行），使得$a_{x,1},a_{x,2},……,a_{x,i-1}$都为$0$，但$a_{x,i} &#x3D; 0$。</p>
-<p>然后用这一行矩阵，用简单行变换的方式将矩阵其他行的第$i$项的系数消为0。</p>
-<p>最后我们就得到一个“阶梯矩阵”，然后就可以愉快地求解了。</p>
-<ul>
-<li><p>Code</p>
-  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e3</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">double</span> a[maxn][maxn],b[maxn];</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++)</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%lf&quot;</span>,&amp;a[i][j]);</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lf&quot;</span>,&amp;b[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=i; j&lt;=n; j++)</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">fabs</span>(a[j][i]) &gt; <span class="number">1e-10</span>) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++)</span><br><span class="line">					<span class="built_in">swap</span>(a[i][k],a[j][k]);</span><br><span class="line">				<span class="built_in">swap</span>(b[i],b[j]);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (j == i)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			<span class="type">double</span> rate = a[j][i] / a[i][i];</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++)</span><br><span class="line">				a[j][k] -= rate * a[i][k];</span><br><span class="line">			b[j] -= rate * b[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;x%d = %.2lf\n&quot;</span>,i,b[i] / a[i][i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>数学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>西点</title>
     <url>/2023/07/06/%E8%A5%BF%E7%82%B9/</url>
     <content><![CDATA[<h1 id="西点"><a href="#西点" class="headerlink" title="西点"></a>西点</h1><h2 id="1-卷"><a href="#1-卷" class="headerlink" title="1.卷"></a>1.卷</h2><h4 id="原料："><a href="#原料：" class="headerlink" title="原料："></a>原料：</h4><ul>
@@ -2260,6 +2168,99 @@
 ]]></content>
       <tags>
         <tag>OI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高斯消元</title>
+    <url>/2023/06/27/%E9%AB%98%E6%96%AF%E6%B6%88%E5%85%83/</url>
+    <content><![CDATA[<h1 id="高斯消元"><a href="#高斯消元" class="headerlink" title="高斯消元"></a>高斯消元</h1><p>高斯消元适用于求解线性方程组。<br>	<br>一般的，对于线性方程组：<br>$$<br>a_{1,1}x_1 + a_{1,2}x_2 + a_{1,3}x_3 + ……a_{1,n}x_n &#x3D; b_1<br>$$<br>$$<br>a_{2,1}x_1 + a_{2,2}x_2 + a_{2,3}x_3 + ……a_{2,n}x_n &#x3D; b_2<br>$$</p>
+<p>$$<br>……<br>$$</p>
+<p>$$<br>a_{n,1}x_1 + a_{n,2}x_2 + a_{n,3}x_3 + ……a_{n,n}x_n &#x3D; b_n<br>$$</p>
+<p>我们用下面这个矩阵来表示这个线性方程组：<br>$$<br>\left {<br>\begin{array}{ccccc|c}<br>a_{1,1} &amp; a_{1,2} &amp; a_{1,3} &amp; \cdots &amp; a_{1,n} &amp; b_1 \<br>a_{2,1} &amp; a_{2,2} &amp; a_{2,3} &amp; \cdots &amp; a_{2,n} &amp; b_2 \<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \<br>a_{n,1} &amp; a_{n,2} &amp; a_{n,3} &amp; \cdots &amp; a_{n,n} &amp; b_n \<br>\end{array}<br>\right }<br>$$</p>
+<p>我们循环一个变量$i$（从$1$到$n$）</p>
+<p>先在矩阵中找到一行（设这行是第$x$行），使得$a_{x,1},a_{x,2},……,a_{x,i-1}$都为$0$，但$a_{x,i} &#x3D; 0$。</p>
+<p>然后用这一行矩阵，用简单行变换的方式将矩阵其他行的第$i$项的系数消为0。</p>
+<p>最后我们就得到一个“阶梯矩阵”，然后就可以愉快地求解了。</p>
+<ul>
+<li><p>Code</p>
+  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e3</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">double</span> a[maxn][maxn],b[maxn];</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++)</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%lf&quot;</span>,&amp;a[i][j]);</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lf&quot;</span>,&amp;b[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=i; j&lt;=n; j++)</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">fabs</span>(a[j][i]) &gt; <span class="number">1e-10</span>) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++)</span><br><span class="line">					<span class="built_in">swap</span>(a[i][k],a[j][k]);</span><br><span class="line">				<span class="built_in">swap</span>(b[i],b[j]);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=n; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (j == i)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			<span class="type">double</span> rate = a[j][i] / a[i][i];</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;=n; k++)</span><br><span class="line">				a[j][k] -= rate * a[i][k];</span><br><span class="line">			b[j] -= rate * b[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;=n; i++) </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;x%d = %.2lf\n&quot;</span>,i,b[i] / a[i][i]);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>特征值的一些</title>
+    <url>/2026/04/24/%E7%89%B9%E5%BE%81%E5%80%BC%E7%9A%84%E4%B8%80%E4%BA%9B/</url>
+    <content><![CDATA[<h3 id="关于特征值的一些"><a href="#关于特征值的一些" class="headerlink" title="关于特征值的一些"></a>关于特征值的一些</h3><ul>
+<li>Notation<br>对于一个矩阵$A$，其第$i$列记作$A_{c(i)}$，第$i$行记作$A_{r(j)}$</li>
+</ul>
+<hr>
+<ul>
+<li><p>Theorem 1: 实对称矩阵的所有特征值都是实数。</p>
+<p>设:<br>$$<br>A\alpha &#x3D; \lambda\alpha (\alpha \neq \mathbf{0})<br>$$<br>目标要证明$\lambda \in \mathbb{R}$。</p>
+<p>对该式左右同时左乘$\alpha^H$：<br>$$<br>\alpha ^H A \alpha &#x3D; \lambda \alpha^H \alpha<br>$$</p>
+<p>由于$\alpha^H \alpha &gt; 0$</p>
+<p>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha}<br>$$</p>
+<p>接下来要证明$\alpha ^H A \alpha \in \mathbb{R}$:<br>$$<br>(\alpha ^H A \alpha)^H &#x3D; \alpha ^H A^H \alpha &#x3D; \alpha ^H A \alpha<br>$$<br>所以$\alpha ^H A \alpha \in \mathbb{R}$，而$\alpha^H \alpha \in \mathbb{R}$<br>所以<br>$$<br>\lambda &#x3D; \frac{ \alpha ^H A \alpha}{\alpha^H \alpha} \in \mathbb{R}<br>$$</p>
+</li>
+</ul>
+<blockquote>
+<p>对于一般矩阵而言，$A^H &#x3D; A$无法推出$A$是实矩阵，但是上例中$\alpha ^H A \alpha$是一个1 * 1的矩阵（也就是一个数），所以才可以推出其是实数。</p>
+</blockquote>
+<blockquote>
+<p>另，Theorem 1还可以有更强的版本：所有满足$A^H &#x3D; A$的矩阵的所有特征值都为实数。</p>
+</blockquote>
+<hr>
+<ul>
+<li><p>Theorem 2: 对于任意一个矩阵的任意一个特征值，其几何重数小于等于代数重数。</p>
+<p>对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>设$v_1, v_2, … v_k$为$E$的一组基，则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组基。</p>
+<p>设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}P^{-1}<br>$$<br>为什么？我们记$A &#x3D; PTP^{-1}$, 我们只需要证明:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$</p>
+<blockquote>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B<br>\end{bmatrix}<br>$$<br>我们考察$AP$的前$k$列，必然是：<br>$$<br>AP &#x3D; [\lambda_0 v_1, \lambda_0 v_2,…, \lambda_0 v_k, …]<br>$$<br>所以显然$PT$的前$k$列也得是这些。而$PT$的第$i$列就是$P$乘$T$的第$i$列，因此：<br>$$<br>\forall i \in [1,k], [v_1, v_2, …, v_n]\ \ P (T_{c(i)}) &#x3D; \lambda_0 v_i<br>$$<br>那么显然，这可以推出：</p>
+<h1 id="forall-i-in-1-dots-k-quadT-j-i"><a href="#forall-i-in-1-dots-k-quadT-j-i" class="headerlink" title="$$\forall i \in {1,\dots,k},\quadT_{j,i}"></a>$$<br>\forall i \in {1,\dots,k},\quad<br>T_{j,i}</h1><p>\begin{cases}<br>\lambda_0, &amp; j&#x3D;i \<br>0, &amp; j\ne i<br>\end{cases}<br>$$</p>
+</blockquote>
+</li>
+</ul>
+<p>​	然后，我们来算$A$的特征多项式：<br>$$<br>\det (A - x I) &#x3D; \det( P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - xI) &#x3D; \det(P \begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1} - PxP^{-1})<br>$$</p>
+<p>$$<br>&#x3D; \det(\begin{bmatrix}<br>\lambda_0 I_k &amp; * \cr<br>0 &amp; B	<br>\end{bmatrix} - xI)&#x3D; \det(\begin{bmatrix}<br>(\lambda_0 - x) I_k &amp; * \cr<br>0 &amp; B - xI_{n - k}	<br>\end{bmatrix}) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$</p>
+<p>​	因此，A的特征多项式中至少有$k$次$(\lambda_0 - x)$作为因子，所以$\lambda_0$的代数重数大于等于$k$。而其几何重数为$k$，所以我们几何重数小于等于代数重数。</p>
+<hr>
+<ul>
+<li>Theorem 3：对于实对称矩阵的任意一个特征值，其几何重数等于代数重数。</li>
+</ul>
+<p>​    对于一个$n \times n$的矩阵$A$和其任意一个特征值$\lambda_0$，设$E$为$A - \lambda_0 I$的Null Space。<br>​    设$v_1, v_2, … v_k$为$E$ 的一组标准正交基（两两正交且模长为1），则特征值$\lambda_0$的几何重数为$k$ 。将其扩展为$v_1, v_2, … v_k, v_{k + 1}, …, v_n$作为n维空间的一组标准正交基。设$F$为$\text{span}(v_{k + 1}, …, v_n)$，则$F &#x3D; E^\perp$。</p>
+<p>​    Lemma 3.1 $\forall x \in F, Ax \in F$。</p>
+<blockquote>
+<p>证明：只需证明$\forall i \in [1,k], v_i \perp (Ax)$即可。</p>
+<p>$$<br>x^T A^Tv_i &#x3D; x^TAv_i &#x3D; x^T (Av_i) &#x3D; \lambda_0 x^T v_i &#x3D; 0<br>$$</p>
+</blockquote>
+<p>​     Lemma 3.2 设$P &#x3D; [v_1, v_2, …, v_n]$，则:<br>$$<br>A &#x3D; P \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}P^{-1}<br>$$</p>
+<blockquote>
+<p>证明：等价于要证明，已知<br>$$<br>AP &#x3D; PT<br>$$<br>推出:<br>$$<br>T &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix}<br>$$<br>对于$T$的前$k$列，之前已经被证明过，不再重复证明。现在只需关注为什么$T$的右上角是零矩阵。$T$矩阵的本质就是规定如何对$v_1,v_2,…,v_n$进行线性组合来得到$PT$。</p>
+<p>$PT$的后$n - k$列应该是$[Av_{k + 1}, Av_{k + 2}, … , Av_n]$，而因为$Av_{k + 1}, Av_{k + 2}, … , Av_n \in F$, 即$Av_{k + 1}, Av_{k + 2}, … , Av_n \in \text{span}(v_{k + 1}, …, v_n)$，所以这里的线性组合完全不需要$v_1,v_2,…,v_k$，所以矩阵的右上角为0。</p>
+</blockquote>
+<p>​	然后我们再来考察矩阵$A$的特征多项式：<br>$$<br>\det (A - xI) &#x3D; (\lambda_0 - x) ^ k \times \det(B - xI_{n - k})<br>$$<br>​	若$\det(B - xI_{n - k})$中还有$\lambda_0 - x$作为因子，则$\lambda_0$也会是$B$的特征值。设$Bz &#x3D; \lambda_0z \ (z \neq \mathbf{0})$。则构造一个新向量$w$：<br>$$<br>w_{n \times 1} &#x3D; \begin{bmatrix}<br>\mathbf{0}_{k\times 1}\cr<br>z<br>\end{bmatrix}<br>$$<br>​	则：<br>$$<br>Tw &#x3D; \begin{bmatrix}<br>\lambda_0 I_k &amp; 0 \cr<br>0 &amp; B	<br>\end{bmatrix} \begin{bmatrix}<br>\mathbf{0}\cr<br>z<br>\end{bmatrix} &#x3D; \begin{bmatrix}<br>\mathbf{0}\cr<br>Bz<br>\end{bmatrix}<br> &#x3D; \begin{bmatrix}<br>\mathbf{0}\cr<br>\lambda_0z<br>\end{bmatrix} &#x3D; \lambda_0 w<br>$$<br>​	而：<br>$$<br>A(Pw) &#x3D; PTP^{-1}(Pw) &#x3D; PTw &#x3D; P\lambda_0w &#x3D; \lambda_0 (Pw)<br>$$<br>​	故 $Pw$ 是 $A$ 关于特征值 $\lambda_0$ 的特征向量。那么$Pw \in E$。</p>
+<p>​	但是我们又因为$w$的前$k$个分量都是0，所以$Pw$就是对$v_{k + 1}, … v_n$的线性组合。显然这个线性组合属于$F$，故$Pw \in F$。</p>
+<p>​	因此$Pw \in (E \cap F) \to Pw &#x3D; \mathbf{0} \to w &#x3D; \mathbf{0}$，矛盾。</p>
+<hr>
+<ul>
+<li>Theorem 4：对于一个实对称矩阵，若其两个特征向量对应两个不同的特征值，那么这两个特征向量一定正交。</li>
+</ul>
+<p>​       设$A\alpha_1 &#x3D; \lambda_1 \alpha_1, A\alpha_2 &#x3D; \lambda_2 \alpha_2, \lambda_1  \neq \lambda_2$，则：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D; \lambda_1 \alpha_1^T\alpha_2<br>$$<br>​	而：<br>$$<br>(A\alpha_1)^T\alpha_2 &#x3D;  \alpha_1^TA^T\alpha_2 &#x3D;  \alpha_1^TA\alpha_2 &#x3D;  \alpha_1^T(A\alpha_2) &#x3D; \lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	于是：<br>$$<br>\lambda_1 \alpha_1^T\alpha_2 &#x3D;\lambda_2 \alpha_1^T\alpha_2<br>$$<br>​	而$\lambda_1 \neq \lambda_2$，故$\alpha_1^T\alpha_2 &#x3D; 0$。</p>
+<hr>
+<ul>
+<li><p>Theorem 5：对于一个$n \times n$的实对称矩阵，其特征向量 span $\mathbb{R}^n$。</p>
+<p>首先，根据代数基本定理，这个实对称矩阵一定有$n$个特征根。</p>
+<p>其次根据Theorem 1，这n个特征根都是实数，所以这个矩阵的各特征根的代数重数相加等于$n$。</p>
+</li>
+</ul>
+<p>​	又因为实对称矩阵的代数重数等于几何重数 (Theorem 3)，所以代数重数为$k$的特征值对应的有$k$个线性无关的特征向量。</p>
+<p>​	又因为Theorem 4，所以实对称矩阵可以有$n$个彼此正交的特征向量，自然他们是线性无关的，故可以span。</p>
+]]></content>
+      <tags>
+        <tag>数学</tag>
       </tags>
   </entry>
 </search>

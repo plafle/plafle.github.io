@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="gdb  $esp表示寄存器%esp 可以在特定机器指令的地址上打断点，例如 b *0xff3ef23f 也可以这样： b *phase_1 + 22 寄存器%pc和%eip中存放的值貌似都是将要执行的下一条指令所在地址  x&#x2F;1i $pc可以显示将要执行的下一条指令  call命令会先把寄存器%ip压栈，然后把%ip赋值为调用的函数开头命令的地址 ret命令相当于就是po">
+    <meta name="description" content="gdb $esp表示寄存器%esp  可以在特定机器指令的地址上打断点，例如 b *0xff3ef23f 也可以这样： b *phase_1 + 22  寄存器%pc和%eip中存放的值貌似都是将要执行的下一条指令所在地址  x&#x2F;1i $pc可以显示将要执行的下一条指令   call命令会先把寄存器%ip压栈，然后把%ip赋值为调用的函数开头命令的地址  ret命令相当于就是pop %ip">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gdb过程中的一些碎碎念">
 <meta property="og:url" content="http://plafle.github.io/2024/11/03/gdb/index.html">
 <meta property="og:site_name" content="plafle&#39;s blog">
-<meta property="og:description" content="gdb  $esp表示寄存器%esp 可以在特定机器指令的地址上打断点，例如 b *0xff3ef23f 也可以这样： b *phase_1 + 22 寄存器%pc和%eip中存放的值貌似都是将要执行的下一条指令所在地址  x&#x2F;1i $pc可以显示将要执行的下一条指令  call命令会先把寄存器%ip压栈，然后把%ip赋值为调用的函数开头命令的地址 ret命令相当于就是po">
+<meta property="og:description" content="gdb $esp表示寄存器%esp  可以在特定机器指令的地址上打断点，例如 b *0xff3ef23f 也可以这样： b *phase_1 + 22  寄存器%pc和%eip中存放的值貌似都是将要执行的下一条指令所在地址  x&#x2F;1i $pc可以显示将要执行的下一条指令   call命令会先把寄存器%ip压栈，然后把%ip赋值为调用的函数开头命令的地址  ret命令相当于就是pop %ip">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-01-28T02:59:33.089Z">
+<meta property="article:modified_time" content="2025-01-28T02:59:34.000Z">
 <meta property="article:author" content="plafle">
 <meta property="article:tag" content="CS">
 <meta name="twitter:card" content="summary">
@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -222,7 +222,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-01-28 10:59:33" itemprop="dateModified" datetime="2025-01-28T10:59:33+08:00">2025-01-28</time>
+      <time title="修改时间：2025-01-28 10:59:34" itemprop="dateModified" datetime="2025-01-28T10:59:34+08:00">2025-01-28</time>
     </span>
 
   
@@ -234,19 +234,23 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="gdb">gdb</h3>
-<ul>
-<li><p><code>$esp</code>表示寄存器<code>%esp</code></p></li>
+    <div class="post-body" itemprop="articleBody"><h3 id="gdb"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</h3><ul>
+<li><p><code>$esp</code>表示寄存器<code>%esp</code></p>
+</li>
 <li><p>可以在特定机器指令的地址上打断点，例如</p>
 <p><code>b *0xff3ef23f</code></p>
 <p>也可以这样：</p>
-<p><code>b *phase_1 + 22</code></p></li>
+<p><code>b *phase_1 + 22</code></p>
+</li>
 <li><p>寄存器<code>%pc</code>和<code>%eip</code>中存放的值貌似都是将要执行的下一条指令所在地址</p>
 <blockquote>
 <p><code>x/1i $pc</code>可以显示将要执行的下一条指令</p>
-</blockquote></li>
-<li><p>call命令会先把寄存器<code>%ip</code>压栈，然后把<code>%ip</code>赋值为调用的函数开头命令的地址</p></li>
-<li><p><code>ret</code>命令相当于就是pop %ip</p></li>
+</blockquote>
+</li>
+<li><p>call命令会先把寄存器<code>%ip</code>压栈，然后把<code>%ip</code>赋值为调用的函数开头命令的地址</p>
+</li>
+<li><p><code>ret</code>命令相当于就是pop %ip</p>
+</li>
 </ul>
 
     </div>
@@ -291,7 +295,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

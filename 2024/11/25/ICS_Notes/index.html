@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="ICS Notes  Carry Flag将两个操作数视作无符号数，无符号数加减溢出的时候Carry Flag会被置为1。在实际执行的加法中，如果两个操作数的符号位相等，但不等于结果的符号位，CF会被置为1，反之为0. 在减法中，如果不够减，那么CF被置为1.   CF (bit 0) Carry flag — Set if an arithmetic operation gene">
+    <meta name="description" content="ICS Notes Carry Flag将两个操作数视作无符号数，无符号数加减溢出的时候Carry Flag会被置为1。在实际执行的加法中，如果两个操作数的符号位相等，但不等于结果的符号位，CF会被置为1，反之为0. 在减法中，如果不够减，那么CF被置为1.   CF (bit 0) Carry flag — Set if an arithmetic operation generates a c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ICS Notes">
 <meta property="og:url" content="http://plafle.github.io/2024/11/25/ICS_Notes/index.html">
 <meta property="og:site_name" content="plafle&#39;s blog">
-<meta property="og:description" content="ICS Notes  Carry Flag将两个操作数视作无符号数，无符号数加减溢出的时候Carry Flag会被置为1。在实际执行的加法中，如果两个操作数的符号位相等，但不等于结果的符号位，CF会被置为1，反之为0. 在减法中，如果不够减，那么CF被置为1.   CF (bit 0) Carry flag — Set if an arithmetic operation gene">
+<meta property="og:description" content="ICS Notes Carry Flag将两个操作数视作无符号数，无符号数加减溢出的时候Carry Flag会被置为1。在实际执行的加法中，如果两个操作数的符号位相等，但不等于结果的符号位，CF会被置为1，反之为0. 在减法中，如果不够减，那么CF被置为1.   CF (bit 0) Carry flag — Set if an arithmetic operation generates a c">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-01-28T03:00:24.336Z">
+<meta property="article:modified_time" content="2025-01-28T03:00:26.000Z">
 <meta property="article:author" content="plafle">
 <meta property="article:tag" content="CS">
 <meta name="twitter:card" content="summary">
@@ -140,7 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ics-notes"><span class="nav-number">1.</span> <span class="nav-text">ICS Notes</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ICS-Notes"><span class="nav-number">1.</span> <span class="nav-text">ICS Notes</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -222,7 +222,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-01-28 11:00:24" itemprop="dateModified" datetime="2025-01-28T11:00:24+08:00">2025-01-28</time>
+      <time title="修改时间：2025-01-28 11:00:26" itemprop="dateModified" datetime="2025-01-28T11:00:26+08:00">2025-01-28</time>
     </span>
 
   
@@ -234,116 +234,121 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="ics-notes">ICS Notes</h3>
-<ul>
-<li>Carry Flag将两个操作数视作无符号数，无符号数加减溢出的时候Carry
-Flag会被置为1。在实际执行的加法中，如果两个操作数的符号位相等，但不等于结果的符号位，CF会被置为1，反之为0.
-在减法中，如果不够减，那么CF被置为1.</li>
+    <div class="post-body" itemprop="articleBody"><h3 id="ICS-Notes"><a href="#ICS-Notes" class="headerlink" title="ICS Notes"></a>ICS Notes</h3><ul>
+<li>Carry Flag将两个操作数视作无符号数，无符号数加减溢出的时候Carry Flag会被置为1。在实际执行的加法中，如果两个操作数的符号位相等，但不等于结果的符号位，CF会被置为1，反之为0. 在减法中，如果不够减，那么CF被置为1.</li>
 </ul>
 <blockquote>
-<p><strong>CF (bit 0) Carry flag</strong> — Set if an arithmetic
-operation generates a carry or a borrow out of the most significant bit
-of the result; cleared otherwise.</p>
+<p><strong>CF (bit 0) Carry flag</strong> — Set if an arithmetic operation generates a carry or a borrow out of the most significant bit of the result; cleared otherwise. </p>
 </blockquote>
 <ul>
-<li>Over
-Flag将两个操作数视为有符号数。加法时，若CF=1表示加法有进位。减法时，若CF=1表示不够减。</li>
+<li>Over Flag将两个操作数视为有符号数。加法时，若CF&#x3D;1表示加法有进位。减法时，若CF&#x3D;1表示不够减。</li>
 </ul>
-<hr />
+<hr>
 <ul>
-<li><strong>SHL</strong>
-逻辑左移，每左移一次，把最高位移到CF里，并在低位补0</li>
-<li><strong>SHR</strong>
-逻辑右移，每右移一次，把最低位移到CF里，并在高位补0</li>
-<li><strong>SAL</strong>
-算术左移，和<strong>SHL</strong>一样，只不过若移位前后sign
-bit发生变化，那么OF会被置为1</li>
-<li><strong>SAR</strong>
-算术右移，每右移一次，把最低位移到CF里，并在高位补符号位</li>
-<li><strong>ROL</strong>
-循环左移，每左移一次，把最高位放到最低位，同时把最高位放到CF里</li>
-<li><strong>ROR</strong>
-循环右移，每右移一次，把最低位放到最高位，同时把最低位放到CF里</li>
-<li><strong>RCL</strong>
-把CF当成最高位加到原来的数左边，一起循环左移。</li>
-<li><strong>RCR</strong>
-把CF当成最低位加到原来的数右边，一起循环右移。</li>
+<li><strong>SHL</strong> 逻辑左移，每左移一次，把最高位移到CF里，并在低位补0</li>
+<li><strong>SHR</strong> 逻辑右移，每右移一次，把最低位移到CF里，并在高位补0</li>
+<li><strong>SAL</strong> 算术左移，和<strong>SHL</strong>一样，只不过若移位前后sign bit发生变化，那么OF会被置为1</li>
+<li><strong>SAR</strong> 算术右移，每右移一次，把最低位移到CF里，并在高位补符号位</li>
+<li><strong>ROL</strong> 循环左移，每左移一次，把最高位放到最低位，同时把最高位放到CF里</li>
+<li><strong>ROR</strong> 循环右移，每右移一次，把最低位放到最高位，同时把最低位放到CF里</li>
+<li><strong>RCL</strong> 把CF当成最高位加到原来的数左边，一起循环左移。</li>
+<li><strong>RCR</strong> 把CF当成最低位加到原来的数右边，一起循环右移。</li>
 </ul>
-<hr />
+<hr>
 <ul>
-<li><p>JCXZ/JECXZ： jump if CX/ECX is 0</p></li>
-<li><p>MUL</p>
+<li><p>JCXZ&#x2F;JECXZ： jump if CX&#x2F;ECX is 0</p>
+</li>
+<li><p>MUL </p>
 <ul>
-<li>单操作数 例如MUL A 意思是DX:AX = （AX * A)</li>
-<li>双操作数 例如MUL S, D 意思是 D *= S</li>
-<li>三操作数 例如MUL n,S,D 意思是 D = S * n, 这里D必须是寄存器</li>
-</ul></li>
-<li><p>IMUL: 与MUL同理</p></li>
-<li><p>机器码里面的操作数如果是立即数存储方法也是小端序的，例如e8 6e ff
-ff ff实际上的操作数是ff ff ff 6e</p></li>
+<li>单操作数 例如MUL A 意思是DX:AX &#x3D; （AX * A)</li>
+<li>双操作数 例如MUL S, D 意思是 D *&#x3D; S</li>
+<li>三操作数 例如MUL n,S,D 意思是 D &#x3D; S * n, 这里D必须是寄存器</li>
 </ul>
-<hr />
+</li>
+<li><p>IMUL: 与MUL同理</p>
+</li>
+<li><p>机器码里面的操作数如果是立即数存储方法也是小端序的，例如e8 6e ff ff ff实际上的操作数是ff ff ff 6e</p>
+</li>
+</ul>
+<hr>
 <p>编译器方面的优化方式：</p>
-<ol type="1">
+<ol>
 <li>提高cache的命中率，例如把二位数组求和改成行优先</li>
 <li>提高流水线的命中率，例如①把循环拆开，②采用cmov指令</li>
-<li>提高单条指令的运行速度，例如把lea 0(%eax,%eax,3) %eax 改为 SAL
-$2,%eax</li>
+<li>提高单条指令的运行速度，例如把lea 0(%eax,%eax,3) %eax 改为 SAL $2,%eax</li>
 <li>使用串指令，例如在把一个数组的全部赋为0的任务中，使用memset这一封装了串指令的命令</li>
 <li>使用多线程，例如在把一个数组的全部赋为0的任务中，开多个线程分别对数组的各个部分赋0</li>
 <li>使用SIMD：一条指令成组操作，节约了时间</li>
 <li>变量与寄存器绑定</li>
 </ol>
 <p>C语言方面的优化方式：</p>
-<ol type="1">
-<li><p>把*2改为&lt;&lt; 1，提高单调指令的效率</p></li>
-<li><p>循环展开，提高流水线效率</p></li>
-<li><p>二位数组行优先访问，提高cache命中率</p></li>
-<li><p>使用memset等封装了串指令的命令</p></li>
-<li><p>register int i</p></li>
-<li><p>if （A &amp;&amp; B） 如果A满足概率90%, B 10%，那么写成if (B
-&amp;&amp; A)</p></li>
-<li><p>把递归改为迭代</p></li>
-<li><p>用封装了SIMD的代码</p></li>
-<li><p>多线程</p></li>
-<li><p>减少重复计算</p></li>
+<ol>
+<li><p>把*2改为&lt;&lt; 1，提高单调指令的效率</p>
+</li>
+<li><p>循环展开，提高流水线效率</p>
+</li>
+<li><p>二位数组行优先访问，提高cache命中率</p>
+</li>
+<li><p>使用memset等封装了串指令的命令</p>
+</li>
+<li><p>register int i</p>
+</li>
+<li><p>if （A &amp;&amp; B） 如果A满足概率90%, B 10%，那么写成if (B &amp;&amp; A)</p>
+</li>
+<li><p>把递归改为迭代</p>
+</li>
+<li><p>用封装了SIMD的代码</p>
+</li>
+<li><p>多线程</p>
+</li>
+<li><p>减少重复计算</p>
+</li>
 </ol>
-<hr />
-<p>​</p>
+<hr>
+<p>​    </p>
 <p>异常：CPU内部产生的错误； 中断：由外部设备产生的“外部事件”</p>
-<hr />
+<hr>
 <p>Question:</p>
 <ul>
 <li><p>rela.data节具体是怎么存储信息的？之前在实验四用readelf看的时候没有看到过rela.data节</p>
 <blockquote>
-<p>存储信息方式同rela.text;</p>
-</blockquote></li>
+<p>存储信息方式同rela.text; </p>
+</blockquote>
+</li>
 <li><p>软中断（int命令）是异常还是中断？</p>
 <blockquote>
 <p>是异常</p>
-</blockquote></li>
+</blockquote>
+</li>
 <li><p>栈帧栈顶地址是什么意思？是存返回地址的那个地方是栈顶吗？</p>
 <blockquote>
 <p>答：不是，是%esp的地址。栈帧的范围是从%ebp到%esp之间（闭区间）</p>
-</blockquote></li>
+</blockquote>
+</li>
 <li><p>我想要让代码跳到0x4011d6处执行，对应的汇编代码不能直接写<code>jmp 0x4011d6</code>，而是得写成</p>
 <blockquote>
 <p>考试时可以这样写</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov $0x4011d6,%r10</span><br><span class="line">jmp *%r10</span><br></pre></td></tr></table></figure>
+
 <p>这是为什么？</p>
-<p>另外，如果我新建一个.s文件然后在里面写<code>jmp 0x4011d6</code>然后汇编，然后再反汇编，得到的反汇编结果是<code>jmp 0x05</code>,这是为什么？</p></li>
+<p>另外，如果我新建一个.s文件然后在里面写<code>jmp 0x4011d6</code>然后汇编，然后再反汇编，得到的反汇编结果是<code>jmp 0x05</code>,这是为什么？</p>
+</li>
 <li><p>一般来说，用switch效率是比用很多if要高吗？</p>
 <blockquote>
 <p>不一定，按习题来</p>
-</blockquote></li>
-<li><p>extern定义的变量名会不会出现在符号表里面（因为如果不用就不会）？这种变量是不是没有强弱符号的概念？</p></li>
-<li><p>在同一个.o文件下，要么全是R_386_32重定位方式，要么全部都是R_386_PC32重定位方式？
-看起来不是：（</p></li>
-<li><p><strong>栈顶是低地址</strong></p></li>
-<li><p><code>b8</code> mov literal, <code>a1</code> mov
-直接寻址</p></li>
-<li><p>外部变量不会在<code>.data</code>,<code>.bss</code>,<code>.text</code>节中</p></li>
+</blockquote>
+</li>
+<li><p>extern定义的变量名会不会出现在符号表里面（因为如果不用就不会）？这种变量是不是没有强弱符号的概念？</p>
+</li>
+<li><p>在同一个.o文件下，要么全是R_386_32重定位方式，要么全部都是R_386_PC32重定位方式？ 看起来不是：（</p>
+</li>
+<li><p><strong>栈顶是低地址</strong></p>
+</li>
+<li><p><code>b8 </code> mov literal, <code>a1</code> mov 直接寻址</p>
+</li>
+<li><p>外部变量不会在<code>.data</code>,<code>.bss</code>,<code>.text</code>节中</p>
+</li>
 </ul>
 <p>假设LP是一个标号，那么JMP LP等价的语句是：</p>
 <p><strong>LEA</strong> LP, %EAX</p>
@@ -351,10 +356,8 @@ $2,%eax</li>
 <p>字符之间的比较最好用ja,jb</p>
 <p>.data 段里面定义的变量使用的时候可以替换为它的地址。</p>
 <p>所有的符号（包括外部符号）只要被引用了就要重定位</p>
-<p>如果<span
-class="math inline">\(x\)</span>在C语言中是一个无符号数，那么<code>x &gt;&gt;= 1</code>翻译成汇编语言就会时shr</p>
-<p>如果<span
-class="math inline">\(x\)</span>在C语言中是一个有符号数，那么<code>x &gt;&gt;= 1</code>翻译成汇编语言就会时sar</p>
+<p>如果$x$在C语言中是一个无符号数，那么<code>x &gt;&gt;= 1</code>翻译成汇编语言就会时shr</p>
+<p>如果$x$在C语言中是一个有符号数，那么<code>x &gt;&gt;= 1</code>翻译成汇编语言就会时sar</p>
 <p>基址加变址寻址：A(B,C,D)中B和C都必须要是寄存器</p>
 <p>没直接问寻址方式就详细答，不放心全都写上</p>
 <p><strong>中断描述符表就是中断向量表。</strong></p>
@@ -401,7 +404,7 @@ class="math inline">\(x\)</span>在C语言中是一个有符号数，那么<code
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

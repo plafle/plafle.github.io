@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"plafle.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="概率论 1. 泊松分布 \(\hspace{1cm}\) 定义为\(P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}\)，\(\lambda &gt; 0\)，也可以记作\(X\) ~ \(P(\lambda)\) \(\hspace{1cm}\) 对于一个二项分布\(B(n,p)\)，如果\(n\)比较大，\(np\)适中（\(n \ge 100">
+    <meta name="description" content="概率论1. 泊松分布$\hspace{1cm}$ 定义为$P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}$，$\lambda &gt; 0$，也可以记作$X$ ~ $P(\lambda)$ $\hspace{1cm}$ 对于一个二项分布$B(n,p)$，如果$n$比较大，$np$适中（$n \ge 100， np \le 10$）那么可以把">
 <meta property="og:type" content="article">
 <meta property="og:title" content="概率论">
 <meta property="og:url" content="http://plafle.github.io/2025/01/01/%E6%A6%82%E7%8E%87%E8%AE%BA/index.html">
 <meta property="og:site_name" content="plafle&#39;s blog">
-<meta property="og:description" content="概率论 1. 泊松分布 \(\hspace{1cm}\) 定义为\(P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}\)，\(\lambda &gt; 0\)，也可以记作\(X\) ~ \(P(\lambda)\) \(\hspace{1cm}\) 对于一个二项分布\(B(n,p)\)，如果\(n\)比较大，\(np\)适中（\(n \ge 100">
+<meta property="og:description" content="概率论1. 泊松分布$\hspace{1cm}$ 定义为$P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}$，$\lambda &gt; 0$，也可以记作$X$ ~ $P(\lambda)$ $\hspace{1cm}$ 对于一个二项分布$B(n,p)$，如果$n$比较大，$np$适中（$n \ge 100， np \le 10$）那么可以把">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-06T12:18:11.902Z">
+<meta property="article:modified_time" content="2025-02-06T12:18:12.000Z">
 <meta property="article:author" content="plafle">
 <meta property="article:tag" content="数学">
 <meta name="twitter:card" content="summary">
@@ -140,9 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">概率论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83"><span class="nav-number">1.1.</span> <span class="nav-text">1. 泊松分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B6%85%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-number">1.2.</span> <span class="nav-text">2. 超几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9D%87%E5%8C%80%E5%88%86%E5%B8%83"><span class="nav-number">1.3.</span> <span class="nav-text">3. 均匀分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83"><span class="nav-number">1.4.</span> <span class="nav-text">4. 指数分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-number">1.5.</span> <span class="nav-text">5. 几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="nav-number">1.6.</span> <span class="nav-text">6. 正态分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">多维随机变量相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E5%AF%B9%E4%BA%8E%E7%A6%BB%E6%95%A3%E5%9E%8B%E5%92%8C%E8%BF%9E%E7%BB%AD%E5%9E%8B%E5%9D%87%E9%80%82%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E8%BF%9E%E7%BB%AD%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2.
-多维随机变量的联合概率密度以及边缘概率密度（连续型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E5%88%97%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E5%88%86%E5%B8%83%E5%88%97%E7%A6%BB%E6%95%A3%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">3.
-多维随机变量的联合分布列以及边缘分布列（离散型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%86%E5%B8%83"><span class="nav-number">2.4.</span> <span class="nav-text">4. 多维变量的分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E6%96%B9%E5%B7%AE%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="nav-number">3.</span> <span class="nav-text">期望，方差，协方差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1%E9%83%A8%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">数理统计部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E9%83%A8%E5%88%86"><span class="nav-number">5.</span> <span class="nav-text">参数估计部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AE%BA%E5%A5%BD%E9%A2%98%E6%95%B4%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">概率论好题整理</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">概率论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83"><span class="nav-number">1.1.</span> <span class="nav-text">1. 泊松分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%B6%85%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-number">1.2.</span> <span class="nav-text">2. 超几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%9D%87%E5%8C%80%E5%88%86%E5%B8%83"><span class="nav-number">1.3.</span> <span class="nav-text">3. 均匀分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83"><span class="nav-number">1.4.</span> <span class="nav-text">4. 指数分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-number">1.5.</span> <span class="nav-text">5. 几何分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="nav-number">1.6.</span> <span class="nav-text">6. 正态分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">多维随机变量相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%EF%BC%8C%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%EF%BC%88%E5%AF%B9%E4%BA%8E%E7%A6%BB%E6%95%A3%E5%9E%8B%E5%92%8C%E8%BF%9E%E7%BB%AD%E5%9E%8B%E5%9D%87%E9%80%82%E7%94%A8%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%EF%BC%88%E8%BF%9E%E7%BB%AD%E5%9E%8B%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%A4%9A%E7%BB%B4%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E7%9A%84%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E5%88%97%E4%BB%A5%E5%8F%8A%E8%BE%B9%E7%BC%98%E5%88%86%E5%B8%83%E5%88%97%EF%BC%88%E7%A6%BB%E6%95%A3%E5%9E%8B%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">3. 多维随机变量的联合分布列以及边缘分布列（离散型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%A4%9A%E7%BB%B4%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%86%E5%B8%83"><span class="nav-number">2.4.</span> <span class="nav-text">4. 多维变量的分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%EF%BC%8C%E6%96%B9%E5%B7%AE%EF%BC%8C%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="nav-number">3.</span> <span class="nav-text">期望，方差，协方差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1%E9%83%A8%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">数理统计部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E9%83%A8%E5%88%86"><span class="nav-number">5.</span> <span class="nav-text">参数估计部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AE%BA%E5%A5%BD%E9%A2%98%E6%95%B4%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">概率论好题整理</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -155,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -224,7 +222,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-02-06 20:18:11" itemprop="dateModified" datetime="2025-02-06T20:18:11+08:00">2025-02-06</time>
+      <time title="修改时间：2025-02-06 20:18:12" itemprop="dateModified" datetime="2025-02-06T20:18:12+08:00">2025-02-06</time>
     </span>
 
   
@@ -236,135 +234,30 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="概率论">概率论</h3>
-<h4 id="泊松分布">1. 泊松分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 定义为<span
-class="math inline">\(P(x=k) = \frac{\lambda
-^k}{k!}e^{-\lambda}\)</span>，<span class="math inline">\(\lambda &gt;
-0\)</span>，也可以记作<span class="math inline">\(X\)</span> ~ <span
-class="math inline">\(P(\lambda)\)</span></p>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-对于一个二项分布<span class="math inline">\(B(n,p)\)</span>，如果<span
-class="math inline">\(n\)</span>比较大，<span
-class="math inline">\(np\)</span>适中（<span class="math inline">\(n \ge
-100， np \le 10\)</span>）那么可以把二项分布<span
-class="math inline">\(B(n,p)\)</span>近似为<span
-class="math inline">\(P(np)\)</span></p>
-<h4 id="超几何分布">2. 超几何分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 定义为<span
-class="math inline">\(H(N,M,n)\)</span>，表示从有限<span
-class="math inline">\(N\)</span>个物品中（其中包含<span
-class="math inline">\(M\)</span>个指定种类的物件）中抽出<span
-class="math inline">\(n\)</span>个物件，成功抽出该指定种类的物件的次数（不放回）</p>
-<h4 id="均匀分布">3. 均匀分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 即在<span
-class="math inline">\([a,b]\)</span>范围内等概率分布的情况，记作<span
-class="math inline">\(X\)</span> ~ <span
-class="math inline">\(U(a,b)\)</span></p>
-<h4 id="指数分布">4. 指数分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 其概率密度函数为
-<span class="math display">\[
-f(x) = \begin{cases}\lambda e^{-\lambda x}\ \ \ \ x &gt; 0\\ 0 \ \ \ \ \
-\ \ \ \ \ \ \ x \le 0 \end{cases}
-\]</span> <span class="math inline">\(\hspace{1cm}\)</span> 记作<span
-class="math inline">\(X\)</span> ~ <span
-class="math inline">\(Exp(\lambda)\)</span></p>
-<h4 id="几何分布">5. 几何分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 定义为<span
-class="math inline">\(P(X = k) = (1 - p)^{k - 1} \times
-p\)</span>，也可记作<span class="math inline">\(X\)</span> ~ <span
-class="math inline">\(G(p)\)</span>，表示第<span
-class="math inline">\(k\)</span>次刚好第一次发生概率为<span
-class="math inline">\(p\)</span>的事</p>
-<h4 id="正态分布">6. 正态分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 其密度函数记为
-<span class="math display">\[
-\varphi(x) = \frac 1{\sqrt{2\pi} \sigma}e^{-\frac{(x -
-\mu)^2}{2\sigma^2}}
-\]</span> <span class="math inline">\(\hspace{1cm}\)</span> 记作<span
-class="math inline">\(X\)</span> ~ <span class="math inline">\(N(\mu,
-\sigma^2)\)</span></p>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 其分布函数记为<span
-class="math inline">\(\Phi(x) = \int_{-\infty}^x \phi(t) dt\)</span></p>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 当<span
-class="math inline">\(\mu = 0, \sigma =
-1\)</span>时，认为是标准正态分布，其概率密度函数记为<span
-class="math inline">\(\varphi_0(x)\)</span>，分布函数记为<span
-class="math inline">\(\Phi_0(x)\)</span></p>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-对于任何任意一个<span class="math inline">\(\varphi(x)\)</span>，有<span
-class="math inline">\(\varphi(x) = \frac 1 \sigma \varphi_0(\frac {x -
-\mu}{\sigma})\)</span>，以及<span class="math inline">\(\Phi(x) =
-\Phi_0(\frac{x - \mu}{\sigma})\)</span></p>
-<h3 id="多维随机变量相关">多维随机变量相关</h3>
-<h4
-id="多维随机变量的联合分布函数以及边缘分布函数对于离散型和连续型均适用">1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-仿照单元模式，我们有如下定义：<span class="math inline">\(F(x,y) = P(X
-\le x, Y \le y)\)</span> 为<span
-class="math inline">\((X,Y)\)</span>的联合分布函数</p>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-根据定义，容易证明</p>
-<p><span class="math display">\[
-P(x_1 &lt; X \le x_2, y_1 &lt; Y \le y_2) = F(x_2,y_2) - F(x_1,y_2) -
-F(x_2,y_1) + F(x_1,y_1)
-\]</span></p>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 注意到<span
-class="math inline">\(F(x,y)\)</span>有如下性质：</p>
-<p><span class="math display">\[
-F(-\infty,y) = F(x, -\infty) = 0
-\]</span></p>
-<p><span class="math display">\[
-F(-\infty,-\infty) = 0, F(+\infty,+\infty) = 1
-\]</span></p>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-定义边缘分布函数：称<span
-class="math inline">\(F_X(x),F_Y(y)\)</span>分别为<span
-class="math inline">\((X,Y)\)</span>关于<span
-class="math inline">\(X\)</span>和<span
-class="math inline">\(Y\)</span>的边缘分布函数，其中<span
-class="math inline">\(F_X(x) = F(x,+\infty)\)</span>，<span
-class="math inline">\(F_Y(y) = F(y, +\infty)\)</span>。</p>
-<h4 id="多维随机变量的联合概率密度以及边缘概率密度连续型">2.
-多维随机变量的联合概率密度以及边缘概率密度（连续型）</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 若存在二元函数<span
-class="math inline">\(f(x,y)\)</span>使得<span
-class="math inline">\(\int_{-\infty}^x \int_{-\infty}^y f(u,v)dudv =
-F(x,y)\)</span>，则称<span
-class="math inline">\(f(x,y)\)</span>为联合概率密度</p>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-定义边缘概率密度函数：称<span class="math inline">\(f_X(x),
-f_Y(y)\)</span>分别为<span class="math inline">\((X,Y)\)</span>关于<span
-class="math inline">\(X\)</span>和<span
-class="math inline">\(Y\)</span>的边缘密度函数，其中<span
-class="math inline">\(f_X(x) =
-\int_{-\infty}^{+\infty}f(x,y)dy\)</span>, <span
-class="math inline">\(f_Y(y) =
-\int_{-\infty}^{+\infty}f(x,y)dx\)</span></p>
-<p>​</p>
-<h4 id="多维随机变量的联合分布列以及边缘分布列离散型">3.
-多维随机变量的联合分布列以及边缘分布列（离散型）</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 若<span
-class="math inline">\((X,Y)\)</span>均是离散的，那么定义<span
-class="math inline">\(p_{ij} =P(X = x_i, Y =
-y_i)\)</span>为联合分布列</p>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 同时定义<span
-class="math inline">\(p_{i·} = \sum_j p_{ij}\)</span>为<span
-class="math inline">\((X,Y)\)</span>关于<span
-class="math inline">\(X\)</span>的边缘分布列，<span
-class="math inline">\(p_{·j} =\sum _i p_{ij}\)</span> 为<span
-class="math inline">\((X,Y)\)</span>关于<span
-class="math inline">\(Y\)</span>的边缘分布列</p>
-<h4 id="多维变量的分布">4. 多维变量的分布</h4>
-<p><span class="math inline">\(\hspace{1cm}\)</span> 设<span
-class="math inline">\(Z = \frac XY\)</span>，且<span
-class="math inline">\(f(x,y)\)</span>表示变量<span
-class="math inline">\(X,Y\)</span>的联合概率密度函数，则有： <span
-class="math display">\[
-f_Z(z) = \int_{-\infty}^{+\infty} |y| f(yz,y)dy
-\]</span></p>
-<h3 id="期望方差协方差">期望，方差，协方差</h3>
-<ul>
+    <div class="post-body" itemprop="articleBody"><h3 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h3><h4 id="1-泊松分布"><a href="#1-泊松分布" class="headerlink" title="1. 泊松分布"></a>1. 泊松分布</h4><p>$\hspace{1cm}$ 定义为$P(x&#x3D;k) &#x3D; \frac{\lambda ^k}{k!}e^{-\lambda}$，$\lambda &gt; 0$，也可以记作$X$ ~ $P(\lambda)$</p>
+<p>$\hspace{1cm}$ 对于一个二项分布$B(n,p)$，如果$n$比较大，$np$适中（$n \ge 100， np \le 10$）那么可以把二项分布$B(n,p)$近似为$P(np)$</p>
+<h4 id="2-超几何分布"><a href="#2-超几何分布" class="headerlink" title="2. 超几何分布"></a>2. 超几何分布</h4><p>$\hspace{1cm}$ 定义为$H(N,M,n)$，表示从有限$N$个物品中（其中包含$M$个指定种类的物件）中抽出$n$个物件，成功抽出该指定种类的物件的次数（不放回）</p>
+<h4 id="3-均匀分布"><a href="#3-均匀分布" class="headerlink" title="3. 均匀分布"></a>3. 均匀分布</h4><p>$\hspace{1cm}$ 即在$[a,b]$范围内等概率分布的情况，记作$X$ ~ $U(a,b)$</p>
+<h4 id="4-指数分布"><a href="#4-指数分布" class="headerlink" title="4. 指数分布"></a>4. 指数分布</h4><p> $\hspace{1cm}$ 其概率密度函数为<br>$$<br>f(x) &#x3D; \begin{cases}\lambda e^{-\lambda x}\ \ \ \ x &gt; 0\ 0 \ \ \ \ \ \ \ \ \ \ \ \ x \le 0 \end{cases}<br>$$<br>$\hspace{1cm}$ 记作$X$ ~ $Exp(\lambda)$</p>
+<h4 id="5-几何分布"><a href="#5-几何分布" class="headerlink" title="5. 几何分布"></a>5. 几何分布</h4><p>$\hspace{1cm}$ 定义为$P(X &#x3D; k) &#x3D; (1 - p)^{k - 1} \times p$，也可记作$X$ ~ $G(p)$，表示第$k$次刚好第一次发生概率为$p$的事</p>
+<h4 id="6-正态分布"><a href="#6-正态分布" class="headerlink" title="6. 正态分布"></a>6. 正态分布</h4><p>$\hspace{1cm}$ 其密度函数记为<br>$$<br>\varphi(x) &#x3D; \frac 1{\sqrt{2\pi} \sigma}e^{-\frac{(x - \mu)^2}{2\sigma^2}}<br>$$<br>$\hspace{1cm}$ 记作$X$ ~ $N(\mu, \sigma^2)$</p>
+<p>$\hspace{1cm}$ 其分布函数记为$\Phi(x) &#x3D; \int_{-\infty}^x \phi(t) dt$</p>
+<p>$\hspace{1cm}$ 当$\mu &#x3D; 0, \sigma &#x3D; 1$时，认为是标准正态分布，其概率密度函数记为$\varphi_0(x)$，分布函数记为$\Phi_0(x)$</p>
+<p>$\hspace{1cm}$ 对于任何任意一个$\varphi(x)$，有$\varphi(x) &#x3D; \frac 1 \sigma \varphi_0(\frac {x - \mu}{\sigma})$，以及$\Phi(x) &#x3D; \Phi_0(\frac{x - \mu}{\sigma})$</p>
+<h3 id="多维随机变量相关"><a href="#多维随机变量相关" class="headerlink" title="多维随机变量相关"></a>多维随机变量相关</h3><h4 id="1-多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）"><a href="#1-多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）" class="headerlink" title="1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）"></a>1.多维随机变量的联合分布函数，以及边缘分布函数（对于离散型和连续型均适用）</h4><p>$\hspace{1cm}$ 仿照单元模式，我们有如下定义：$F(x,y) &#x3D; P(X \le x, Y \le y)$ 为$(X,Y)$的联合分布函数</p>
+<p>$\hspace{1cm}$ 根据定义，容易证明</p>
+<p>$$<br>P(x_1 &lt; X \le x_2, y_1 &lt; Y \le y_2) &#x3D; F(x_2,y_2) - F(x_1,y_2) - F(x_2,y_1) + F(x_1,y_1)<br>$$</p>
+<p>$\hspace{1cm}$ 注意到$F(x,y)$有如下性质：</p>
+<p>$$<br>F(-\infty,y) &#x3D; F(x, -\infty) &#x3D; 0<br>$$</p>
+<p>$$<br>F(-\infty,-\infty) &#x3D; 0, F(+\infty,+\infty) &#x3D; 1<br>$$</p>
+<p>$\hspace{1cm}$ 定义边缘分布函数：称$F_X(x),F_Y(y)$分别为$(X,Y)$关于$X$和$Y$的边缘分布函数，其中$F_X(x) &#x3D; F(x,+\infty)$，$F_Y(y) &#x3D; F(y, +\infty)$。</p>
+<h4 id="2-多维随机变量的联合概率密度以及边缘概率密度（连续型）"><a href="#2-多维随机变量的联合概率密度以及边缘概率密度（连续型）" class="headerlink" title="2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）"></a>2. 多维随机变量的联合概率密度以及边缘概率密度（连续型）</h4><p>$\hspace{1cm}$ 若存在二元函数$f(x,y)$使得$\int_{-\infty}^x \int_{-\infty}^y f(u,v)dudv &#x3D; F(x,y)$，则称$f(x,y)$为联合概率密度</p>
+<p>$\hspace{1cm}$ 定义边缘概率密度函数：称$f_X(x), f_Y(y)$分别为$(X,Y)$关于$X$和$Y$的边缘密度函数，其中$f_X(x) &#x3D; \int_{-\infty}^{+\infty}f(x,y)dy$, $f_Y(y) &#x3D; \int_{-\infty}^{+\infty}f(x,y)dx$</p>
+<p>​	</p>
+<h4 id="3-多维随机变量的联合分布列以及边缘分布列（离散型）"><a href="#3-多维随机变量的联合分布列以及边缘分布列（离散型）" class="headerlink" title="3. 多维随机变量的联合分布列以及边缘分布列（离散型）"></a>3. 多维随机变量的联合分布列以及边缘分布列（离散型）</h4><p>$\hspace{1cm}$ 若$(X,Y)$均是离散的，那么定义$p_{ij} &#x3D;P(X &#x3D; x_i, Y &#x3D; y_i)$为联合分布列</p>
+<p>$\hspace{1cm}$ 同时定义$p_{i·} &#x3D; \sum_j p_{ij}$为$(X,Y)$关于$X$的边缘分布列，$p_{·j} &#x3D;\sum <em>i p</em>{ij}$ 为$(X,Y)$关于$Y$的边缘分布列</p>
+<h4 id="4-多维变量的分布"><a href="#4-多维变量的分布" class="headerlink" title="4. 多维变量的分布"></a>4. 多维变量的分布</h4><p>$\hspace{1cm}$ 设$Z &#x3D; \frac XY$，且$f(x,y)$表示变量$X,Y$的联合概率密度函数，则有：<br>$$<br>f_Z(z) &#x3D; \int_{-\infty}^{+\infty} |y| f(yz,y)dy<br>$$</p>
+<h3 id="期望，方差，协方差"><a href="#期望，方差，协方差" class="headerlink" title="期望，方差，协方差"></a>期望，方差，协方差</h3><ul>
 <li><p>常见分布的期望和方差：</p>
 <table>
 <thead>
@@ -374,386 +267,160 @@ f_Z(z) = \int_{-\infty}^{+\infty} |y| f(yz,y)dy
 <th>D：方差</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td><span class="math inline">\(U(a,b)\)</span></td>
-<td><span class="math inline">\(\frac {a + b}2\)</span></td>
-<td><span class="math inline">\(\frac{(b - a)^2}{12}\)</span></td>
+<tbody><tr>
+<td>$U(a,b)$</td>
+<td>$\frac {a + b}2$</td>
+<td>$\frac{(b - a)^2}{12}$</td>
 </tr>
 <tr>
-<td><span class="math inline">\(P(\lambda)\)</span></td>
-<td><span class="math inline">\(\lambda\)</span></td>
-<td><span class="math inline">\(\lambda\)</span></td>
+<td>$P(\lambda)$</td>
+<td>$\lambda$</td>
+<td>$\lambda$</td>
 </tr>
 <tr>
-<td><span class="math inline">\(E(\lambda)\)</span></td>
-<td><span class="math inline">\(\frac 1\lambda\)</span></td>
-<td><span class="math inline">\(\frac 1{\lambda^2}\)</span></td>
+<td>$E(\lambda)$</td>
+<td>$\frac 1\lambda$</td>
+<td>$\frac 1{\lambda^2}$</td>
 </tr>
 <tr>
-<td><span class="math inline">\(G(p)\)</span></td>
-<td><span class="math inline">\(\frac 1p\)</span></td>
-<td><span class="math inline">\(\frac q{p^2}\)</span></td>
+<td>$G(p)$</td>
+<td>$\frac 1p$</td>
+<td>$\frac q{p^2}$</td>
 </tr>
 <tr>
-<td><span class="math inline">\(N(\mu, \sigma^2)\)</span></td>
-<td><span class="math inline">\(\mu\)</span></td>
-<td><span class="math inline">\(\sigma^2\)</span></td>
+<td>$N(\mu, \sigma^2)$</td>
+<td>$\mu$</td>
+<td>$\sigma^2$</td>
 </tr>
 <tr>
-<td><span class="math inline">\(B(n,p)\)</span></td>
-<td><span class="math inline">\(np\)</span></td>
-<td><span class="math inline">\(npq\)</span></td>
+<td>$B(n,p)$</td>
+<td>$np$</td>
+<td>$npq$</td>
 </tr>
-</tbody>
-</table>
-<p>注：<span class="math inline">\(E(\lambda)\)</span>为指数分布，<span
-class="math inline">\(G(p)\)</span>为几何分布，<span
-class="math inline">\(q = 1 - p\)</span></p></li>
-<li><p>切比雪夫不等式： 对于一切分布<span
-class="math inline">\(X\)</span>，有： <span class="math display">\[
-P(|X - EX| &gt; \varepsilon) \le \frac {DX}{\varepsilon^2}
-\]</span></p></li>
-<li><p>注意：如果随机变量<span
-class="math inline">\(X,Y\)</span>满足<span class="math inline">\(E(XY)
-= E(X)E(Y)\)</span>那么不能说明<span
-class="math inline">\(X\)</span>和<span
-class="math inline">\(Y\)</span>是独立的！</p></li>
-<li><p>对于任意随机变量<span
-class="math inline">\(X_1,X_2,...,X_n\)</span>以及任意常数<span
-class="math inline">\(k_0,k_1,...,k_n\)</span>，我们有： <span
-class="math display">\[
-D(k_0 + k_1X_1+ k_2X_2 + ... + k_nX_n) = \sum_{i = 1}^n{k_i}^2DX_i + 2
-\sum_{1 \le i &lt; j \le n}k_ik_jCov(X_i,X_j)
-\]</span></p></li>
-<li><p>Cauchy-schwarz inequation: <span class="math display">\[
-EX^2 \times EY^2 \ge (E[XY])^2
-\]</span></p></li>
-<li><p>最小二乘法拟合：对于随机变量<span
-class="math inline">\(X,Y\)</span>，尝试用<span class="math inline">\(y
-= \hat{a}x + \hat{b}\)</span>拟合，那么最好的拟合直线中: <span
-class="math display">\[
-\hat{a} = \rho_{XY} \sqrt{\frac {DY}{DX} }, \hat{b} = EY - \hat{a}EX
-\]</span></p></li>
-<li><p>若<span class="math inline">\((X,Y)\)</span>服从二维正态分布<span
-class="math inline">\(N(\mu_1,\mu_2,{\sigma_1}^2,{\sigma_2}^2,\rho)\)</span>，那么<span
-class="math inline">\(Cov(X,Y) = \sigma_1\sigma_2\rho\)</span></p></li>
-<li><p>条件期望的概念：书p69开始，注意：<span
-class="math inline">\(E(X|Y)\)</span>是一个关于<span
-class="math inline">\(Y\)</span>的函数，也是一个随机变量，而<span
-class="math inline">\(E(X|Y = y)\)</span>是一个常数。全期望公式： <span
-class="math display">\[
-E(X) = E[E(X|Y)]
-\]</span></p></li>
-</ul>
-<h3 id="数理统计部分">数理统计部分</h3>
-<ul>
-<li><p><strong>样本方差</strong>的定义：设有<span
-class="math inline">\(n\)</span>个样本<span
-class="math inline">\(X_1,X_2,...,X_n\)</span>，则定义样本方差 <span
-class="math display">\[
-S^2 = \frac 1{n - 1} \sum_{i = 1}^n(X_i - \bar{X})^2
-\]</span> 其中： <span class="math display">\[
-\bar{X} = \frac 1n \sum_{i = 1}^nX_i
-\]</span></p></li>
-<li><p>设<span
-class="math inline">\(n\)</span>个样本都是独立同分布的，且每个样本作为随机变量均值为<span
-class="math inline">\(\mu\)</span>,方差为<span
-class="math inline">\(\sigma^2\)</span>，则： <span
-class="math display">\[
-ES^2 =E(\frac 1{n - 1} \sum_{i = 1}^n(X_i - \bar{X})^2) = \frac 1{n - 1}
-\sum_{i = 1}^n(E^2(X_i) - 2E(X_i\bar{X}) + E^2(\bar{x}))\\ = \frac 1{n -
-1} \sum_{i = 1}^n(\mu^2 + \sigma^2 + \mu^2 + \frac 1n \sigma^2 -
-2E(X_i\bar{X}))\\
-\because E(X_i\bar{X}) = \frac 1nE(\sum_{1 \le j\le n, j \neq i}X_iX_j)
-+ \frac 1nE({X_i}^2) = \frac 1n\sum_{1 \le j\le n, j \neq i}E(X_i)E(X_j)
-+ \frac 1nE({X_i}^2)\\ = \mu^2 + \frac 1n \sigma^2\\
-\therefore ES^2 = \frac 1{n - 1} \times n \times \frac{n - 1}n\sigma^2 =
-\sigma^2
-\]</span></p></li>
-<li><p>设<span class="math inline">\(\chi^2\)</span> ~ <span
-class="math inline">\(\chi^2(n)\)</span>，则当<span
-class="math inline">\(n\)</span>足够大时，<span
-class="math inline">\(\sqrt{2\chi^2}\)</span>近似服从正态分布<span
-class="math inline">\(N(\sqrt{2n-1},1)\)</span></p></li>
-<li><p><strong>t分布</strong>：若<span class="math inline">\(X\)</span>
-~ <span class="math inline">\(N(0,1)\)</span>, <span
-class="math inline">\(Y\)</span> ~ <span
-class="math inline">\(\chi^2(N)\)</span>，且<span
-class="math inline">\(X\)</span>和<span
-class="math inline">\(Y\)</span>相互独立，那么定义<span
-class="math inline">\(T\)</span> ~ <span class="math inline">\(t(n) =
-\frac{X}{\sqrt{Y/n}}\)</span>为<strong>t分布</strong>.</p>
-<p>当<span class="math inline">\(n \to +\infty\)</span>时，<span
-class="math inline">\(t(n)\)</span> 可近似为 <span
-class="math inline">\(N(0,1)\)</span></p></li>
-<li><p><strong>F分布：</strong>若<span class="math inline">\(X\)</span>
-~ <span class="math inline">\(\chi^2(n_1)\)</span>， <span
-class="math inline">\(Y\)</span> ~ <span
-class="math inline">\(\chi^2(n_2)\)</span>，且<span
-class="math inline">\(X\)</span>和<span
-class="math inline">\(Y\)</span>相互独立，那么定义<span
-class="math inline">\(F(n_1,n_2) =
-\frac{X/{n_1}}{Y/_{n_2}}\)</span>为<strong>F分布</strong></p>
-<p>​ 若<span class="math inline">\(F\)</span> ~ <span
-class="math inline">\(F(n_1,n_2)\)</span>,则有$1F $ ~ <span
-class="math inline">\(F(n_2,n_1)\)</span>。同时我们有：<span
-class="math inline">\(F_{\alpha}(n_2,n_1) = \frac 1{F_{1 -
-\alpha}(n_1,n_2)}\)</span></p></li>
-<li><p>假设<span
-class="math inline">\(X_1,X_2,...,X_n\)</span>均服从<span
-class="math inline">\(N(\mu,\sigma^2)\)</span>且相互独立，设<span
-class="math inline">\(\bar{X} = \frac 1n \sum_{i = 1}^n
-{X_i}\)</span>，<span class="math inline">\(S^2 = \frac 1n \sum_{i =
-1}^n(X_i - \bar{X})^2\)</span>，那么：</p>
-<ul>
-<li>$ _{i = 1}^n (X_i - )^2$ ~ <span
-class="math inline">\(\chi^2(n)\)</span></li>
-<li>$_{i = 1}^n (X_i - {X})^2 $ ~ <span class="math inline">\(\chi^2 (n
-- 1)\)</span> 这条等价为<span class="math inline">\((n - 1)\frac
-{S^2}{\sigma^2}\)</span> ~ <span class="math inline">\(\chi^2(n -
-1)\)</span></li>
-<li><span class="math inline">\(\frac{\bar{X} - \mu}
-{\sigma}\sqrt{n}\)</span> ~ <span
-class="math inline">\(N(0,1)\)</span>；<br />
+</tbody></table>
+<p>注：$E(\lambda)$为指数分布，$G(p)$为几何分布，$q &#x3D; 1 - p$</p>
 </li>
-<li><span class="math inline">\(\frac{\bar{X} - \mu}{S}\sqrt{n}\)</span>
-~ <span class="math inline">\(t(n - 1)\)</span>；
-（这里的S表示标准差，即<span
-class="math inline">\(\sqrt{S^2}\)</span>，同时我们可以比较上下发现，当<span
-class="math inline">\(n \to \infty\)</span>时，<span
-class="math inline">\(t(n - 1) \to N(0,1)\)</span>）</li>
-</ul></li>
-<li><p>p96 推论6.3 考前看一下，难记</p></li>
-<li><p>在正态分布中，不相关和独立是等价的，这是一条很强的结论</p></li>
-<li><p>正态分布随机抽样得到<span
-class="math inline">\(X_1,X_2,...,X_n\)</span>。那么有<span
-class="math inline">\(S^2\)</span>与<span
-class="math inline">\(\overline{X}\)</span>独立，且有<span
-class="math inline">\(\tilde{S}\)</span>与<span
-class="math inline">\(\overline{X}\)</span>独立。</p></li>
+<li><p>切比雪夫不等式： 对于一切分布$X$，有：<br>$$<br>P(|X - EX| &gt; \varepsilon) \le \frac {DX}{\varepsilon^2}<br>$$</p>
+</li>
+<li><p>注意：如果随机变量$X,Y$满足$E(XY) &#x3D; E(X)E(Y)$那么不能说明$X$和$Y$是独立的！</p>
+</li>
+<li><p>对于任意随机变量$X_1,X_2,…,X_n$以及任意常数$k_0,k_1,…,k_n$，我们有：<br>$$<br>D(k_0 + k_1X_1+ k_2X_2 + … + k_nX_n) &#x3D; \sum_{i &#x3D; 1}^n{k_i}^2DX_i + 2 \sum_{1 \le i &lt; j \le n}k_ik_jCov(X_i,X_j)<br>$$</p>
+</li>
+<li><p>Cauchy-schwarz inequation:<br>$$<br>EX^2 \times EY^2 \ge (E[XY])^2<br>$$</p>
+</li>
+<li><p>最小二乘法拟合：对于随机变量$X,Y$，尝试用$y &#x3D; \hat{a}x + \hat{b}$拟合，那么最好的拟合直线中:<br>$$<br>\hat{a} &#x3D; \rho_{XY} \sqrt{\frac {DY}{DX} }, \hat{b} &#x3D; EY - \hat{a}EX<br>$$</p>
+</li>
+<li><p>若$(X,Y)$服从二维正态分布$N(\mu_1,\mu_2,{\sigma_1}^2,{\sigma_2}^2,\rho)$，那么$Cov(X,Y) &#x3D; \sigma_1\sigma_2\rho$</p>
+</li>
+<li><p>条件期望的概念：书p69开始，注意：$E(X|Y)$是一个关于$Y$的函数，也是一个随机变量，而$E(X|Y &#x3D; y)$是一个常数。全期望公式：<br>$$<br>E(X) &#x3D; E[E(X|Y)]<br>$$</p>
+</li>
 </ul>
-<h3 id="参数估计部分">参数估计部分</h3>
-<p><span class="math inline">\(\hspace{1cm}\)</span>
-这部分主要用于处理已经知道一系列样本，要用这些样板来估计分布函数里面的一些参数的问题。</p>
+<h3 id="数理统计部分"><a href="#数理统计部分" class="headerlink" title="数理统计部分"></a>数理统计部分</h3><ul>
+<li><p><strong>样本方差</strong>的定义：设有$n$个样本$X_1,X_2,…,X_n$，则定义样本方差<br>$$<br>S^2 &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2<br>$$<br>其中：<br>$$<br>\bar{X} &#x3D; \frac 1n \sum_{i &#x3D; 1}^nX_i<br>$$</p>
+</li>
+<li><p>设$n$个样本都是独立同分布的，且每个样本作为随机变量均值为$\mu$,方差为$\sigma^2$，则：<br>$$<br>ES^2 &#x3D;E(\frac 1{n - 1} \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2) &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(E^2(X_i) - 2E(X_i\bar{X}) + E^2(\bar{x}))\ &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n(\mu^2 + \sigma^2 + \mu^2 + \frac 1n \sigma^2 - 2E(X_i\bar{X}))\<br>\because E(X_i\bar{X}) &#x3D; \frac 1nE(\sum_{1 \le j\le n, j \neq i}X_iX_j) + \frac 1nE({X_i}^2) &#x3D; \frac 1n\sum_{1 \le j\le n, j \neq i}E(X_i)E(X_j) + \frac 1nE({X_i}^2)\ &#x3D; \mu^2 + \frac 1n \sigma^2\<br>\therefore ES^2 &#x3D; \frac 1{n - 1} \times n \times \frac{n - 1}n\sigma^2 &#x3D; \sigma^2<br>$$</p>
+</li>
+<li><p>设$\chi^2$ ~ $\chi^2(n)$，则当$n$足够大时，$\sqrt{2\chi^2}$近似服从正态分布$N(\sqrt{2n-1},1)$</p>
+</li>
+<li><p><strong>t分布</strong>：若$X$ ~ $N(0,1)$, $Y$ ~ $\chi^2(N)$，且$X$和$Y$相互独立，那么定义$T$ ~ $t(n) &#x3D; \frac{X}{\sqrt{Y&#x2F;n}}$为<strong>t分布</strong>.</p>
+<p>当$n \to +\infty$时，$t(n)$ 可近似为 $N(0,1)$ </p>
+</li>
+<li><p><strong>F分布：<strong>若$X$ ~ $\chi^2(n_1)$， $Y$ ~ $\chi^2(n_2)$，且$X$和$Y$相互独立，那么定义$F(n_1,n_2) &#x3D; \frac{X&#x2F;{n_1}}{Y&#x2F;_{n_2}}$为</strong>F分布</strong></p>
+<p>​        若$F$ ~ $F(n_1,n_2)$,则有$\frac 1F $ ~ $F(n_2,n_1)$。同时我们有：$F_{\alpha}(n_2,n_1) &#x3D; \frac 1{F_{1 - \alpha}(n_1,n_2)}$</p>
+</li>
+<li><p>假设$X_1,X_2,…,X_n$均服从$N(\mu,\sigma^2)$且相互独立，设$\bar{X} &#x3D; \frac 1n \sum_{i &#x3D; 1}^n {X_i}$，$S^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n(X_i - \bar{X})^2$，那么：</p>
+<ul>
+<li>$ \frac 1{\sigma^2}\sum_{i &#x3D; 1}^n (X_i - \mu)^2$ ~ $\chi^2(n)$</li>
+<li>$\frac 1{\sigma^2}\sum_{i &#x3D; 1}^n (X_i - \bar{X})^2 $ ~ $\chi^2 (n - 1)$ 这条等价为$(n - 1)\frac {S^2}{\sigma^2}$ ~ $\chi^2(n - 1)$</li>
+<li>$\frac{\bar{X} - \mu} {\sigma}\sqrt{n}$ ~ $N(0,1)$；    </li>
+<li>$\frac{\bar{X} - \mu}{S}\sqrt{n}$ ~ $t(n - 1)$； （这里的S表示标准差，即$\sqrt{S^2}$，同时我们可以比较上下发现，当$n \to \infty$时，$t(n - 1) \to N(0,1)$）</li>
+</ul>
+</li>
+<li><p>p96 推论6.3 考前看一下，难记</p>
+</li>
+<li><p>在正态分布中，不相关和独立是等价的，这是一条很强的结论</p>
+</li>
+<li><p>正态分布随机抽样得到$X_1,X_2,…,X_n$。那么有$S^2$与$\overline{X}$独立，且有$\tilde{S}$与$\overline{X}$独立。</p>
+</li>
+</ul>
+<h3 id="参数估计部分"><a href="#参数估计部分" class="headerlink" title="参数估计部分"></a>参数估计部分</h3><p>$\hspace{1cm}$ 这部分主要用于处理已经知道一系列样本，要用这些样板来估计分布函数里面的一些参数的问题。</p>
 <ul>
 <li><p>矩估计：</p>
 <ul>
-<li><p>若只有一个参数要估计，那只需要用一阶矩来估计即可；
-如果有n个参数要估计，那么用前n阶矩来估计</p></li>
-<li><p>用第<span class="math inline">\(k\)</span>阶矩来估计的方法：</p>
+<li><p>若只有一个参数要估计，那只需要用一阶矩来估计即可； 如果有n个参数要估计，那么用前n阶矩来估计</p>
+</li>
+<li><p>用第$k$阶矩来估计的方法：</p>
 <ul>
-<li>首先计算出总体的<span
-class="math inline">\(k\)</span>阶原点矩，这等于<span
-class="math inline">\(E(X^k)\)</span>，这应该是一个关于待估计参数的函数</li>
-<li>然后计算出样本的<span
-class="math inline">\(k\)</span>阶原点矩，这等于<span
-class="math inline">\(\frac 1n \sum_{i = 1}^n {X_i}^k\)</span>
-，这算出来是一个确定的数</li>
-<li>令样本的<span
-class="math inline">\(k\)</span>阶原点矩等于总体的<span
-class="math inline">\(k\)</span>阶原点矩，得到一个方程用来解待估计的参数</li>
-</ul></li>
-<li><p>更加一般化地说，就是我们可以用样本的<span
-class="math inline">\(k\)</span>阶原点矩作为总体的<span
-class="math inline">\(k\)</span>阶原点矩。例如，我们知道样本的<span
-class="math inline">\(1\)</span>阶原点矩是<span
-class="math inline">\(a\)</span>，样本的<span
-class="math inline">\(2\)</span>阶原点矩是<span
-class="math inline">\(b\)</span>，现在要求样本的标准差的矩估计。</p>
-<p>那么，我们就可以认为<span class="math inline">\(EX = a\)</span>,
-<span class="math inline">\(EX^2 = b\)</span>，于是<span
-class="math inline">\(D = EX^2 -(EX)^2 = b -
-a^2\)</span>，所以我们就认为<span class="math inline">\(\sqrt{b -
-a^2}\)</span>是样本的标准差的矩估计。</p></li>
-<li><p>我们有如下记号约定：对于一个样本<span
-class="math inline">\((X_1,X_2,...,X_n)\)</span>，令 <span
-class="math inline">\(\tilde{S}^2 = \frac 1n \sum_{i = 1}^n (X_i -
-\overline{X})^2\)</span></p></li>
-<li><p>在矩估计法中，认为<span class="math inline">\(DX =
-\tilde{S}^2\)</span></p>
-<p>证明如下： <span class="math display">\[
-\tilde{S}^2 =\frac 1n \sum_{i = 1}^n (X_i - \overline{X})^2 \\ =
-\frac 1n \sum_{i = 1}^n{X_i}^2 - \frac 2n \sum_{i =
-1}^n{X_i}\overline{X} + \overline{X}^2\\ =  \frac 1n \sum_{i =
-1}^n{X_i}^2 - 2\overline{X}^2 + \overline{X}^2 = \frac 1n \sum_{i =
-1}^n{X_i}^2 - \overline{X}^2\\ = EX^2 - (EX)^2 = DX
-\]</span></p></li>
-</ul></li>
-<li><p>最大似然估计</p>
-<p>即为要让参数取该估计值时，样本发生的概率最大</p></li>
-<li><p>设<span class="math inline">\(\hat{\theta} =
-\hat{\theta}(X_1,X_2,...,X_n)\)</span>是参数<span
-class="math inline">\(\theta\)</span>的估计量，若对于任意的<span
-class="math inline">\(\theta \in \Theta\)</span>，都有： <span
-class="math display">\[
-E(\hat{\theta}) = \theta
-\]</span> 那么称<span class="math inline">\(\hat{\theta}\)</span>是<span
-class="math inline">\(\theta\)</span>的无偏估计。</p>
-<p>设总体方差<span
-class="math inline">\(DX=\sigma^2\)</span>存在，那么<span
-class="math inline">\(S^2 = \frac 1{n - 1} \sum_{i = 1}^n (X_i -
-\overline{X})^2\)</span>是<span
-class="math inline">\(\sigma^2\)</span>的无偏估计，而<span
-class="math inline">\(\tilde{S}^2 = \frac 1n \sum_{i = 1}^n(X_i -
-\overline{X})^2\)</span>是<span
-class="math inline">\(\sigma^2\)</span>的有偏估计。</p></li>
+<li>首先计算出总体的$k$阶原点矩，这等于$E(X^k)$，这应该是一个关于待估计参数的函数</li>
+<li>然后计算出样本的$k$阶原点矩，这等于$\frac 1n \sum_{i &#x3D; 1}^n {X_i}^k$  ，这算出来是一个确定的数</li>
+<li>令样本的$k$阶原点矩等于总体的$k$阶原点矩，得到一个方程用来解待估计的参数</li>
 </ul>
-<h3 id="概率论好题整理">概率论好题整理</h3>
-<ol type="1">
-<li><p>若<span class="math inline">\(X,Y\)</span>独立，且<span
-class="math inline">\(X\)</span> ~ <span
-class="math inline">\(P(\lambda_1)\)</span>,<span
-class="math inline">\(Y\)</span> ~ <span
-class="math inline">\(P(\lambda_2)\)</span>。</p>
-<ol type="1">
-<li>证明<span class="math inline">\(X + Y\)</span> ~ <span
-class="math inline">\(P(\lambda_1 + \lambda_2)\)</span>;
-（2）求在已知<span class="math inline">\(X + Y = m\)</span>的条件下<span
-class="math inline">\(X\)</span>的分布</li>
-</ol></li>
-<li><p>已知随机变量<span class="math inline">\(X\)</span>和<span
-class="math inline">\(Y\)</span>相互独立，且都服从<span
-class="math inline">\(N(0,1)\)</span>，求<span
-class="math inline">\(E[max\{X,Y\}]\)</span></p></li>
-<li><p>已知<span class="math inline">\(X\)</span> ~ <span
-class="math inline">\(N(\mu, \sigma ^2)\)</span>，求<span
-class="math inline">\(DX\)</span></p>
-<p>首先<span class="math inline">\(EX = \mu\)</span>, 然后： <span
-class="math display">\[
-DX = E((X - EX)^2) = E((X - \mu)^2) = \int_{-\infty}^{+\infty} \frac 1
-{\sqrt{2\pi}\sigma}e^{-\frac {(x - \mu)^2}{2\sigma ^2}}\times (x -
-\mu)^2 dx\\ = \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma}
-e^{\frac{-x^2}{2\sigma^2} }\times x^2 dx = \int_{-\infty}^{+\infty}
-\frac 1 {\sqrt{2\pi}\sigma} e^{-(\frac x{\sqrt 2 \sigma})^2} \times
-(\frac x{\sqrt 2 \sigma})^2d(\frac {x}{\sqrt 2 \sigma}) \times 2\sqrt 2
-\sigma ^3\\ = \frac{2\sigma ^2}{\sqrt{\pi}} \int_{-\infty}^{+\infty}
-e^{-x^2} x^2dx
-\]</span></p></li>
+</li>
+<li><p>更加一般化地说，就是我们可以用样本的$k$阶原点矩作为总体的$k$阶原点矩。例如，我们知道样本的$1$阶原点矩是$a$，样本的$2$阶原点矩是$b$，现在要求样本的标准差的矩估计。</p>
+<p>那么，我们就可以认为$EX &#x3D; a$, $EX^2 &#x3D; b$，于是$D &#x3D; EX^2 -(EX)^2 &#x3D; b - a^2$，所以我们就认为$\sqrt{b - a^2}$是样本的标准差的矩估计。</p>
+</li>
+<li><p>我们有如下记号约定：对于一个样本$(X_1,X_2,…,X_n)$，令 $\tilde{S}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2$</p>
+</li>
+<li><p>在矩估计法中，认为$DX &#x3D; \tilde{S}^2$</p>
+<p>证明如下：<br>$$<br>\tilde{S}^2 &#x3D;\frac 1n \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2 \ &#x3D;<br>\frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - \frac 2n \sum_{i &#x3D; 1}^n{X_i}\overline{X} + \overline{X}^2\ &#x3D;  \frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - 2\overline{X}^2 + \overline{X}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n{X_i}^2 - \overline{X}^2\ &#x3D; EX^2 - (EX)^2 &#x3D; DX<br>$$</p>
+</li>
+</ul>
+</li>
+<li><p>最大似然估计</p>
+<p>即为要让参数取该估计值时，样本发生的概率最大</p>
+</li>
+<li><p>设$\hat{\theta} &#x3D; \hat{\theta}(X_1,X_2,…,X_n)$是参数$\theta$的估计量，若对于任意的$\theta \in \Theta$，都有：<br>$$<br>E(\hat{\theta}) &#x3D; \theta<br>$$<br>那么称$\hat{\theta}$是$\theta$的无偏估计。</p>
+<p>设总体方差$DX&#x3D;\sigma^2$存在，那么$S^2 &#x3D; \frac 1{n - 1} \sum_{i &#x3D; 1}^n (X_i - \overline{X})^2$是$\sigma^2$的无偏估计，而$\tilde{S}^2 &#x3D; \frac 1n \sum_{i &#x3D; 1}^n(X_i - \overline{X})^2$是$\sigma^2$的有偏估计。</p>
+</li>
+</ul>
+<h3 id="概率论好题整理"><a href="#概率论好题整理" class="headerlink" title="概率论好题整理"></a>概率论好题整理</h3><ol>
+<li><p>若$X,Y$独立，且$X$ ~ $P(\lambda_1)$,$Y$ ~ $P(\lambda_2)$。</p>
+<p>(1) 证明$X + Y$ ~ $P(\lambda_1 + \lambda_2)$; （2）求在已知$X + Y &#x3D; m$的条件下$X$的分布</p>
+</li>
+<li><p>已知随机变量$X$和$Y$相互独立，且都服从$N(0,1)$，求$E[max{X,Y}]$</p>
+</li>
+<li><p>已知$X$ ~ $N(\mu, \sigma ^2)$，求$DX$</p>
+<p>首先$EX &#x3D; \mu$, 然后：</p>
+</li>
 </ol>
-<p>​ 考察积分<span
-class="math inline">\(\int_{-\infty}^{+\infty}e^{-x^2}x^2dx\)</span>：
-<span class="math display">\[
-\int_{-\infty}^{+\infty} e^{-x^2}dx = \left.
-xe^{-x^2}\right|_{-\infty}^{+\infty}  +
-2\int_{-\infty}^{+\infty}e^{x^2}x^2 dx = \sqrt{\pi}
-\]</span> ​ 于是： <span class="math display">\[
-\int_{-\infty}^{+\infty}e^{x^2}x^2 dx =\frac {\sqrt \pi}2
-\]</span> ​ 所以: <span class="math display">\[
-DX = \sigma^2
-\]</span></p>
-<ol start="4" type="1">
-<li>已知<span class="math inline">\(X\)</span> ~ <span
-class="math inline">\(N(0,\sigma^2)\)</span>, <span
-class="math inline">\(Y\)</span> ~ <span
-class="math inline">\(N(0,\sigma ^2)\)</span>，求证：<span
-class="math inline">\(X + Y\)</span> ~ <span class="math inline">\(N(0,
-2\sigma^2)\)</span>， <span class="math inline">\(X - Y\)</span> ~ <span
-class="math inline">\(N(0, 2\sigma^2)\)</span>。</li>
+<p>$$<br>DX &#x3D; E((X - EX)^2) &#x3D; E((X - \mu)^2) &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma}e^{-\frac {(x - \mu)^2}{2\sigma ^2}}\times (x - \mu)^2 dx\ &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma} e^{\frac{-x^2}{2\sigma^2} }\times x^2 dx &#x3D; \int_{-\infty}^{+\infty} \frac 1 {\sqrt{2\pi}\sigma} e^{-(\frac x{\sqrt 2 \sigma})^2} \times (\frac x{\sqrt 2 \sigma})^2d(\frac {x}{\sqrt 2 \sigma}) \times 2\sqrt 2 \sigma ^3\ &#x3D; \frac{2\sigma ^2}{\sqrt{\pi}} \int_{-\infty}^{+\infty} e^{-x^2} x^2dx<br>$$</p>
+<p>​		考察积分$\int_{-\infty}^{+\infty}e^{-x^2}x^2dx$：<br>$$<br>\int_{-\infty}^{+\infty} e^{-x^2}dx &#x3D; \left. xe^{-x^2}\right|<em>{-\infty}^{+\infty}  + 2\int</em>{-\infty}^{+\infty}e^{x^2}x^2 dx &#x3D; \sqrt{\pi}<br>$$<br>​		于是：<br>$$<br>\int_{-\infty}^{+\infty}e^{x^2}x^2 dx &#x3D;\frac {\sqrt \pi}2<br>$$<br>​		所以:<br>$$<br>DX &#x3D; \sigma^2<br>$$</p>
+<ol start="4">
+<li>已知$X$ ~ $N(0,\sigma^2)$, $Y$ ~ $N(0,\sigma ^2)$，求证：$X + Y$ ~ $N(0, 2\sigma^2)$， $X - Y$ ~ $N(0, 2\sigma^2)$。</li>
 </ol>
-<p><strong>超级强的一个结论：</strong>若<span
-class="math inline">\(X\)</span> ~ <span
-class="math inline">\(N(\mu_1,{\sigma_1}^2)\)</span>，<span
-class="math inline">\(Y\)</span> ~ <span
-class="math inline">\(N(\mu_2,{\sigma_2}^2)\)</span>，则<span
-class="math inline">\(X + Y\)</span> ~ <span
-class="math inline">\(N(\mu_1+\mu_2，{\sigma_1}^2+{\sigma_2}^2
-)\)</span>，</p>
-<p><span class="math inline">\(X - Y\)</span> ~ <span
-class="math inline">\(N(\mu1 - \mu
-2,{\sigma_1}^2+{\sigma_2}^2  )\)</span></p>
-<ol start="5" type="1">
-<li><p>设随机变量<span class="math inline">\(X\)</span>与<span
-class="math inline">\(Y\)</span>相互独立，且都服从<span
-class="math inline">\(N(0, \frac 12)\)</span>分布，求<span
-class="math inline">\(E|X - Y|\)</span>以及<span
-class="math inline">\(D|X-Y|\)</span> <span class="math display">\[
-E|X-Y| = \sqrt{\frac 2 \pi}\ \ \ \ \ \ \ D|X-Y| = 1 - \frac 2 \pi
-\]</span></p></li>
-<li><p>设随机变量<span class="math inline">\(x\)</span>具有概率密度：
-<span class="math display">\[
-f(x) = \begin{cases} \frac{x^m}{m!} e^{-x}\ \ \ \ \ \ \ \ x \ge 0\\
-0 \ \ \ \ \ \ \  \ \ \ \ \  \ else\end{cases}
-\]</span> 其中<span
-class="math inline">\(m\)</span>为正整数。请证明：<span
-class="math inline">\(P(0 \le X \le 2(m + 1)) \ge \frac m{m +
-1}\)</span></p>
+<p>**超级强的一个结论：**若$X$ ~ $N(\mu_1,{\sigma_1}^2)$，$Y$ ~ $N(\mu_2,{\sigma_2}^2)$，则$X + Y$ ~ $N(\mu_1+\mu_2，{\sigma_1}^2+{\sigma_2}^2 )$，</p>
+<p>$X - Y$ ~ $N(\mu1 - \mu 2,{\sigma_1}^2+{\sigma_2}^2  )$</p>
+<ol start="5">
+<li><p>设随机变量$X$与$Y$相互独立，且都服从$N(0, \frac 12)$分布，求$E|X - Y|$以及$D|X-Y|$<br>$$<br>E|X-Y| &#x3D; \sqrt{\frac 2 \pi}\ \ \ \ \ \ \ D|X-Y| &#x3D; 1 - \frac 2 \pi<br>$$</p>
+</li>
+<li><p>设随机变量$x$具有概率密度：<br>$$<br>f(x) &#x3D; \begin{cases} \frac{x^m}{m!} e^{-x}\ \ \ \ \ \ \ \ x \ge 0\<br>0 \ \ \ \ \ \ \  \ \ \ \ \  \ else\end{cases}<br>$$<br>其中$m$为正整数。请证明：$P(0 \le X \le 2(m + 1)) \ge \frac m{m + 1}$</p>
 <blockquote>
-<p>hint: 实际上这个概率密度函数和欧拉给出的 x!
-的连续函数的被积函数很像</p>
-</blockquote></li>
-<li><p>设随机变量<span
-class="math inline">\(X,Y\)</span>独立，且分别服从参数为<span
-class="math inline">\(\lambda\)</span>和<span
-class="math inline">\(\mu\)</span>的泊松分布，求<span
-class="math inline">\(E(X|X + Y = m)\)</span></p>
+<p>hint: 实际上这个概率密度函数和欧拉给出的 x! 的连续函数的被积函数很像</p>
+</blockquote>
+</li>
+<li><p>设随机变量$X,Y$独立，且分别服从参数为$\lambda$和$\mu$的泊松分布，求$E(X|X + Y &#x3D; m)$</p>
 <blockquote>
-<p><span class="math inline">\(ans:\frac{m\lambda}{\lambda +
-\mu}\)</span></p>
-</blockquote></li>
-<li><p>假设随机变量<span class="math inline">\(X_1\)</span>在<span
-class="math inline">\([0,1]\)</span>上有均匀分布,<span
-class="math inline">\(X_i\)</span>在<span
-class="math inline">\([X_{i-1},X_{i-1}+1]\)</span>上有均匀分布，其中<span
-class="math inline">\(i = 2,3,...,n\)</span>，求<span
-class="math inline">\(EX_n\)</span></p>
-<p>解：首先<span class="math inline">\(E(X_i|X_{i - 1}) = X_{i - 1} +
-\frac 12\)</span>，根据全期望公式，有</p>
-<p><span class="math display">\[
-E(X_i) = E(E(X_i|X_{i - 1})) = E(x_{i - 1} + \frac 12) = EX_{i - 1} +
-\frac 12
-\]</span> 而<span class="math inline">\(E_1 = \frac
-12\)</span>，所以<span class="math inline">\(E_n = \frac
-n2\)</span></p></li>
-<li><p>已知<span class="math inline">\(X\)</span> ~ <span
-class="math inline">\(N(0,1)\)</span>，求<span
-class="math inline">\(E(X^2),D(X^2)\)</span> <span
-class="math display">\[
-E(X^2) = E^2(X) + D(X) = 1\\
-E(X^4) = \int_{-\infty}^{+\infty}\frac
-1{\sqrt{2\pi}}e^{-\frac{x^2}2}x^4dx\\
-while\ \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^4dx = \frac 34 \sqrt{\pi}\
-\ (This \ \ is \ \ similar \ \  to \ \ calculating \ \
-\int_{-\infty}^{+\infty}e^{-x^2}x^2 dx)\\
-\therefore E(X^4) = 3\\
-\therefore D(X^2) = E(X^4)-E^2(X^2) = 3 - 1 = 2
-\]</span></p></li>
-<li><p>设总体<span class="math inline">\(B\)</span> ~ <span
-class="math inline">\(B(1,p)\)</span>,<span
-class="math inline">\(p\)</span>为未知参数，<span
-class="math inline">\((X_1,X_2,X_3,...,X_n)\)</span> 为来自总体<span
-class="math inline">\(X\)</span>的样本，求<span
-class="math inline">\(p\)</span>的极大似然估计</p>
-<p>第一种做法是<span class="math inline">\(L(\theta) = \prod(X_ip +
-(1-X_i)(1-p))\)</span>，这种后续取对然后求驻点是做不下去的</p>
-<p>需要写成<span class="math inline">\(L(\theta) = \prod(p^{X_i}(1 -
-p)^{1 - X_i})\)</span>，然后后续取对然后求驻点可以做</p></li>
-<li><p>设总体<span class="math inline">\(X\)</span>的密度函数为： <span
-class="math display">\[
-f(x) = \begin{cases}\frac 1 \theta e^{-\frac{x - \mu}\theta}\ \ \ \ x
-\ge \mu \\ 0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x &lt; \mu  \\ \end{cases}
-\]</span> 其中<span class="math inline">\(\theta &gt; 0\)</span>，
-求未知参数<span class="math inline">\(\mu,
-\theta\)</span>的矩估计量</p></li>
+<p>$ans:\frac{m\lambda}{\lambda + \mu}$</p>
+</blockquote>
+</li>
+<li><p>假设随机变量$X_1$在$[0,1]$上有均匀分布,$X_i$在$[X_{i-1},X_{i-1}+1]$上有均匀分布，其中$i &#x3D; 2,3,…,n$，求$EX_n$</p>
+<p>解：首先$E(X_i|X_{i - 1}) &#x3D; X_{i - 1} + \frac 12$，根据全期望公式，有</p>
+<p>$$<br>E(X_i) &#x3D; E(E(X_i|X_{i - 1})) &#x3D; E(x_{i - 1} + \frac 12) &#x3D; EX_{i - 1} + \frac 12<br>$$<br>而$E_1 &#x3D; \frac 12$，所以$E_n &#x3D; \frac n2$</p>
+</li>
+<li><p>已知$X$ ~ $N(0,1)$，求$E(X^2),D(X^2)$<br>$$<br>E(X^2) &#x3D; E^2(X) + D(X) &#x3D; 1\<br>E(X^4) &#x3D; \int_{-\infty}^{+\infty}\frac 1{\sqrt{2\pi}}e^{-\frac{x^2}2}x^4dx\<br>while\ \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^4dx &#x3D; \frac 34 \sqrt{\pi}\ \ (This \ \ is \ \ similar \ \  to \ \ calculating \ \ \int_{-\infty}^{+\infty}e^{-x^2}x^2 dx)\<br>\therefore E(X^4) &#x3D; 3\<br>\therefore D(X^2) &#x3D; E(X^4)-E^2(X^2) &#x3D; 3 - 1 &#x3D; 2<br>$$</p>
+</li>
+<li><p>设总体$B$ ~ $B(1,p)$,$p$为未知参数，$(X_1,X_2,X_3,…,X_n)$ 为来自总体$X$的样本，求$p$的极大似然估计</p>
+<p>第一种做法是$L(\theta) &#x3D; \prod(X_ip + (1-X_i)(1-p))$，这种后续取对然后求驻点是做不下去的</p>
+<p>需要写成$L(\theta) &#x3D; \prod(p^{X_i}(1 - p)^{1 - X_i})$，然后后续取对然后求驻点可以做</p>
+</li>
+<li><p>设总体$X$的密度函数为：<br>$$<br>f(x) &#x3D; \begin{cases}\frac 1 \theta e^{-\frac{x - \mu}\theta}\ \ \ \ x \ge \mu \ 0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x &lt; \mu  \ \end{cases}<br>$$<br>其中$\theta &gt; 0$， 求未知参数$\mu, \theta$的矩估计量</p>
+</li>
 </ol>
-<p>注意到：<span class="math inline">\(X - \mu\)</span> ~ <span
-class="math inline">\(E(\frac 1\theta)\)</span>，</p>
-<p>所以：<span class="math inline">\(E(X - \mu)\)</span> = <span
-class="math inline">\(\theta\)</span>, <span class="math inline">\(D(X -
-\mu) = \theta^2\)</span>， 所以：<span class="math inline">\(EX = \theta
-+ \mu, DX = \theta ^2\)</span>， 所以：<span
-class="math inline">\(\overline{X} = \theta + \mu, \tilde{S}^2 =
-\theta^2\)</span> 所以：<span class="math inline">\(\theta = \tilde{S},
-\mu = \overline{X} - \tilde{S}\)</span></p>
-<ol start="12" type="1">
-<li>若<span class="math inline">\(X\)</span>与<span
-class="math inline">\(Y\)</span>不相关，是否有<span
-class="math inline">\(f(X)\)</span>与<span
-class="math inline">\(g(Y)\)</span>不相关？</li>
-<li>若<span
-class="math inline">\(X_1,X_2,...,X_n\)</span>独立同分布，是否有<span
-class="math inline">\(\overline{X}\)</span>与<span
-class="math inline">\(S^2\)</span>不相关？</li>
+<p> 注意到：$X - \mu$  ~ $E(\frac 1\theta)$，</p>
+<p>所以：$E(X - \mu)$ &#x3D; $\theta$, $D(X - \mu) &#x3D; \theta^2$，<br>所以：$EX &#x3D; \theta + \mu, DX &#x3D; \theta ^2$，<br>所以：$\overline{X} &#x3D; \theta + \mu, \tilde{S}^2 &#x3D; \theta^2$<br>所以：$\theta &#x3D; \tilde{S}, \mu &#x3D; \overline{X} - \tilde{S}$</p>
+<ol start="12">
+<li>若$X$与$Y$不相关，是否有$f(X)$与$g(Y)$不相关？</li>
+<li>若$X_1,X_2,…,X_n$独立同分布，是否有$\overline{X}$与$S^2$不相关？</li>
 </ol>
 
     </div>
@@ -798,7 +465,7 @@ class="math inline">\(S^2\)</span>不相关？</li>
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
